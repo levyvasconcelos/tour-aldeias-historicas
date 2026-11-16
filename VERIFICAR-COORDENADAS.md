@@ -19,14 +19,22 @@ Legenda: ✅ confirmada em fonte pública · 🟡 fonte pública com pouca preci
 
 | # | Ponto | Estado | Lat, Lng | Mapa | Nota |
 |---|---|---|---|---|---|
-| 1 | Castelo de Belmonte | ✅ verificada | 40.3594, -7.348 | [abrir](https://www.google.com/maps?q=40.3594,-7.348) | Wikipedia (Castle of Belmonte) |
-| 2 | Igreja de Santiago e Panteão dos Cabrais | 🔴 estimada — confirmar no local | 40.3591, -7.3487 | [abrir](https://www.google.com/maps?q=40.3591,-7.3487) | Junto ao castelo - confirmar |
-| 3 | Sinagoga Bet Eliahu | 🔴 estimada — confirmar no local | 40.359, -7.3498 | [abrir](https://www.google.com/maps?q=40.359,-7.3498) | Rua da Fonte da Rosa 41 - confirmar |
-| 4 | Museu Judaico de Belmonte | 🟡 aproximada | 40.3581, -7.35 | [abrir](https://www.google.com/maps?q=40.3581,-7.35) | Wikipedia (40°21'29"N 7°21'00"W) |
+| 1 | Castelo de Belmonte | ✅ verificada | 40.359173885, -7.348244551 | [abrir](https://www.google.com/maps?q=40.359173885,-7.348244551) | Coordenada indicada por Levy (Google Maps) |
+| 2 | Igreja de Santiago e Panteão dos Cabrais | 🔴 estimada — confirmar no local | 40.35895, -7.34855 | [abrir](https://www.google.com/maps?q=40.35895,-7.34855) | Largo do Castelo, junto às capelas - confirmar |
+| 3 | Sinagoga Bet Eliahu | ✅ verificada | 40.358597876, -7.347314557 | [abrir](https://www.google.com/maps?q=40.358597876,-7.347314557) | Coordenada indicada por Levy (Google Maps) |
+| 4 | Museu Judaico de Belmonte | ✅ verificada | 40.358552859, -7.349797742 | [abrir](https://www.google.com/maps?q=40.358552859,-7.349797742) | Coordenada indicada por Levy (Google Maps) |
 | 5 | Rua Medieval de Belmonte | 🔴 estimada — confirmar no local | 40.3585, -7.3496 | [abrir](https://www.google.com/maps?q=40.3585,-7.3496) | Nome genérico - indicar a rua real |
-| 6 | Estátua de Pedro Álvares Cabral | 🔴 estimada — confirmar no local | 40.3578, -7.3512 | [abrir](https://www.google.com/maps?q=40.3578,-7.3512) | Perto da Câmara Municipal - confirmar |
+| 6 | Estátua de Pedro Álvares Cabral | ✅ verificada | 40.359185262, -7.350315823 | [abrir](https://www.google.com/maps?q=40.359185262,-7.350315823) | Coordenada indicada por Levy (Google Maps) |
 | 7 | Miradouro de Belmonte | 🔴 estimada — confirmar no local | 40.3597, -7.3468 | [abrir](https://www.google.com/maps?q=40.3597,-7.3468) | Nome genérico - indicar o miradouro real |
-| 8 | Torre Centum Cellas | ✅ verificada | 40.37764, -7.3427 | [abrir](https://www.google.com/maps?q=40.37764,-7.3427) | Wikipedia / Atlas Obscura / Pleiades |
+| 8 | Museu à Descoberta do Novo Mundo | 🔴 estimada — confirmar no local | 40.35905, -7.35085 | [abrir](https://www.google.com/maps?q=40.35905,-7.35085) | Solar dos Cabrais, Rua Pedro Álvares Cabral - confirmar |
+| 9 | Lenda dos Cabrais | 🔴 estimada — confirmar no local | 40.3591, -7.35075 | [abrir](https://www.google.com/maps?q=40.3591,-7.35075) | Perto do Museu dos Descobrimentos - confirmar |
+| 10 | Pelourinho e Paços do Concelho | ✅ verificada | 40.358687595, -7.349646492 | [abrir](https://www.google.com/maps?q=40.358687595,-7.349646492) | Coordenada indicada por Levy (Google Maps) - Pelourinho e Paços do Concelho num só ponto |
+| 11 | Capelas de Santo António e do Calvário | ✅ verificada | 40.358899324, -7.348414784 | [abrir](https://www.google.com/maps?q=40.358899324,-7.348414784) | Coordenada indicada por Levy (Google Maps) |
+| 12 | Cruz de Pau-Brasil | ✅ verificada | 40.359267, -7.34862 | [abrir](https://www.google.com/maps?q=40.359267,-7.34862) | Coordenada indicada por Levy (Google Maps) |
+| 13 | Judiaria de Belmonte | ✅ verificada | 40.358235312, -7.348695408 | [abrir](https://www.google.com/maps?q=40.358235312,-7.348695408) | Coordenada indicada por Levy (Google Maps) |
+| 14 | Candelabro Hanukkah | ✅ verificada | 40.358889246, -7.349860824 | [abrir](https://www.google.com/maps?q=40.358889246,-7.349860824) | Coordenada indicada por Levy (Google Maps) |
+| 15 | Motivos Cruciformes | ✅ verificada | 40.358408399, -7.348241601 | [abrir](https://www.google.com/maps?q=40.358408399,-7.348241601) | Coordenada indicada por Levy (Google Maps) |
+| 16 | Torre Centum Cellas | ✅ verificada | 40.37764, -7.3427 | [abrir](https://www.google.com/maps?q=40.37764,-7.3427) | Wikipedia / Atlas Obscura / Pleiades |
 
 ## Sortelha
 

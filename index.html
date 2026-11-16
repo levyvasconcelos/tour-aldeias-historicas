@@ -2,37 +2,608 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#1a3a2a">
-<title>EURO TOURS – Roteiros a pé com GPS</title>
+<meta name="description" content="Roteiro a pé Belmonte, Sortelha e Sabugal - EURO TOURS">
+<title>EURO TOURS – Belmonte, Sortelha e Sabugal</title>
+<link rel="icon" href="images/logo-euro-tours.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Source Sans 3',Arial,sans-serif;background:#f5f5f0;color:#1a1a18}
-header{background:#1a3a2a;color:#fff;padding:18px 20px;text-align:center}
-header h1{font-family:Georgia,serif;font-size:22px}
-main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
-p.intro{color:#555550;font-size:15px;line-height:1.6;margin-bottom:20px;text-align:center}
-a.cartao{display:block;background:#fff;border-radius:12px;padding:20px;margin-bottom:14px;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(0,0,0,.10);border-left:6px solid #2e7d32}
-a.cartao:focus-visible{outline:3px solid #c9a84c;outline-offset:3px}
-a.cartao h2{font-family:Georgia,serif;font-size:20px;color:#1a3a2a;margin-bottom:6px}
-a.cartao p{font-size:14px;color:#555550;line-height:1.5}
-a.cartao span{display:inline-block;margin-top:10px;background:#2e7d32;color:#fff;font-weight:600;font-size:14px;padding:10px 18px;border-radius:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde-escuro:#1a3a2a;--verde-medio:#2e7d32;--verde-claro:#4caf50;
+  --verde-bg:#e8f5e9;--dourado:#c9a84c;--vermelho:#c62828;
+  --cinza-bg:#f5f5f0;--cinza-borda:#d0d0c8;--texto-primario:#1a1a18;
+  --texto-secundario:#555550;--branco:#ffffff;
+  --sombra:0 2px 12px rgba(0,0,0,.10);--radius:12px;--radius-sm:8px;
+  --font-titulo:'Playfair Display',Georgia,serif;
+  --font-corpo:'Source Sans 3',Arial,sans-serif;--btn-min:52px;
+}
+body{font-family:var(--font-corpo);background:var(--cinza-bg);color:var(--texto-primario);min-height:100vh;overflow-x:hidden}
+.skip-link{position:absolute;top:-100px;left:16px;background:var(--verde-escuro);color:#fff;padding:10px 16px;border-radius:var(--radius-sm);font-size:15px;text-decoration:none;z-index:9999;transition:top .2s}
+.skip-link:focus{top:16px}
+/* TOPBAR */
+.topbar{background:var(--verde-escuro);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.2);position:sticky;top:0;z-index:1000}
+.topbar .logo{height:48px;width:auto}
+.topbar-direita{display:flex;align-items:center;gap:12px}
+.lang-select{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-sm);color:#fff;font-family:var(--font-corpo);font-size:14px;font-weight:600;padding:8px 28px 8px 12px;cursor:pointer;min-height:var(--btn-min);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-color:rgba(255,255,255,.12)}
+.lang-select:focus{outline:3px solid var(--dourado);outline-offset:2px}
+/* TÍTULO */
+.titulo-tour{text-align:center;padding:20px 20px 8px}
+.titulo-tour h1{font-family:var(--font-titulo);font-size:clamp(22px,5vw,30px);color:var(--verde-escuro);letter-spacing:.5px}
+.titulo-tour p{font-size:14px;color:var(--texto-secundario);margin-top:4px}
+/* PROGRESSO */
+.progresso-container{padding:8px 20px 0}
+.progresso-label{display:flex;justify-content:space-between;font-size:13px;color:var(--texto-secundario);margin-bottom:6px}
+.progresso-label strong{color:var(--verde-escuro)}
+.progresso-barra-bg{background:var(--cinza-borda);border-radius:99px;height:10px;overflow:hidden}
+.progresso-barra{background:linear-gradient(90deg,var(--verde-medio),var(--verde-claro));height:100%;border-radius:99px;width:0%;transition:width .6s ease}
+/* BOTÕES */
+.botoes-controlo{display:flex;gap:10px;padding:16px 20px;justify-content:center;flex-wrap:wrap}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;min-height:var(--btn-min);font-family:var(--font-corpo);font-size:15px;font-weight:600;border:none;border-radius:var(--radius);cursor:pointer;transition:transform .15s,filter .15s;letter-spacing:.3px;flex:1;max-width:170px}
+.btn:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-start{background:var(--verde-medio);color:#fff;box-shadow:0 3px 10px rgba(46,125,50,.35)}
+.btn-start:hover:not(:disabled){filter:brightness(1.1)}
+.btn-stop{background:var(--vermelho);color:#fff;box-shadow:0 3px 10px rgba(198,40,40,.35)}
+.btn-stop:hover:not(:disabled){filter:brightness(1.1)}
+/* BOTÃO RA */
+.btn-ra{display:flex;align-items:center;justify-content:center;gap:8px;min-height:var(--btn-min);padding:0 18px;font-family:var(--font-corpo);font-size:15px;font-weight:600;border:2px solid var(--dourado);border-radius:var(--radius);background:var(--verde-escuro);color:var(--dourado);cursor:pointer;transition:background .2s,color .2s;flex:1;max-width:170px}
+.btn-ra:hover{background:var(--dourado);color:var(--verde-escuro)}
+.btn-ra:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+.btn-ra:active{transform:scale(.97)}
+/* ÁUDIO */
+.btn-audio{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--verde-escuro);color:#fff;border:2px solid var(--dourado);font-size:22px;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);z-index:900;transition:transform .15s,background .2s;display:none}
+.btn-audio:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+.btn-audio:active{transform:scale(.93)}
+.btn-audio.tocando{background:var(--dourado);color:var(--verde-escuro)}
+/* MAPA */
+
+/* INFO */
+#info{background:var(--branco);margin:12px 16px 0;border-radius:var(--radius) var(--radius) 0 0;padding:18px 20px 14px;box-shadow:0 -2px 0 0 var(--verde-medio) inset,var(--sombra);border-top:4px solid var(--verde-medio);min-height:56px;transition:border-color .4s}
+#info h2{font-family:var(--font-titulo);font-size:21px;color:var(--verde-escuro);margin-bottom:8px}
+#info p{font-size:15px;line-height:1.65;color:var(--texto-primario)}
+.info-vazio{color:var(--texto-secundario);font-style:italic;font-size:14px;text-align:center;padding:6px 0}
+/* Galeria acima do mapa — altura mais compacta */
+#info .galeria{aspect-ratio:16/7;margin-top:12px}
+/* Mapa sem arredondamento em cima quando tem info colada */
+#map{height:40vh;min-height:200px;width:100%;border-top:none;border-bottom:3px solid var(--verde-escuro)}
+/* CARROSSEL */
+.galeria{position:relative;overflow:hidden;border-radius:var(--radius-sm);margin-top:14px;background:#000;aspect-ratio:16/9}
+.carousel{display:flex;transition:transform .4s ease;height:100%}
+.carousel img{min-width:100%;height:100%;object-fit:cover;display:block}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:none;width:44px;height:44px;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:5;cursor:pointer;border-radius:50%;transition:background .2s}
+.car-btn:hover{background:rgba(0,0,0,.8)}
+.car-btn:focus-visible{outline:3px solid var(--dourado);outline-offset:2px}
+.prev{left:8px}.next{right:8px}
+.car-counter{position:absolute;bottom:8px;right:12px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:3px 8px;border-radius:99px}
+.btn-partilhar{margin-top:14px;width:100%;background:var(--verde-bg);color:var(--verde-escuro);border:1.5px solid var(--verde-claro);border-radius:var(--radius-sm);padding:12px;font-family:var(--font-corpo);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;min-height:48px}
+.btn-partilhar:hover{background:#c8e6c9}
+/* OFFLINE */
+.offline-banner{background:#fff3cd;color:#856404;text-align:center;font-size:14px;font-weight:600;padding:8px 16px;display:none;border-bottom:1px solid #ffc107}
+.offline-banner.visivel{display:block}
+/* GPS STATUS */
+.status-gps{display:flex;align-items:center;gap:8px;padding:6px 20px;font-size:13px;color:var(--texto-secundario)}
+.status-dot{width:10px;height:10px;border-radius:50%;background:var(--cinza-borda);flex-shrink:0;transition:background .3s}
+.status-dot.ativo{background:var(--verde-claro);box-shadow:0 0 0 3px rgba(76,175,80,.25)}
+.status-dot.impreciso{background:#ff9800;box-shadow:0 0 0 3px rgba(255,152,0,.25)}
+.status-dot.erro{background:var(--vermelho)}
+/* DEBUG */
+#debug{display:none;background:#111;color:#00ff88;padding:12px 16px;font-size:12px;font-family:monospace;text-align:left;margin:0 16px 8px;border-radius:var(--radius-sm);line-height:1.8}
+#debug.visivel{display:block}
+/* MODAL SENHA */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,25,17,.85);display:flex;align-items:center;justify-content:center;z-index:9000;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.oculto{display:none}
+.modal-box{background:var(--branco);border-radius:var(--radius);padding:32px 28px;max-width:380px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.35);text-align:center}
+.modal-logo{height:56px;margin-bottom:16px}
+.modal-box h2{font-family:var(--font-titulo);font-size:22px;color:var(--verde-escuro);margin-bottom:8px}
+.modal-box p{font-size:14px;color:var(--texto-secundario);margin-bottom:20px;line-height:1.5}
+.modal-input-wrap{position:relative;margin-bottom:16px}
+.modal-input{width:100%;padding:14px 48px 14px 16px;border:1.5px solid var(--cinza-borda);border-radius:var(--radius-sm);font-size:17px;font-family:var(--font-corpo);letter-spacing:2px;text-align:center;color:var(--texto-primario);background:var(--cinza-bg);transition:border-color .2s;min-height:var(--btn-min)}
+.modal-input:focus{outline:none;border-color:var(--verde-medio);box-shadow:0 0 0 3px rgba(46,125,50,.18)}
+.modal-input.erro{border-color:var(--vermelho)}
+.toggle-senha{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:20px;color:var(--texto-secundario);min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center}
+.modal-erro{color:var(--vermelho);font-size:13px;margin-bottom:12px;min-height:18px}
+.btn-confirmar{width:100%;background:var(--verde-medio);color:#fff;border:none;border-radius:var(--radius-sm);padding:16px;font-family:var(--font-corpo);font-size:17px;font-weight:600;cursor:pointer;transition:filter .15s;min-height:var(--btn-min)}
+.btn-confirmar:hover{filter:brightness(1.1)}
+.btn-confirmar:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+/* CONCLUSÃO */
+.conclusao-overlay{position:fixed;inset:0;background:rgba(10,25,17,.9);display:flex;align-items:center;justify-content:center;z-index:8000;padding:20px;backdrop-filter:blur(6px)}
+.conclusao-overlay.oculto{display:none}
+.conclusao-box{background:var(--branco);border-radius:var(--radius);padding:36px 28px;max-width:400px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.35)}
+.conclusao-icone{font-size:56px;margin-bottom:12px;display:block}
+.conclusao-box h2{font-family:var(--font-titulo);font-size:26px;color:var(--verde-escuro);margin-bottom:10px}
+.conclusao-box p{font-size:15px;color:var(--texto-secundario);margin-bottom:20px;line-height:1.6}
+.conclusao-stats{display:flex;gap:12px;justify-content:center;margin:16px 0 24px}
+.conclusao-stat{background:var(--verde-bg);border-radius:var(--radius-sm);padding:12px 18px;flex:1}
+.conclusao-stat span{display:block;font-size:26px;font-weight:700;color:var(--verde-escuro);font-family:var(--font-titulo)}
+.conclusao-stat small{font-size:12px;color:var(--texto-secundario)}
+.btn-fechar-conclusao{width:100%;background:var(--verde-escuro);color:#fff;border:none;border-radius:var(--radius-sm);padding:16px;font-family:var(--font-corpo);font-size:16px;font-weight:600;cursor:pointer;min-height:var(--btn-min)}
+/* REALIDADE AUMENTADA */
+#ra-overlay{position:fixed;inset:0;z-index:2000;background:#000;display:none;flex-direction:column}
+#ra-overlay.ativo{display:flex}
+#ra-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#ra-canvas{position:absolute;inset:0;width:100%;height:100%}
+.ra-topbar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,.65),transparent)}
+.ra-titulo{color:#fff;font-family:var(--font-corpo);font-size:15px;font-weight:600}
+.ra-logo{height:36px;border-radius:4px}
+.btn-fechar-ra{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .2s}
+.btn-fechar-ra:hover{background:rgba(255,255,255,.3)}
+.btn-fechar-ra:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.ra-info-bar{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:16px 20px 28px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);color:#fff;min-height:80px;transition:opacity .3s}
+.ra-info-bar.vazio{opacity:.4}
+.ra-info-nome{font-family:var(--font-titulo);font-size:22px;font-weight:600;margin-bottom:4px}
+.ra-info-dist{font-size:14px;color:var(--dourado);font-weight:600}
+.ra-info-texto{font-size:13px;color:rgba(255,255,255,.8);margin-top:4px;line-height:1.5}
+.ra-bussola{position:absolute;top:70px;right:16px;z-index:10;width:52px;height:52px;background:rgba(0,0,0,.5);border:1.5px solid rgba(255,255,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.ra-bussola-agulha{width:20px;height:20px;position:relative;transition:transform .15s ease-out}
+.ra-bussola-agulha::before{content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:18px solid #ff4444}
+.ra-bussola-agulha::after{content:'';position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:10px solid rgba(255,255,255,.5)}
+.ra-aviso{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;background:rgba(0,0,0,.85);color:#fff;text-align:center;padding:32px;gap:16px}
+.ra-aviso h3{font-family:var(--font-titulo);font-size:22px;color:var(--dourado)}
+.ra-aviso p{font-size:15px;line-height:1.6;color:rgba(255,255,255,.8)}
+.btn-permitir{background:var(--verde-medio);color:#fff;border:none;border-radius:10px;padding:14px 32px;font-size:16px;font-weight:600;cursor:pointer;min-height:52px}
+.btn-permitir:hover{filter:brightness(1.1)}
+.ra-mira{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border:2px solid rgba(255,255,255,.3);border-radius:50%;z-index:5;pointer-events:none}
+.ra-mira::before{content:'';position:absolute;width:1px;height:20px;background:rgba(255,255,255,.4);left:50%;top:50%;transform:translate(-50%,-50%)}
+.ra-mira::after{content:'';position:absolute;width:20px;height:1px;background:rgba(255,255,255,.4);left:50%;top:50%;transform:translate(-50%,-50%)}
+.ra-gps-status{position:absolute;top:70px;left:16px;z-index:10;background:rgba(0,0,0,.5);border-radius:20px;padding:6px 12px;font-size:12px;color:#fff;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px)}
+.ra-gps-dot{width:8px;height:8px;border-radius:50%;background:#aaa;flex-shrink:0}
+.ra-gps-dot.ok{background:#4caf50;box-shadow:0 0 0 2px rgba(76,175,80,.3)}
+.ra-gps-dot.err{background:#f44336}
+/* ACESSIBILIDADE */
+@media(prefers-contrast:high){:root{--cinza-bg:#fff;--cinza-borda:#000;--texto-primario:#000;--texto-secundario:#111}.btn,.modal-input{border:2px solid #000!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+@media(min-width:600px){.botoes-controlo{justify-content:center}.btn,.btn-ra{max-width:160px}#info{margin:20px 24px 10px;padding:24px}}
 </style>
 </head>
 <body>
-<header><h1>EURO TOURS Covilhã</h1></header>
-<main>
-  <p class="intro">Roteiros a pé com GPS. Escolha o seu roteiro.</p>
-  <a class="cartao" href="https://levyvasconcelos.github.io/tour-serra/">
-    <h2>Serra da Estrela</h2>
-    <p>Roteiro a pé com GPS pela Serra da Estrela, com texto em vários idiomas.</p>
-    <span>Abrir roteiro</span>
-  </a>
-  <a class="cartao" href="belmonte-sortelha-sabugal/">
-    <h2>Belmonte, Sortelha e Sabugal</h2>
-    <p>23 pontos de interesse nas três aldeias, com texto em português, inglês, espanhol e francês.</p>
-    <span>Abrir roteiro</span>
-  </a>
+
+<a href="#main-content" class="skip-link" data-i18n="skip_link">Saltar para o conteúdo principal</a>
+
+<div class="offline-banner" id="offline-banner" role="alert" aria-live="assertive">
+  📶 Sem ligação à internet — a funcionar em modo offline
+</div>
+
+<header class="topbar" role="banner">
+  <img src="images/logo-euro-tours.png" class="logo" alt="EURO TOURS" id="logo-debug-trigger" tabindex="0" role="img">
+  <div class="topbar-direita">
+    <label for="lang-select" style="position:absolute;left:-9999px">Idioma</label>
+    <select class="lang-select" id="lang-select" aria-label="Selecionar idioma" onchange="mudarIdioma(this.value)">
+      <option value="pt">🇵🇹 PT</option>
+      <option value="en">🇬🇧 EN</option>
+      <option value="es">🇪🇸 ES</option>
+      <option value="fr">🇫🇷 FR</option>
+    </select>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <div class="titulo-tour">
+    <h1 data-i18n="titulo_tour">Belmonte, Sortelha e Sabugal</h1>
+    <p data-i18n="subtitulo_tour">Roteiro a pé pelas Aldeias Históricas</p>
+  </div>
+
+  <div class="progresso-container" aria-label="Progresso do tour" role="region">
+    <div class="progresso-label">
+      <span data-i18n="progresso_label">Pontos visitados</span>
+      <strong id="progresso-texto" aria-live="polite">0 / 0</strong>
+    </div>
+    <div class="progresso-barra-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progresso-aria">
+      <div class="progresso-barra" id="progresso-barra"></div>
+    </div>
+  </div>
+
+  <div class="botoes-controlo" role="group" aria-label="Controlos do tour">
+    <button class="btn btn-start" id="btn-iniciar" onclick="pedirPermissaoEIniciar()" aria-describedby="status-gps-texto" data-i18n="btn_iniciar">▶ INICIAR TOUR</button>
+    <button class="btn btn-stop"  id="btn-parar"   onclick="parar()" disabled data-i18n="btn_parar">■ PARAR TOUR</button>
+    <button class="btn-ra"        id="btn-ra"       onclick="abrirRA()" aria-label="Abrir modo Realidade Aumentada">📷 MODO RA</button>
+  </div>
+
+  <div class="status-gps" aria-live="polite">
+    <div class="status-dot" id="status-dot" aria-hidden="true"></div>
+    <span id="status-gps-texto" data-i18n="gps_aguardar">A aguardar GPS...</span>
+  </div>
+
+  <section id="info" aria-live="polite" aria-atomic="true" aria-label="Informação do ponto atual">
+    <p class="info-vazio" data-i18n="info_vazio">Inicie o tour e aproxime-se de um ponto para ver a informação.</p>
+  </section>
+
+  <div id="map" role="application" aria-label="Mapa interativo do roteiro Belmonte, Sortelha e Sabugal" tabindex="0"></div>
+
+  <div id="debug" role="log" aria-label="Informação de diagnóstico"></div>
+
 </main>
+
+<button class="btn-audio" id="btn-audio" aria-label="Pausar áudio" onclick="toggleAudio()" aria-pressed="true">🔊</button>
+
+<!-- MODAL SENHA -->
+<div class="modal-overlay oculto" id="modal-senha" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" aria-describedby="modal-desc">
+  <div class="modal-box">
+    <img src="images/logo-euro-tours.png" class="modal-logo" alt="EURO TOURS" aria-hidden="true">
+    <h2 id="modal-titulo" data-i18n="modal_titulo">Acesso ao Tour</h2>
+    <p id="modal-desc" data-i18n="modal_desc">Insira a senha fornecida pela EURO TOURS para iniciar o tour de hoje.</p>
+    <div class="modal-input-wrap">
+      <input type="password" id="input-senha" class="modal-input" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Senha de acesso" aria-required="true" aria-invalid="false" onkeydown="if(event.key==='Enter') confirmarSenha()" placeholder="EURO-AAAAMMDD">
+      <button class="toggle-senha" onclick="toggleVerSenha()" id="toggle-senha-btn" aria-label="Mostrar senha" aria-pressed="false">👁</button>
+    </div>
+    <div class="modal-erro" id="modal-erro" role="alert" aria-live="assertive"></div>
+    <button class="btn-confirmar" onclick="confirmarSenha()" data-i18n="modal_confirmar">Confirmar</button>
+  </div>
+</div>
+
+<!-- CONCLUSÃO -->
+<div class="conclusao-overlay oculto" id="conclusao-overlay" role="dialog" aria-modal="true" aria-labelledby="conclusao-titulo">
+  <div class="conclusao-box">
+    <span class="conclusao-icone" aria-hidden="true">🏰</span>
+    <h2 id="conclusao-titulo" data-i18n="conclusao_titulo">Tour Concluído!</h2>
+    <p data-i18n="conclusao_desc">Parabéns por ter explorado Belmonte, Sortelha e Sabugal. Esperamos que tenha sido uma experiência inesquecível!</p>
+    <div class="conclusao-stats">
+      <div class="conclusao-stat"><span id="conclusao-pontos">0</span><small data-i18n="conclusao_pontos_label">pontos visitados</small></div>
+      <div class="conclusao-stat"><span id="conclusao-tempo">0</span><small data-i18n="conclusao_tempo_label">minutos</small></div>
+    </div>
+    <button class="btn-fechar-conclusao" onclick="fecharConclusao()" data-i18n="conclusao_fechar">Fechar</button>
+  </div>
+</div>
+
+<!-- REALIDADE AUMENTADA -->
+<div id="ra-overlay" role="dialog" aria-modal="true" aria-label="Modo Realidade Aumentada">
+  <video id="ra-video" autoplay playsinline muted aria-hidden="true"></video>
+  <canvas id="ra-canvas" aria-hidden="true"></canvas>
+  <div class="ra-mira" aria-hidden="true"></div>
+  <div class="ra-topbar">
+    <span class="ra-titulo">📍 Realidade Aumentada</span>
+    <img src="images/logo-euro-tours.png" class="ra-logo" alt="EURO TOURS" aria-hidden="true">
+    <button class="btn-fechar-ra" onclick="fecharRA()" aria-label="Fechar realidade aumentada">✕</button>
+  </div>
+  <div class="ra-gps-status" aria-live="polite">
+    <div class="ra-gps-dot" id="ra-gps-dot" aria-hidden="true"></div>
+    <span id="ra-gps-txt">A obter GPS...</span>
+  </div>
+  <div class="ra-bussola" aria-hidden="true">
+    <div class="ra-bussola-agulha" id="ra-agulha"></div>
+  </div>
+  <div class="ra-info-bar vazio" id="ra-info-bar" aria-live="polite">
+    <div class="ra-info-nome" id="ra-info-nome">Aponte a câmara para a paisagem</div>
+    <div class="ra-info-dist" id="ra-info-dist"></div>
+    <div class="ra-info-texto" id="ra-info-texto">Os pontos do tour aparecerão quando estiverem no campo de visão</div>
+  </div>
+  <div class="ra-aviso" id="ra-aviso" style="display:none">
+    <h3>📷 Permissões necessárias</h3>
+    <p>Para usar o modo RA precisamos de acesso à câmara e à bússola do seu telemóvel.</p>
+    <button class="btn-permitir" onclick="pedirPermissoesRA()">Permitir acesso</button>
+    <button style="background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;margin-top:8px;font-size:14px" onclick="fecharRA()">Cancelar</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+"use strict";
+// ================================================================
+// 1. I18N
+// ================================================================
+const TRADUCOES={
+  pt:{skip_link:"Saltar para o conteúdo principal",titulo_tour:"Belmonte, Sortelha e Sabugal",subtitulo_tour:"Roteiro a pé pelas Aldeias Históricas",btn_iniciar:"▶ INICIAR TOUR",btn_parar:"■ PARAR TOUR",progresso_label:"Pontos visitados",gps_aguardar:"A aguardar GPS...",gps_ativo:"GPS ativo",gps_impreciso:"GPS com baixa precisão (±{acc}m) — mova-se ao ar livre",gps_erro:"Erro de GPS — verifique as permissões",info_vazio:"Inicie o tour e aproxime-se de um ponto para ver a informação.",modal_titulo:"Acesso ao Tour",modal_desc:"Insira a senha fornecida pela EURO TOURS para iniciar o tour de hoje.",modal_placeholder:"EURO-AAAAMMDD",modal_confirmar:"Confirmar",modal_erro_senha:"Senha incorreta. Tente novamente.",btn_partilhar:"📤 Partilhar este ponto",img_alt:"{nome} — imagem {n} de {total}",btn_anterior:"Imagem anterior",btn_seguinte:"Imagem seguinte",audio_pausar:"Pausar áudio",audio_retomar:"Retomar áudio",offline_banner:"📶 Sem ligação à internet — a funcionar em modo offline",conclusao_titulo:"Tour Concluído!",conclusao_desc:"Parabéns por ter explorado Belmonte, Sortelha e Sabugal. Esperamos que tenha sido uma experiência inesquecível!",conclusao_pontos_label:"pontos visitados",conclusao_tempo_label:"minutos",conclusao_fechar:"Fechar",partilha_texto:"Acabei de visitar {nome} com o roteiro a pé EURO TOURS! 🏰"},
+  en:{skip_link:"Skip to main content",titulo_tour:"Belmonte, Sortelha and Sabugal",subtitulo_tour:"Walking route through the Historic Villages",btn_iniciar:"▶ START TOUR",btn_parar:"■ STOP TOUR",progresso_label:"Points visited",gps_aguardar:"Waiting for GPS...",gps_ativo:"GPS active",gps_impreciso:"Low GPS accuracy (±{acc}m) — move outdoors",gps_erro:"GPS error — check permissions",info_vazio:"Start the tour and approach a point to see information.",modal_titulo:"Tour Access",modal_desc:"Enter the password provided by EURO TOURS to start today's tour.",modal_placeholder:"EURO-YYYYMMDD",modal_confirmar:"Confirm",modal_erro_senha:"Incorrect password. Please try again.",btn_partilhar:"📤 Share this point",img_alt:"{nome} — image {n} of {total}",btn_anterior:"Previous image",btn_seguinte:"Next image",audio_pausar:"Pause audio",audio_retomar:"Resume audio",offline_banner:"📶 No internet connection — running in offline mode",conclusao_titulo:"Tour Completed!",conclusao_desc:"Congratulations on exploring Belmonte, Sortelha and Sabugal. We hope it was an unforgettable experience!",conclusao_pontos_label:"points visited",conclusao_tempo_label:"minutes",conclusao_fechar:"Close",partilha_texto:"I just visited {nome} on the EURO TOURS walking route! 🏰"},
+  es:{skip_link:"Saltar al contenido principal",titulo_tour:"Belmonte, Sortelha y Sabugal",subtitulo_tour:"Recorrido a pie por las Aldeas Históricas",btn_iniciar:"▶ INICIAR TOUR",btn_parar:"■ PARAR TOUR",progresso_label:"Puntos visitados",gps_aguardar:"Esperando GPS...",gps_ativo:"GPS activo",gps_impreciso:"GPS con baja precisión (±{acc}m) — muévase al exterior",gps_erro:"Error de GPS — verifique los permisos",info_vazio:"Inicie el tour y acérquese a un punto para ver la información.",modal_titulo:"Acceso al Tour",modal_desc:"Introduzca la contraseña proporcionada por EURO TOURS para iniciar el tour de hoy.",modal_placeholder:"EURO-AAAAMMDD",modal_confirmar:"Confirmar",modal_erro_senha:"Contraseña incorrecta. Inténtelo de nuevo.",btn_partilhar:"📤 Compartir este punto",img_alt:"{nome} — imagen {n} de {total}",btn_anterior:"Imagen anterior",btn_seguinte:"Imagen siguiente",audio_pausar:"Pausar audio",audio_retomar:"Reanudar audio",offline_banner:"📶 Sin conexión a internet — funcionando en modo sin conexión",conclusao_titulo:"¡Tour Completado!",conclusao_desc:"¡Felicidades por explorar Belmonte, Sortelha y Sabugal! ¡Esperamos que haya sido una experiencia inolvidable!",conclusao_pontos_label:"puntos visitados",conclusao_tempo_label:"minutos",conclusao_fechar:"Cerrar",partilha_texto:"¡Acabo de visitar {nome} con el recorrido a pie de EURO TOURS! 🏰"},
+  fr:{skip_link:"Passer au contenu principal",titulo_tour:"Belmonte, Sortelha et Sabugal",subtitulo_tour:"Parcours à pied dans les Villages Historiques",btn_iniciar:"▶ DÉMARRER",btn_parar:"■ ARRÊTER",progresso_label:"Points visités",gps_aguardar:"En attente du GPS...",gps_ativo:"GPS actif",gps_impreciso:"Précision GPS faible (±{acc}m) — allez à l'extérieur",gps_erro:"Erreur GPS — vérifiez les permissions",info_vazio:"Démarrez le tour et approchez-vous d'un point pour voir les informations.",modal_titulo:"Accès au Tour",modal_desc:"Saisissez le mot de passe fourni par EURO TOURS pour commencer le tour d'aujourd'hui.",modal_placeholder:"EURO-AAAAMMJJ",modal_confirmar:"Confirmer",modal_erro_senha:"Mot de passe incorrect. Veuillez réessayer.",btn_partilhar:"📤 Partager ce point",img_alt:"{nome} — image {n} sur {total}",btn_anterior:"Image précédente",btn_seguinte:"Image suivante",audio_pausar:"Mettre en pause",audio_retomar:"Reprendre l'audio",offline_banner:"📶 Pas de connexion internet — mode hors ligne actif",conclusao_titulo:"Tour Terminé !",conclusao_desc:"Félicitations pour avoir exploré Belmonte, Sortelha et Sabugal. Nous espérons que ce fut une expérience inoubliable !",conclusao_pontos_label:"points visités",conclusao_tempo_label:"minutes",conclusao_fechar:"Fermer",partilha_texto:"Je viens de visiter {nome} avec le parcours à pied EURO TOURS ! 🏰"}
+};
+let idiomaAtual=(navigator.language||'pt').slice(0,2);
+if(!TRADUCOES[idiomaAtual])idiomaAtual='pt';
+function t(chave,vars={}){let s=(TRADUCOES[idiomaAtual]||TRADUCOES.pt)[chave]||chave;Object.entries(vars).forEach(([k,v])=>{s=s.replace(`{${k}}`,v)});return s}
+function aplicarTraducoes(){document.documentElement.lang=idiomaAtual;document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.getAttribute('data-i18n')));document.getElementById('lang-select').value=idiomaAtual;atualizarProgresso()}
+function mudarIdioma(lang){idiomaAtual=lang;localStorage.setItem('et_lang',lang);aplicarTraducoes();if(infoMostrada)mostrarInfo(infoMostrada)}
+
+// ================================================================
+// 2. MAPA
+// ================================================================
+const map=L.map('map',{zoomControl:true,attributionControl:false}).setView([40.345,-7.22],11);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
+const userIcon=L.icon({iconUrl:'images/logo-euro-tours.png',iconSize:[40,40],iconAnchor:[20,40]});
+
+// ================================================================
+// 3. PONTOS (31 pontos — ver VERIFICAR-COORDENADAS.md)
+// ================================================================
+const pontos=[
+  {"nome": "Castelo de Belmonte", "aldeia": "Belmonte", "lat": 40.359173885, "lng": -7.348244551, "raio": 90, "texto": {"pt": "Em 1266, D. Afonso III autorizou o bispo Egas Fafes a erguer aqui uma torre-castelo, numa terra que já tinha defesas. Em 1446, D. Afonso V ofereceu-o a Fernão Cabral, que o transformou em casa: ainda se veem as janelas panorâmicas e uma janela manuelina. Um violento incêndio no fim do século XVII destruiu a ala oeste e a família mudou-se. Hoje o castelo tem um anfiteatro ao ar livre, e a torre de menagem é um pequeno museu com achados das escavações dos anos 1990, que revelaram até vestígios romanos.", "en": "In 1266, King Afonso III authorised Bishop Egas Fafes to build a tower-castle here, in a place that already had defences. In 1446, King Afonso V gave it to Fernão Cabral, who turned it into a home: you can still see the panoramic windows and a Manueline window. A fierce fire in the late 17th century destroyed the west wing and the family moved out. Today the castle has an open-air amphitheatre, and the keep is a small museum with finds from the 1990s excavations, which even revealed Roman traces.", "es": "En 1266, Alfonso III autorizó al obispo Egas Fafes a levantar aquí una torre-castillo, en un lugar que ya tenía defensas. En 1446, Alfonso V se lo cedió a Fernão Cabral, que lo convirtió en casa: aún se ven las ventanas panorámicas y una ventana manuelina. Un violento incendio a finales del siglo XVII destruyó el ala oeste y la familia se mudó. Hoy el castillo tiene un anfiteatro al aire libre, y la torre del homenaje es un pequeño museo con hallazgos de las excavaciones de los años 1990, que revelaron incluso vestigios romanos.", "fr": "En 1266, Alphonse III autorisa l'évêque Egas Fafes à ériger ici une tour-château, en un lieu déjà défendu. En 1446, Alphonse V le donna à Fernão Cabral, qui en fit une demeure : on voit encore les fenêtres panoramiques et une fenêtre manuéline. Un violent incendie à la fin du XVIIe siècle détruisit l'aile ouest et la famille déménagea. Aujourd'hui, le château a un amphithéâtre en plein air, et le donjon est un petit musée avec des trouvailles des fouilles des années 1990, qui ont même révélé des vestiges romains."}, "img": ["images/ponto-belmonte-castelo-1.jpg"]},
+  {"nome": "Igreja de Santiago e Panteão dos Cabrais", "aldeia": "Belmonte", "lat": 40.35895, "lng": -7.34855, "raio": 40, "texto": {"pt": "Esta igreja românica, anterior ao reinado de D. Dinis, foi ganhando elementos góticos e maneiristas. No interior ficam vestígios de pintura a fresco e uma Pietà do século XIV, que José Saramago considerou a peça mais admirável da igreja. Ao lado, a capela dos Cabrais, de 1433, é o panteão da família de Pedro Álvares Cabral. É também paragem na Via da Estrela, o caminho de peregrinação a Compostela que aproveita a antiga via romana de Mérida a Braga.", "en": "This Romanesque church, older than the reign of King Dinis, gained Gothic and Mannerist elements over time. Inside you will find traces of fresco painting and a 14th-century Pietà, which José Saramago considered the church's most admirable piece. Beside it, the Cabral chapel, from 1433, is the pantheon of Pedro Álvares Cabral's family. It is also a stop on the Via da Estrela, the pilgrim route to Compostela that follows the old Roman road from Mérida to Braga.", "es": "Esta iglesia románica, anterior al reinado de Dinis, fue ganando elementos góticos y manieristas. En el interior quedan restos de pintura al fresco y una Piedad del siglo XIV, que José Saramago consideró la pieza más admirable de la iglesia. Al lado, la capilla de los Cabral, de 1433, es el panteón de la familia de Pedro Álvares Cabral. Es también una parada en la Via da Estrela, el camino de peregrinación a Compostela que aprovecha la antigua calzada romana de Mérida a Braga.", "fr": "Cette église romane, antérieure au règne de Denis, a gagné des éléments gothiques et maniéristes. À l'intérieur subsistent des traces de peinture à fresque et une Pietà du XIVe siècle, que José Saramago jugeait la pièce la plus admirable de l'église. À côté, la chapelle des Cabral, de 1433, est le panthéon de la famille de Pedro Álvares Cabral. C'est aussi une étape sur la Via da Estrela, le chemin de pèlerinage vers Compostelle qui suit l'ancienne voie romaine de Mérida à Braga."}},
+  {"nome": "Sinagoga Bet Eliahu", "aldeia": "Belmonte", "lat": 40.358597876, "lng": -7.347314557, "raio": 40, "texto": {"pt": "A Sinagoga Bet Eliahu, de traça recente, foi projetada pelo arquiteto Neves Dias e inaugurada em 1996, quando passavam 500 anos sobre o édito de D. Manuel I que expulsou os judeus de Portugal. Está orientada para Jerusalém, e o candelabro na porta e nas grades e a estrela de David nos portões identificam o templo. Belmonte já teria uma sinagoga no século XIII, de que não restam vestígios, mas existe uma pedra que o comprova no Museu Judaico.", "en": "The Bet Eliahu Synagogue, of recent design, was planned by the architect Neves Dias and opened in 1996, 500 years after King Manuel I's edict expelling the Jews from Portugal. It faces Jerusalem, and the candelabrum on the door and railings and the Star of David on the gates identify the temple. Belmonte probably had a synagogue in the 13th century, of which nothing remains, but a stone in the Jewish Museum proves it.", "es": "La Sinagoga Bet Eliahu, de traza reciente, fue proyectada por el arquitecto Neves Dias e inaugurada en 1996, cuando se cumplían 500 años del edicto de Manuel I que expulsó a los judíos de Portugal. Está orientada hacia Jerusalén, y el candelabro en la puerta y en las rejas y la estrella de David en los portones identifican el templo. Belmonte ya tendría una sinagoga en el siglo XIII, de la que no quedan vestigios, pero hay una piedra que lo prueba en el Museo Judío.", "fr": "La synagogue Bet Eliahu, de conception récente, fut dessinée par l'architecte Neves Dias et inaugurée en 1996, 500 ans après l'édit de Manuel Ier expulsant les Juifs du Portugal. Elle est orientée vers Jérusalem, et le chandelier sur la porte et les grilles ainsi que l'étoile de David sur les portails identifient le temple. Belmonte aurait déjà eu une synagogue au XIIIe siècle, dont il ne reste rien, mais une pierre au Musée Juif en témoigne."}, "img": ["images/ponto-belmonte-sinagoga-1.jpg"]},
+  {"nome": "Museu Judaico de Belmonte", "aldeia": "Belmonte", "lat": 40.358552859, "lng": -7.349797742, "raio": 30, "texto": {"pt": "Aqui conta-se uma das histórias mais surpreendentes de Portugal: a de uma comunidade que manteve a fé viva em segredo durante séculos. O museu abriu em 2005 e foi renovado em 2017, com novos conteúdos e mais protagonismo para a própria comunidade de Belmonte. Vê-se mais de uma centena de objetos ligados às práticas religiosas, como o quipá. É das visitas mais procuradas da vila, e percebe-se porquê.", "en": "This is where one of Portugal's most surprising stories is told: that of a community that kept its faith alive in secret for centuries. The museum opened in 2005 and was renovated in 2017, with new content and a bigger role for Belmonte's own community. You can see more than a hundred objects linked to religious practice, such as the kippah. It is one of the town's most visited sights, and it is easy to see why.", "es": "Aquí se cuenta una de las historias más sorprendentes de Portugal: la de una comunidad que mantuvo viva su fe en secreto durante siglos. El museo abrió en 2005 y se renovó en 2017, con nuevos contenidos y más protagonismo para la propia comunidad de Belmonte. Se ven más de un centenar de objetos ligados a las prácticas religiosas, como la kipá. Es una de las visitas más buscadas de la villa, y se entiende por qué.", "fr": "Ici se raconte l'une des histoires les plus surprenantes du Portugal : celle d'une communauté qui a gardé sa foi vivante en secret pendant des siècles. Le musée a ouvert en 2005 et a été rénové en 2017, avec de nouveaux contenus et une place plus grande donnée à la communauté de Belmonte elle-même. On y voit plus d'une centaine d'objets liés aux pratiques religieuses, comme la kippa. C'est l'une des visites les plus recherchées du bourg, et on comprend pourquoi."}},
+  {"nome": "Rua Medieval de Belmonte", "aldeia": "Belmonte", "lat": 40.3585, "lng": -7.3496, "raio": 60, "texto": {"pt": "Neste bairro histórico, as ruas estreitas e as casas de granito guardam a memória da vila ao longo dos séculos. Belmonte foi crescendo à volta do castelo desde que D. Sancho I lhe deu foral, em 1199. Caminhe devagar e levante os olhos: as pedras têm sempre mais para contar do que parece.", "en": "In this historic quarter, the narrow lanes and granite houses keep the memory of the town through the centuries. Belmonte grew around its castle after King Sancho I granted it a charter in 1199. Walk slowly and look up: the stones always have more to tell than it seems.", "es": "En este barrio histórico, las calles estrechas y las casas de granito guardan la memoria de la villa a lo largo de los siglos. Belmonte fue creciendo alrededor del castillo desde que Sancho I le dio fuero, en 1199. Camine despacio y levante la vista: las piedras siempre tienen más que contar de lo que parece.", "fr": "Dans ce quartier historique, les ruelles étroites et les maisons de granit gardent la mémoire du bourg à travers les siècles. Belmonte s'est développée autour du château depuis que Sanche Ier lui a accordé une charte, en 1199. Marchez lentement et levez les yeux : les pierres ont toujours plus à raconter qu'il n'y paraît."}},
+  {"nome": "Estátua de Pedro Álvares Cabral", "aldeia": "Belmonte", "lat": 40.359185262, "lng": -7.350315823, "raio": 40, "texto": {"pt": "Belmonte é a terra de Pedro Álvares Cabral, nascido aqui em 1467, o navegador que em 1500 chegou ao Brasil. A família ficou ligada ao castelo desde que Fernão Cabral o recebeu, em 1446. Procure no castelo a elegante janela manuelina, com esfera armilar, e o escudo dos Cabrais, com duas cabras.", "en": "Belmonte is the home of Pedro Álvares Cabral, born here in 1467, the navigator who reached Brazil in 1500. The family was tied to the castle from the moment Fernão Cabral received it in 1446. Look for the elegant Manueline window of the castle, with its armillary sphere, and the Cabral shield, with two goats.", "es": "Belmonte es la tierra de Pedro Álvares Cabral, nacido aquí en 1467, el navegante que llegó a Brasil en 1500. La familia quedó ligada al castillo desde que Fernão Cabral lo recibió, en 1446. Busque en el castillo la elegante ventana manuelina, con esfera armilar, y el escudo de los Cabral, con dos cabras.", "fr": "Belmonte est la terre de Pedro Álvares Cabral, né ici en 1467, le navigateur qui atteignit le Brésil en 1500. La famille est liée au château depuis que Fernão Cabral le reçut, en 1446. Cherchez au château l'élégante fenêtre manuéline, avec sa sphère armillaire, et l'écu des Cabral, avec deux chèvres."}},
+  {"nome": "Miradouro de Belmonte", "aldeia": "Belmonte", "lat": 40.3597, "lng": -7.3468, "raio": 100, "texto": {"pt": "Faça aqui uma pausa e deixe o olhar correr pela Cova da Beira, com a Serra da Estrela como pano de fundo. É a paisagem que os habitantes de Belmonte veem há séculos. Um bom sítio para uma fotografia e para recuperar o fôlego.", "en": "Take a break here and let your eyes roam over the Cova da Beira, with the Serra da Estrela as a backdrop. It is the landscape Belmonte's people have looked at for centuries. A good spot for a photo and to catch your breath.", "es": "Haga aquí una pausa y deje que la mirada recorra la Cova da Beira, con la Serra da Estrela de fondo. Es el paisaje que los habitantes de Belmonte ven desde hace siglos. Un buen sitio para una foto y para recuperar el aliento.", "fr": "Faites une pause ici et laissez votre regard courir sur la Cova da Beira, avec la Serra da Estrela en toile de fond. C'est le paysage que les habitants de Belmonte contemplent depuis des siècles. Un bon endroit pour une photo et pour reprendre son souffle."}},
+  {"nome": "Museu à Descoberta do Novo Mundo", "aldeia": "Belmonte", "lat": 40.35905, "lng": -7.35085, "raio": 40, "texto": {"pt": "Este edifício foi casa da família Cabral e hoje alberga a Biblioteca e o Arquivo Municipal. Na fachada, sobre o portão, está o brasão dos Condes de Belmonte, o único que escapou ao pico que mutilou todos os brasões da povoação, porque só aqui foi colocado depois dos tempos agitados da Primeira República. Nas traseiras, um museu interativo, feito de raiz, leva o visitante por 500 anos da construção de um país e pela viagem da Descoberta do Brasil.", "en": "This building was the Cabral family home and now houses the Municipal Library and Archive. On the façade, above the gate, is the coat of arms of the Counts of Belmonte, the only one to escape the pick that mutilated every coat of arms in the town, because it was only placed here after the turbulent days of the First Republic. At the back, a purpose-built interactive museum takes you through 500 years of a country's making and the voyage that discovered Brazil.", "es": "Este edificio fue casa de la familia Cabral y hoy alberga la Biblioteca y el Archivo Municipal. En la fachada, sobre el portón, está el escudo de los Condes de Belmonte, el único que escapó al pico que mutiló todos los escudos de la población, porque solo se colocó aquí después de los tiempos agitados de la Primera República. En la parte de atrás, un museo interactivo, construido desde cero, lleva al visitante por 500 años de la construcción de un país y por el viaje del Descubrimiento de Brasil.", "fr": "Cet édifice fut la maison de la famille Cabral et abrite aujourd'hui la bibliothèque et les archives municipales. Sur la façade, au-dessus du portail, se trouve le blason des comtes de Belmonte, le seul à avoir échappé au pic qui a mutilé tous les blasons du bourg, car il n'a été placé ici qu'après les temps agités de la Première République. À l'arrière, un musée interactif, construit pour l'occasion, vous emmène à travers 500 ans de construction d'un pays et le voyage de la Découverte du Brésil."}},
+  {"nome": "Lenda dos Cabrais", "aldeia": "Belmonte", "lat": 40.3591, "lng": -7.35075, "raio": 30, "texto": {"pt": "Conta-se que um pastor da Serra da Estrela sonhou três noites seguidas: 'Vai a Belém e lá encontrarás o teu bem.' Foi, mas nada encontrou. No regresso, um almocreve disse-lhe que também sonhara com um tesouro em Belmonte, debaixo da penha onde estava uma cabra amarela com a cria. O pastor voltou e achou uma cabra e um cabrito de ouro. Ofereceu uma das peças ao Rei, que escolheu o cabrito, e o pastor deu-lhe também a cabra. Em recompensa, o Rei ofereceu-lhe todas as terras que percorresse a cavalo num dia. Assim, diz a lenda, nasceu o poder dos Cabrais e as duas cabras do seu brasão.", "en": "The story goes that a shepherd from the Serra da Estrela dreamed three nights in a row: 'Go to Belém and there you will find your fortune.' He went, but found nothing. On the way back, a muleteer told him he had dreamed of a treasure in Belmonte, under the crag where a yellow goat and her kid stood. The shepherd returned and found a golden goat and kid. He offered one of the pieces to the King, who chose the kid, and the shepherd gave him the goat too. As a reward, the King gave him all the land he could ride around in a day. That, says the legend, is how the Cabral power began, and why their coat of arms has two goats.", "es": "Cuenta la leyenda que un pastor de la Serra da Estrela soñó tres noches seguidas: 'Ve a Belén y allí encontrarás tu fortuna.' Fue, pero no encontró nada. A la vuelta, un arriero le dijo que también había soñado con un tesoro en Belmonte, bajo la peña donde estaba una cabra amarilla con su cría. El pastor volvió y halló una cabra y un cabrito de oro. Ofreció una de las piezas al Rey, que eligió el cabrito, y el pastor le dio también la cabra. Como recompensa, el Rey le ofreció todas las tierras que recorriera a caballo en un día. Así, dice la leyenda, nació el poder de los Cabral y las dos cabras de su escudo.", "fr": "On raconte qu'un berger de la Serra da Estrela rêva trois nuits de suite : « Va à Bethléem et tu y trouveras ton bien. » Il y alla, mais ne trouva rien. Au retour, un muletier lui dit avoir rêvé d'un trésor à Belmonte, sous le rocher où se tenaient une chèvre jaune et son petit. Le berger revint et trouva une chèvre et un chevreau en or. Il offrit l'une des pièces au Roi, qui choisit le chevreau, et le berger lui donna aussi la chèvre. En récompense, le Roi lui offrit toutes les terres qu'il parcourrait à cheval en un jour. Ainsi, dit la légende, naquit le pouvoir des Cabral et les deux chèvres de leur blason."}},
+  {"nome": "Pelourinho e Paços do Concelho", "aldeia": "Belmonte", "lat": 40.358687595, "lng": -7.349646492, "raio": 30, "texto": {"pt": "Estamos no Largo do Pelourinho, onde ficam os Antigos Paços do Concelho, documentados desde o século XV: um edifício retangular e simples, com uma torre. O pelourinho original era do tipo gaiola, muito parecido com o de Trancoso, com soco de quatro degraus e coluna octogonal, e restam apenas alguns fragmentos desde a regularização do largo, em 1885. Nas invasões francesas, Junot mandou destruir os brasões de pedra porque Belmonte não se rendeu.", "en": "We are in Largo do Pelourinho, home of the Old Town Hall, documented since the 15th century: a simple rectangular building with a tower. The original pillory was cage-type, very like Trancoso's, with a four-step base and an octagonal column, and only a few fragments remain since the square was levelled in 1885. During the French invasions, Junot had the stone coats of arms destroyed because Belmonte did not surrender.", "es": "Estamos en el Largo do Pelourinho, donde están los Antiguos Paços do Concelho, documentados desde el siglo XV: un edificio rectangular y sencillo, con una torre. La picota original era de tipo jaula, muy parecida a la de Trancoso, con basamento de cuatro escalones y columna octogonal, y solo quedan algunos fragmentos desde la regularización de la plaza, en 1885. En las invasiones francesas, Junot mandó destruir los escudos de piedra porque Belmonte no se rindió.", "fr": "Nous sommes au Largo do Pelourinho, où se trouvent les anciens Paços do Concelho, documentés depuis le XVe siècle : un bâtiment rectangulaire simple, avec une tour. Le pilori d'origine était de type cage, très semblable à celui de Trancoso, avec un socle de quatre marches et une colonne octogonale, et il n'en reste que quelques fragments depuis le réaménagement de la place, en 1885. Lors des invasions françaises, Junot fit détruire les blasons de pierre parce que Belmonte ne s'était pas rendue."}, "img": ["images/ponto-belmonte-pelourinho-1.jpg", "images/ponto-belmonte-pelourinho-2.jpg"]},
+  {"nome": "Capelas de Santo António e do Calvário", "aldeia": "Belmonte", "lat": 40.358899324, "lng": -7.348414784, "raio": 30, "texto": {"pt": "Duas pequenas capelas junto ao castelo e à Igreja de Santiago. A de Santo António parece a mais antiga, do século XV, e tem um brasão com as armas das famílias Queiroz, Gouveia e Cabral. Guarda duas imagens de madeira, do Espírito Santo e de Santo António, vindas do antigo convento franciscano de Nossa Senhora da Esperança. A do Calvário é do século XIX, de estilo neogótico, e a porta está decorada com os instrumentos da Paixão de Cristo: escadas, lança, vara do vinagre, turquês, martelo e coroa de espinhos.", "en": "Two small chapels beside the castle and the Church of Santiago. Saint Anthony's seems the older, from the 15th century, with a shield bearing the arms of the Queiroz, Gouveia and Cabral families. It holds two wooden images, of the Holy Spirit and Saint Anthony, from the former Franciscan convent of Our Lady of Hope. The Calvary chapel is 19th-century, neo-Gothic, and its door is decorated with the instruments of Christ's Passion: ladder, lance, vinegar rod, pincers, hammer and crown of thorns.", "es": "Dos pequeñas capillas junto al castillo y a la Iglesia de Santiago. La de San Antonio parece la más antigua, del siglo XV, y tiene un escudo con las armas de las familias Queiroz, Gouveia y Cabral. Guarda dos imágenes de madera, del Espíritu Santo y de San Antonio, procedentes del antiguo convento franciscano de Nuestra Señora de la Esperanza. La del Calvario es del siglo XIX, de estilo neogótico, y la puerta está decorada con los instrumentos de la Pasión de Cristo: escaleras, lanza, caña del vinagre, tenazas, martillo y corona de espinas.", "fr": "Deux petites chapelles près du château et de l'église de Santiago. Celle de Saint-Antoine semble la plus ancienne, du XVe siècle, avec un blason aux armes des familles Queiroz, Gouveia et Cabral. Elle garde deux images en bois, du Saint-Esprit et de saint Antoine, venues de l'ancien couvent franciscain de Notre-Dame-de-l'Espérance. Celle du Calvaire date du XIXe siècle, de style néogothique, et sa porte est ornée des instruments de la Passion du Christ : échelles, lance, bâton au vinaigre, tenailles, marteau et couronne d'épines."}, "img": ["images/ponto-belmonte-capelas-1.jpg", "images/ponto-belmonte-capelas-2.jpg"]},
+  {"nome": "Cruz de Pau-Brasil", "aldeia": "Belmonte", "lat": 40.359267, "lng": -7.34862, "raio": 25, "texto": {"pt": "Ao sair do castelo, à direita, fica a cruz de madeira de pau-brasil, réplica da que Cabral mandou levantar na primeira missa celebrada no Brasil. Foi oferecida nos anos cinquenta pelo presidente brasileiro Juscelino Kubitschek de Oliveira. Uma madeira que dá nome a um país, aqui à sombra do castelo.", "en": "On leaving the castle, on the right, stands the brazilwood cross, a replica of the one Cabral had raised at the first Mass celebrated in Brazil. It was a gift in the 1950s from the Brazilian president Juscelino Kubitschek de Oliveira. A wood that gave a country its name, here in the shadow of the castle.", "es": "Al salir del castillo, a la derecha, está la cruz de madera de palo brasil, réplica de la que Cabral mandó levantar en la primera misa celebrada en Brasil. Fue un regalo, en los años cincuenta, del presidente brasileño Juscelino Kubitschek de Oliveira. Una madera que da nombre a un país, aquí a la sombra del castillo.", "fr": "À la sortie du château, sur la droite, se dresse la croix en bois de brésil, réplique de celle que Cabral fit ériger lors de la première messe célébrée au Brésil. Elle fut offerte dans les années 1950 par le président brésilien Juscelino Kubitschek de Oliveira. Un bois qui a donné son nom à un pays, ici à l'ombre du château."}, "img": ["images/ponto-belmonte-cruz-pau-brasil-1.jpg"]},
+  {"nome": "Judiaria de Belmonte", "aldeia": "Belmonte", "lat": 40.358235312, "lng": -7.348695408, "raio": 35, "texto": {"pt": "A antiga judiaria de Belmonte situava-se em torno da atual Rua Direita e da Rua Fonte da Rosa, esta a primitiva Rua da Judiaria. No cimo da Rua Direita, a norte, ainda existe uma das praças mais antigas da vila, que conserva muito da arquitetura primitiva: pequenas casas de granito, térreas, com pequenas aberturas e cruzes nas ombreiras. Estão sinalizadas, por isso procure-as.", "en": "Belmonte's old Jewish quarter lay around today's Rua Direita and Rua Fonte da Rosa, the latter the original Rua da Judiaria. At the top of Rua Direita, to the north, one of the town's oldest squares still stands, keeping much of its early architecture: small, single-storey granite houses with tiny openings and crosses on the door jambs. They are signposted, so go and find them.", "es": "La antigua judería de Belmonte se situaba en torno a la actual Rua Direita y la Rua Fonte da Rosa, esta la primitiva Rua da Judiaria. En lo alto de la Rua Direita, al norte, aún existe una de las plazas más antiguas de la villa, que conserva mucho de su arquitectura primitiva: pequeñas casas de granito, de una planta, con pequeñas aberturas y cruces en las jambas. Están señalizadas, así que búsquelas.", "fr": "L'ancienne juiverie de Belmonte s'étendait autour de l'actuelle Rua Direita et de la Rua Fonte da Rosa, celle-ci étant l'ancienne Rua da Judiaria. En haut de la Rua Direita, au nord, subsiste l'une des plus anciennes places du bourg, qui garde beaucoup de son architecture primitive : de petites maisons de granit de plain-pied, aux petites ouvertures et aux croix sur les montants des portes. Elles sont signalées, alors partez à leur recherche."}, "img": ["images/ponto-belmonte-judiaria-1.jpg"]},
+  {"nome": "Candelabro Hanukkah", "aldeia": "Belmonte", "lat": 40.358889246, "lng": -7.349860824, "raio": 25, "texto": {"pt": "Este candelabro de nove braços lembra o Hanukkah, a festa judaica que recorda a purificação do Templo de Jerusalém e a revolta contra os selêucidas, liderada por Matatias Macabeu e os seus cinco filhos. Conta a tradição que só havia azeite para um dia, mas a chama ardeu oito, o tempo de preparar mais. Por isso se acende uma vela por dia, e o nono braço, ao centro e mais alto, é o shamash, a vela que serve para acender as outras.", "en": "This nine-branched candelabrum recalls Hanukkah, the Jewish festival that remembers the purification of the Temple in Jerusalem and the revolt against the Seleucids led by Mattathias Maccabee and his five sons. Tradition says there was oil for only one day, but the flame burned for eight, the time needed to prepare more. That is why one candle is lit each day, and the ninth branch, in the centre and higher, is the shamash, the candle used to light the others.", "es": "Este candelabro de nueve brazos recuerda el Hanukkah, la fiesta judía que conmemora la purificación del Templo de Jerusalén y la revuelta contra los seléucidas, liderada por Matatías Macabeo y sus cinco hijos. Cuenta la tradición que solo había aceite para un día, pero la llama ardió ocho, el tiempo necesario para preparar más. Por eso se enciende una vela cada día, y el noveno brazo, en el centro y más alto, es el shamash, la vela que sirve para encender las demás.", "fr": "Ce chandelier à neuf branches rappelle Hanoucca, la fête juive qui commémore la purification du Temple de Jérusalem et la révolte contre les Séleucides menée par Mattathias Maccabée et ses cinq fils. La tradition raconte qu'il n'y avait d'huile que pour un jour, mais la flamme brûla huit jours, le temps d'en préparer d'autre. C'est pourquoi on allume une bougie par jour, et la neuvième branche, au centre et plus haute, est le shamash, la bougie qui sert à allumer les autres."}, "img": ["images/ponto-belmonte-candelabro-1.jpg"]},
+  {"nome": "Motivos Cruciformes", "aldeia": "Belmonte", "lat": 40.358408399, "lng": -7.348241601, "raio": 30, "texto": {"pt": "Na Rua do Inverno e noutros locais da vila, repare nas cruzes gravadas nas ombreiras das portas. Segundo alguns investigadores, nas judiarias seriam uma forma de os cripto-judeus dizerem 'agora somos cristãos', para não serem perseguidos pela Inquisição. Outros propõem que a cruz servia para purificar um espaço considerado herético, como uma casa antes habitada por judeus. Fica a dúvida, e as pedras não respondem.", "en": "On Rua do Inverno and elsewhere in the town, notice the crosses carved on the door jambs. According to some researchers, in the Jewish quarters they were a way for crypto-Jews to say 'we are Christians now', so as not to be persecuted by the Inquisition. Others suggest the cross was used to purify a space seen as heretical, such as a house once lived in by Jews. The doubt remains, and the stones do not answer.", "es": "En la Rua do Inverno y en otros lugares de la villa, fíjese en las cruces grabadas en las jambas de las puertas. Según algunos investigadores, en las juderías serían una forma de que los criptojudíos dijeran 'ahora somos cristianos', para no ser perseguidos por la Inquisición. Otros proponen que la cruz servía para purificar un espacio considerado herético, como una casa antes habitada por judíos. La duda permanece, y las piedras no responden.", "fr": "Dans la Rua do Inverno et ailleurs dans le bourg, remarquez les croix gravées sur les montants des portes. Selon certains chercheurs, dans les juiveries elles étaient une façon pour les crypto-juifs de dire « nous sommes chrétiens maintenant », afin de ne pas être persécutés par l'Inquisition. D'autres proposent que la croix servait à purifier un espace jugé hérétique, comme une maison autrefois habitée par des Juifs. Le doute demeure, et les pierres ne répondent pas."}, "img": ["images/ponto-belmonte-motivos-cruciformes-1.jpg"]},
+  {"nome": "Torre Centum Cellas", "aldeia": "Belmonte", "lat": 40.37764, "lng": -7.3427, "raio": 120, "texto": {"pt": "Esta torre romana, com cerca de dois mil anos, fazia parte de uma villa do século I e continua a intrigar quem a visita. O nome 'Cem Celas' vem de uma teoria que a via como prisão com cem celas; outros pensam que foi estalagem ou posto militar, numa estrada que ligava Mérida a Braga. Sobreviveu a um grande incêndio no século III e, mais tarde, teve lá dentro uma capela medieval dedicada a São Cornélio, até ao século XVIII. Ainda hoje há quem discuta o que ela era, e talvez seja isso que a torna tão fascinante.", "en": "This Roman tower, about two thousand years old, was part of a 1st-century villa and still intrigues everyone who visits. The name 'Hundred Cells' comes from a theory that saw it as a prison with a hundred cells; others think it was an inn or a military post on a road linking Mérida to Braga. It survived a major fire in the 3rd century and later housed a medieval chapel to Saint Cornelius, until the 18th century. People still debate what it was, and perhaps that is what makes it so fascinating.", "es": "Esta torre romana, de unos dos mil años, formaba parte de una villa del siglo I y sigue intrigando a quien la visita. El nombre 'Cien Celdas' viene de una teoría que la veía como prisión con cien celdas; otros piensan que fue posada o puesto militar, en una calzada que unía Mérida con Braga. Sobrevivió a un gran incendio en el siglo III y más tarde albergó una capilla medieval dedicada a San Cornelio, hasta el siglo XVIII. Aún hoy se discute qué era, y quizá eso la hace tan fascinante.", "fr": "Cette tour romaine, vieille d'environ deux mille ans, faisait partie d'une villa du Ier siècle et intrigue encore tous ceux qui la visitent. Le nom « Cent Cellules » vient d'une théorie qui y voyait une prison de cent cellules ; d'autres pensent qu'il s'agissait d'une auberge ou d'un poste militaire, sur une route reliant Mérida à Braga. Elle a survécu à un grand incendie au IIIe siècle et abrita plus tard une chapelle médiévale dédiée à saint Corneille, jusqu'au XVIIIe siècle. On débat encore de sa fonction, et c'est peut-être ce qui la rend si fascinante."}},
+  {"nome": "Porta da Vila de Sortelha", "aldeia": "Sortelha", "lat": 40.3284, "lng": -7.2157, "raio": 70, "texto": {"pt": "Ao atravessar a Porta da Vila, um velho lodão recebe o visitante, enquanto a torre de menagem vigia a aldeia adormecida. Sortelha é a 'Aldeia do Anel de Pedra': casas impossíveis entre penedos redondos, um castelo alto e dominante, e uma muralha que ainda abraça quem vive dentro dela. Deixe-se levar pelas ruas de granito até ao castelo.", "en": "As you pass through the Town Gate, an old nettle tree greets you, while the keep watches over the sleeping village. Sortelha is the 'Village of the Stone Ring': impossible houses between round boulders, a tall dominant castle, and a wall that still embraces those who live inside. Let the granite streets lead you up to the castle.", "es": "Al cruzar la Puerta de la Villa, un viejo almez recibe al visitante, mientras la torre del homenaje vigila la aldea dormida. Sortelha es la 'Aldea del Anillo de Piedra': casas imposibles entre peñascos redondos, un castillo alto y dominante, y una muralla que aún abraza a quien vive dentro. Déjese llevar por las calles de granito hasta el castillo.", "fr": "En franchissant la Porte du Bourg, un vieux micocoulier accueille le visiteur, tandis que le donjon veille sur le village endormi. Sortelha est le « Village de l'Anneau de Pierre » : des maisons impossibles entre des rochers ronds, un château haut et dominant, et une muraille qui enlace encore ceux qui vivent à l'intérieur. Laissez-vous guider par les rues de granit jusqu'au château."}},
+  {"nome": "Pelourinho de Sortelha", "aldeia": "Sortelha", "lat": 40.329, "lng": -7.2153, "raio": 60, "texto": {"pt": "O pelourinho era o símbolo da justiça e da autoridade do concelho. Este é manuelino, mandado erguer por D. Manuel I em 1510, com seis degraus octogonais e coluna canelada. Fica na praça que foi o antigo centro político da vila, mesmo ao lado da Casa da Câmara e Cadeia e da entrada do castelo.", "en": "The pillory was the symbol of the council's justice and authority. This one is Manueline, ordered by King Manuel I in 1510, with six octagonal steps and a fluted column. It stands in the square that was the village's old political centre, right beside the Town Hall and Jail and the castle entrance.", "es": "La picota era el símbolo de la justicia y la autoridad del concejo. Esta es manuelina, mandada levantar por Manuel I en 1510, con seis escalones octogonales y columna acanalada. Está en la plaza que fue el antiguo centro político de la villa, junto al Ayuntamiento y Cárcel y la entrada del castillo.", "fr": "Le pilori était le symbole de la justice et de l'autorité de la municipalité. Celui-ci est manuélin, ordonné par Manuel Ier en 1510, avec six marches octogonales et une colonne cannelée. Il se dresse sur la place qui fut l'ancien centre politique du village, à côté de l'hôtel de ville et prison et de l'entrée du château."}},
+  {"nome": "Igreja Matriz de Sortelha (N. Sra. das Neves)", "aldeia": "Sortelha", "lat": 40.3291, "lng": -7.2149, "raio": 60, "texto": {"pt": "A Igreja Matriz de Nossa Senhora das Neves é renascentista, e a data de 1573 está gravada no portal. Tem uma particularidade rara: está rodeada por uma necrópole de sepulturas antropomórficas escavadas na rocha. Os degraus esculpidos entre os penedos levam ao topo do campanário, e a vista de lá vale cada um deles.", "en": "The parish church of Our Lady of the Snows is Renaissance, and the year 1573 is carved on its portal. It has a rare feature: it is surrounded by a necropolis of human-shaped graves cut into the rock. Steps carved among the boulders lead to the top of the bell tower, and the view is worth every one of them.", "es": "La Iglesia Matriz de Nuestra Señora de las Nieves es renacentista, y la fecha de 1573 está grabada en el portal. Tiene una particularidad rara: está rodeada por una necrópolis de sepulturas antropomorfas excavadas en la roca. Los escalones tallados entre los peñascos llevan a lo alto del campanario, y la vista merece cada uno de ellos.", "fr": "L'église paroissiale Notre-Dame-des-Neiges est de style Renaissance, et l'année 1573 est gravée sur son portail. Elle a une particularité rare : elle est entourée d'une nécropole de tombes anthropomorphes creusées dans la roche. Des marches taillées entre les rochers mènent au sommet du clocher, et la vue vaut chacune d'elles."}},
+  {"nome": "Casa da Câmara e Cadeia (Câmara Velha)", "aldeia": "Sortelha", "lat": 40.3289, "lng": -7.2155, "raio": 60, "texto": {"pt": "Aqui funcionavam a Câmara e a Cadeia, o coração administrativo de Sortelha no tempo em que a aldeia era sede de concelho. Governo e justiça viviam paredes meias, num edifício só. Faça de conta que é dia de audiência e imagine a praça cheia.", "en": "Here stood the Town Hall and the Jail, Sortelha's administrative heart when the village was a municipal seat. Government and justice lived side by side, in a single building. Pretend it is a hearing day and imagine the square full of people.", "es": "Aquí funcionaban el Ayuntamiento y la Cárcel, el corazón administrativo de Sortelha cuando la aldea era cabeza de concejo. Gobierno y justicia vivían pared con pared, en un solo edificio. Haga como si fuera día de audiencia e imagine la plaza llena.", "fr": "Ici fonctionnaient l'hôtel de ville et la prison, le cœur administratif de Sortelha au temps où le village était chef-lieu de municipalité. Gouvernement et justice vivaient côte à côte, dans un seul bâtiment. Imaginez un jour d'audience et la place pleine de monde."}},
+  {"nome": "Rua Principal de Sortelha", "aldeia": "Sortelha", "lat": 40.3287, "lng": -7.2156, "raio": 60, "texto": {"pt": "Estas ruas de granito seguem as curvas da rocha, e as casas parecem nascer dela, encaixadas entre os penedos. Pelo caminho há casas com nomes que dão que pensar: a Casa do Governador, a Casa do Juiz, a chamada Casa Árabe, uma casa quinhentista e outra com janela manuelina. Cada esquina muda a vista, por isso vá devagar e não se esqueça de olhar para cima.", "en": "These granite streets follow the curves of the rock, and the houses seem to grow out of it, wedged between the boulders. Along the way there are houses with names that spark the imagination: the Governor's House, the Judge's House, the so-called Arab House, a 16th-century house and another with a Manueline window. Every corner changes the view, so go slowly and don't forget to look up.", "es": "Estas calles de granito siguen las curvas de la roca, y las casas parecen nacer de ella, encajadas entre los peñascos. Por el camino hay casas con nombres que dan que pensar: la Casa del Gobernador, la Casa del Juez, la llamada Casa Árabe, una casa del siglo XVI y otra con ventana manuelina. Cada esquina cambia la vista, así que vaya despacio y no olvide mirar hacia arriba.", "fr": "Ces rues de granit suivent les courbes de la roche, et les maisons semblent en jaillir, nichées entre les rochers. En chemin, des maisons aux noms évocateurs : la Maison du Gouverneur, la Maison du Juge, la soi-disant Maison Arabe, une maison du XVIe siècle et une autre à fenêtre manuéline. Chaque coin de rue change la vue, alors allez doucement et n'oubliez pas de lever les yeux."}},
+  {"nome": "Miradouro de Sortelha", "aldeia": "Sortelha", "lat": 40.3293, "lng": -7.2146, "raio": 80, "texto": {"pt": "Atravesse a Porta Nova e, junto às ruínas da Igreja da Misericórdia, dedique um tempo à contemplação da Serra da Estrela, a mais alta serra de Portugal continental. Daqui percebe-se porque é que se escolheu este sítio para uma aldeia fortificada: vê-se muito longe.", "en": "Go through the Porta Nova and, beside the ruins of the Misericórdia church, take time to contemplate the Serra da Estrela, the highest mountain range in mainland Portugal. From here you can see why this spot was chosen for a fortified village: you can see a very long way.", "es": "Cruce la Porta Nova y, junto a las ruinas de la iglesia de la Misericordia, dedique un tiempo a contemplar la Serra da Estrela, la sierra más alta de Portugal continental. Desde aquí se entiende por qué se eligió este sitio para una aldea fortificada: se ve muy lejos.", "fr": "Franchissez la Porta Nova et, près des ruines de l'église de la Miséricorde, prenez le temps de contempler la Serra da Estrela, la plus haute montagne du Portugal continental. D'ici, on comprend pourquoi ce site fut choisi pour un village fortifié : on voit très loin."}},
+  {"nome": "Castelo de Sortelha", "aldeia": "Sortelha", "lat": 40.3288, "lng": -7.2151, "raio": 80, "texto": {"pt": "Este é um típico castelo roqueiro, assente num imponente rochedo e com a torre de menagem isolada, a vigiar a aldeia. A porta do castelo ostenta as armas reais de D. Manuel I e a esfera armilar, e as muralhas que abraçam Sortelha vieram no tempo de D. Dinis, melhoradas por D. Fernando. Há ainda duas portas falsas na muralha, uma delas junto ao castelo.", "en": "This is a typical rock-top castle, set on an imposing outcrop with an isolated keep watching over the village. The castle door bears the royal arms of King Manuel I and the armillary sphere, and the walls that embrace Sortelha came in the time of King Dinis, improved by King Fernando. There are also two false gates in the wall, one of them near the castle.", "es": "Este es un típico castillo roquero, asentado sobre un imponente peñasco y con la torre del homenaje aislada, vigilando la aldea. La puerta del castillo luce las armas reales de Manuel I y la esfera armilar, y las murallas que abrazan Sortelha llegaron en tiempos de Dinis, mejoradas por Fernando. Hay además dos puertas falsas en la muralla, una de ellas junto al castillo.", "fr": "Voici un château typique de rocher, posé sur un imposant affleurement, avec un donjon isolé qui veille sur le village. La porte du château porte les armes royales de Manuel Ier et la sphère armillaire, et les remparts qui enlacent Sortelha datent du temps de Denis, améliorés par Ferdinand. Il y a aussi deux fausses portes dans la muraille, dont l'une près du château."}},
+  {"nome": "Castelo de Sabugal", "aldeia": "Sabugal", "lat": 40.3514, "lng": -7.0942, "raio": 100, "texto": {"pt": "Está diante do Castelo das Cinco Quinas, assim chamado pela invulgar torre de menagem de planta pentagonal, talvez uma alusão simbólica ao facto de a vila ser, em definitivo, parte de Portugal. Esta fortaleza dos séculos XII-XIII, com muita obra de D. Dinis, tem dupla muralha, barbacã e troneiras em forma de cruz. D. Manuel I mandou fazer obras e deixou os seus símbolos reais nas pedras da porta principal. Lá dentro, salas góticas abobadadas mostram escudos com as quinas nacionais. O castelo também já serviu de prisão.", "en": "You are in front of the Castle of the Five Quinas, named for its unusual pentagonal keep, perhaps a symbolic hint that the town was finally part of Portugal. This 12th-13th century fortress, with much work by King Dinis, has a double wall, a barbican and cross-shaped loopholes. King Manuel I had works done and left his royal symbols on the stones of the main door. Inside, vaulted Gothic rooms show shields with the national quinas. The castle has even served as a prison.", "es": "Está ante el Castillo de las Cinco Quinas, llamado así por su inusual torre del homenaje de planta pentagonal, quizá una alusión simbólica a que la villa era, definitivamente, parte de Portugal. Esta fortaleza de los siglos XII-XIII, con mucha obra de Dinis, tiene doble muralla, barbacana y troneras en forma de cruz. Manuel I mandó hacer obras y dejó sus símbolos reales en las piedras de la puerta principal. Dentro, salas góticas abovedadas muestran escudos con las quinas nacionales. El castillo llegó a servir incluso de prisión.", "fr": "Vous voici devant le château des Cinq Quinas, ainsi nommé pour son donjon pentagonal inhabituel, peut-être une allusion symbolique au fait que la ville fait définitivement partie du Portugal. Cette forteresse des XIIe-XIIIe siècles, avec beaucoup de travaux de Denis, a une double muraille, une barbacane et des meurtrières en forme de croix. Manuel Ier fit faire des travaux et laissa ses symboles royaux sur les pierres de la porte principale. À l'intérieur, des salles gothiques voûtées montrent des écus aux quinas nationales. Le château a même servi de prison."}},
+  {"nome": "Centro de Interpretação do Património Judaico", "aldeia": "Sabugal", "lat": 40.3512, "lng": -7.0946, "raio": 60, "texto": {"pt": "Mesmo ao lado do castelo, a Casa da Memória Judaica da Raia Sabugalense, aberta na Casa do Castelo, recorda as comunidades judaicas que viveram nesta fronteira. Até 2006, o tema quase não tinha destaque neste concelho, e hoje é uma das razões para o visitar. Tal como em Belmonte, a história judaica da Beira Interior está cheia de capítulos de coragem e de discrição.", "en": "Right next to the castle, the Casa da Memória Judaica da Raia Sabugalense, opened in the Casa do Castelo, remembers the Jewish communities that lived along this border. Until 2006 the theme received little attention in this municipality, and today it is one of the reasons to visit. As in Belmonte, the Jewish history of the Beira Interior is full of chapters of courage and discretion.", "es": "Justo al lado del castillo, la Casa da Memória Judaica da Raia Sabugalense, abierta en la Casa do Castelo, recuerda a las comunidades judías que vivieron en esta frontera. Hasta 2006 el tema apenas tenía protagonismo en este municipio, y hoy es una de las razones para visitarlo. Como en Belmonte, la historia judía de la Beira Interior está llena de capítulos de valentía y discreción.", "fr": "Juste à côté du château, la Casa da Memória Judaica da Raia Sabugalense, ouverte dans la Casa do Castelo, rappelle les communautés juives qui ont vécu sur cette frontière. Jusqu'en 2006, le thème avait peu de visibilité dans cette commune, et c'est aujourd'hui l'une des raisons de la visiter. Comme à Belmonte, l'histoire juive de la Beira Interior est pleine de chapitres de courage et de discrétion."}},
+  {"nome": "Porta da Vila de Sabugal", "aldeia": "Sabugal", "lat": 40.351, "lng": -7.095, "raio": 70, "texto": {"pt": "Estamos na zona da antiga entrada da vila amuralhada, uma vila que já tinha muralha no século XII, quando pertencia ao Reino de Leão. Só em 1297, com o Tratado de Alcanizes, o Sabugal passou para Portugal. Imagine o movimento de quem entrava e saía, entre dois reinos que se vigiavam com atenção.", "en": "We are in the area of the old entrance to the walled town, which already had a wall in the 12th century, when it belonged to the Kingdom of León. Only in 1297, with the Treaty of Alcanizes, did Sabugal pass to Portugal. Imagine the comings and goings, between two kingdoms that watched each other closely.", "es": "Estamos en la zona de la antigua entrada de la villa amurallada, que ya tenía muralla en el siglo XII, cuando pertenecía al Reino de León. Solo en 1297, con el Tratado de Alcañices, Sabugal pasó a Portugal. Imagine el ir y venir de quienes entraban y salían, entre dos reinos que se vigilaban con atención.", "fr": "Nous sommes dans la zone de l'ancienne entrée du bourg fortifié, qui avait déjà une muraille au XIIe siècle, quand il appartenait au royaume de León. Ce n'est qu'en 1297, avec le traité d'Alcañices, que Sabugal passa au Portugal. Imaginez les allées et venues, entre deux royaumes qui se surveillaient de près."}},
+  {"nome": "Igreja de Santa Maria do Prado", "aldeia": "Sabugal", "lat": 40.3518, "lng": -7.0958, "raio": 80, "texto": {"pt": "O centro histórico do Sabugal guarda duas igrejas de interesse: a de São João e a da Misericórdia, esta de origem românica. A vila cresceu junto ao castelo e ao rio Côa, e as igrejas foram durante séculos o ponto de encontro da comunidade. Entre, se estiver aberta, e dê um minuto ao silêncio.", "en": "Sabugal's historic centre has two churches of interest: São João and the Misericórdia, the latter of Romanesque origin. The town grew up beside the castle and the Côa river, and the churches were for centuries the community's meeting point. Step inside, if one is open, and give a minute to the silence.", "es": "El casco histórico de Sabugal guarda dos iglesias de interés: la de San Juan y la de la Misericordia, esta de origen románico. La villa creció junto al castillo y al río Côa, y las iglesias fueron durante siglos el punto de encuentro de la comunidad. Entre, si hay alguna abierta, y dedique un minuto al silencio.", "fr": "Le centre historique de Sabugal abrite deux églises intéressantes : São João et la Miséricorde, cette dernière d'origine romane. La ville s'est développée près du château et de la rivière Côa, et les églises furent pendant des siècles le lieu de rencontre de la communauté. Entrez, si l'une est ouverte, et accordez une minute au silence."}},
+  {"nome": "Rua da Direita de Sabugal", "aldeia": "Sabugal", "lat": 40.3516, "lng": -7.0955, "raio": 80, "texto": {"pt": "Pela Rua Direita encontram-se o Solar dos Camejos, a igreja matriz, a igreja da Misericórdia, o pelourinho e a antiga casa da Câmara. Percorra-a como se fosse dia de mercado, atento às casas e aos pormenores. É um bom ponto para sentir o ritmo da vila.", "en": "Along Rua Direita you will find the Solar dos Camejos manor, the parish church, the Misericórdia church, the pillory and the old Town Hall. Walk it as if it were market day, noticing the houses and the details. It is a good spot to feel the rhythm of the town.", "es": "Por la Rua Direita se encuentran el Solar dos Camejos, la iglesia matriz, la iglesia de la Misericordia, la picota y la antigua casa del Ayuntamiento. Recórrala como si fuera día de mercado, atento a las casas y a los detalles. Es un buen lugar para sentir el ritmo de la villa.", "fr": "Le long de la Rua Direita se trouvent le manoir Solar dos Camejos, l'église paroissiale, l'église de la Miséricorde, le pilori et l'ancien hôtel de ville. Parcourez-la comme un jour de marché, attentif aux maisons et aux détails. C'est un bon endroit pour sentir le rythme de la ville."}},
+  {"nome": "Casa da Câmara de Sabugal", "aldeia": "Sabugal", "lat": 40.3519, "lng": -7.0945, "raio": 70, "texto": {"pt": "Estes são os Paços do Concelho do Sabugal, de onde se governa um concelho com mais de 800 quilómetros quadrados, um dos maiores da região. Numa terra de fronteira, tantas aldeias e tanto território dão muito que tratar. Daqui parte a vida administrativa de toda esta zona.", "en": "This is Sabugal's Town Hall, from where a municipality of more than 800 square kilometres is governed, one of the largest in the region. In a border land, so many villages and so much territory keep an administration busy. All the administrative life of this area starts from here.", "es": "Este es el Ayuntamiento de Sabugal, desde donde se gobierna un municipio de más de 800 kilómetros cuadrados, uno de los mayores de la región. En una tierra de frontera, tantas aldeas y tanto territorio dan mucho que hacer. Desde aquí parte la vida administrativa de toda esta zona.", "fr": "Voici l'hôtel de ville de Sabugal, d'où l'on gouverne une commune de plus de 800 kilomètres carrés, l'une des plus grandes de la région. Dans une terre de frontière, tant de villages et tant de territoire donnent beaucoup de travail. C'est d'ici que part la vie administrative de toute cette zone."}},
+  {"nome": "Ponte Medieval de Sabugal", "aldeia": "Sabugal", "lat": 40.3498, "lng": -7.0968, "raio": 120, "texto": {"pt": "O rio Côa passa aos pés do castelo, e esta ponte é uma das formas de o atravessar. Daqui percebe-se a importância do rio para a vila: serviu de defesa, de água e de caminho. Pare um instante para ouvir a água.", "en": "The Côa river flows at the foot of the castle, and this bridge is one way of crossing it. From here you can see how important the river was for the town: it served as defence, water supply and route. Stop for a moment and listen to the water.", "es": "El río Côa pasa a los pies del castillo, y este puente es una de las formas de cruzarlo. Desde aquí se entiende la importancia del río para la villa: sirvió de defensa, de agua y de camino. Deténgase un instante a escuchar el agua.", "fr": "La rivière Côa coule au pied du château, et ce pont est l'un des moyens de la traverser. D'ici, on comprend l'importance de la rivière pour la ville : elle servait de défense, d'eau et de chemin. Arrêtez-vous un instant pour écouter l'eau."}},
+  {"nome": "Miradouro de Sabugal", "aldeia": "Sabugal", "lat": 40.351, "lng": -7.0935, "raio": 100, "texto": {"pt": "Daqui abre-se a vista sobre o vale do Côa. A cerca de 750 metros de altitude, o Sabugal é das cidades mais altas de Portugal. Foi nestas terras que, em 1811, se travou a Batalha do Sabugal, durante a Guerra Peninsular, e a paisagem ajuda a perceber porque é que o território era tão disputado.", "en": "From here the view opens over the Côa valley. At about 750 metres of altitude, Sabugal is among the highest cities in Portugal. It was in these lands that the Battle of Sabugal was fought in 1811, during the Peninsular War, and the landscape helps explain why the territory was so contested.", "es": "Desde aquí se abre la vista sobre el valle del Côa. A unos 750 metros de altitud, Sabugal es una de las ciudades más altas de Portugal. Fue en estas tierras donde, en 1811, se libró la Batalla de Sabugal, durante la Guerra Peninsular, y el paisaje ayuda a entender por qué el territorio era tan disputado.", "fr": "D'ici, la vue s'ouvre sur la vallée du Côa. À environ 750 mètres d'altitude, Sabugal est l'une des villes les plus hautes du Portugal. C'est dans ces terres que fut livrée, en 1811, la bataille de Sabugal, pendant la guerre péninsulaire, et le paysage aide à comprendre pourquoi ce territoire était si disputé."}},
+];
+
+const aldeias=[
+  {"nome": "Belmonte", "lat": 40.3588, "lng": -7.3495, "raio": 600, "img": ["images/vila-belmonte.jpg"], "texto": {"pt": "Bem-vindo a Belmonte! Vila da Cova da Beira com foral de 1199, é a terra de Pedro Álvares Cabral e guarda uma das mais antigas comunidades judaicas do mundo, que durante séculos praticou a fé em segredo. Vai passar pelo castelo, pela igreja e panteão dos Cabrais, pela sinagoga e pelo museu judaico.", "en": "Welcome to Belmonte! A town in the Cova da Beira, granted its charter in 1199, it is the home of Pedro Álvares Cabral and has one of the oldest Jewish communities in the world, which for centuries practised its faith in secret. You will pass the castle, the church and pantheon of the Cabrais, the synagogue and the Jewish museum.", "es": "¡Bienvenido a Belmonte! Villa de la Cova da Beira con fuero desde 1199, es la tierra de Pedro Álvares Cabral y conserva una de las comunidades judías más antiguas del mundo, que durante siglos practicó su fe en secreto. Pasará por el castillo, la iglesia y el panteón de los Cabral, la sinagoga y el museo judío.", "fr": "Bienvenue à Belmonte ! Bourg de la Cova da Beira doté d'une charte depuis 1199, c'est la terre de Pedro Álvares Cabral et elle abrite l'une des plus anciennes communautés juives du monde, qui a pratiqué sa foi en secret pendant des siècles. Vous passerez par le château, l'église et le panthéon des Cabral, la synagogue et le musée juif."}},
+  {"nome": "Sortelha", "lat": 40.329, "lng": -7.2152, "raio": 500, "img": ["images/vila-sortelha.jpg"], "texto": {"pt": "Bem-vindo a Sortelha! Aldeia de granito a cerca de 760 m de altitude, rodeada por muralhas medievais e com castelo construído em 1228. Foi sede de concelho até 1855 e é muitas vezes apontada como uma das aldeias mais bonitas de Portugal. Vai passar pela porta da vila, pelo pelourinho, pela igreja e pelo castelo.", "en": "Welcome to Sortelha! A granite village at about 760 m altitude, surrounded by medieval walls, with a castle built in 1228. It was a municipal seat until 1855 and is often named one of the most beautiful villages in Portugal. You will pass the village gate, the pillory, the church and the castle.", "es": "¡Bienvenido a Sortelha! Aldea de granito a unos 760 m de altitud, rodeada de murallas medievales y con un castillo construido en 1228. Fue cabeza de concejo hasta 1855 y se la cita a menudo como una de las aldeas más bonitas de Portugal. Pasará por la puerta de la villa, la picota, la iglesia y el castillo.", "fr": "Bienvenue à Sortelha ! Village de granit à environ 760 m d'altitude, entouré de remparts médiévaux, avec un château construit en 1228. Chef-lieu de municipalité jusqu'en 1855, il est souvent cité parmi les plus beaux villages du Portugal. Vous passerez par la porte du village, le pilori, l'église et le château."}},
+  {"nome": "Sabugal", "lat": 40.3515, "lng": -7.0948, "raio": 700, "img": ["images/vila-sabugal.jpg"], "texto": {"pt": "Bem-vindo ao Sabugal! Cidade a cerca de 750 m de altitude, junto ao rio Côa, famosa pelo castelo de torre de menagem pentagonal. Foi também palco da Batalha do Sabugal, em 1811, durante a Guerra Peninsular. Vai passar pelo castelo, pelo centro histórico e pelo rio.", "en": "Welcome to Sabugal! A town at about 750 m altitude beside the Côa river, famous for its castle with a pentagonal keep. It was also the scene of the Battle of Sabugal in 1811, during the Peninsular War. You will pass the castle, the historic centre and the river.", "es": "¡Bienvenido a Sabugal! Ciudad a unos 750 m de altitud, junto al río Côa, famosa por su castillo de torre del homenaje pentagonal. Fue también escenario de la Batalla de Sabugal, en 1811, durante la Guerra Peninsular. Pasará por el castillo, el casco histórico y el río.", "fr": "Bienvenue à Sabugal ! Ville à environ 750 m d'altitude, au bord de la rivière Côa, célèbre pour son château au donjon pentagonal. Elle fut aussi le théâtre de la bataille de Sabugal, en 1811, pendant la guerre péninsulaire. Vous passerez par le château, le centre historique et la rivière."}},
+];
+
+// Marcadores das aldeias (sempre visiveis). Os pontos de cada aldeia so aparecem no mapa quando se chega a ela
+// (ou ao tocar no marcador da aldeia).
+const iconeAldeia=L.divIcon({html:'<div style="font-size:28px;line-height:1">🏰</div>',className:'',iconSize:[32,32],iconAnchor:[16,16]});
+aldeias.forEach(a=>{
+  L.marker([a.lat,a.lng],{icon:iconeAldeia}).addTo(map).bindPopup(a.nome).on('click',()=>revelarAldeia(a.nome));
+  L.circle([a.lat,a.lng],{radius:a.raio,color:"#c9a84c",weight:2,dashArray:'6 6',fillOpacity:.04}).addTo(map);
+});
+pontos.forEach(p=>{
+  p._camadas=[L.marker([p.lat,p.lng]).bindPopup(p.nome),L.circle([p.lat,p.lng],{radius:p.raio,color:"#2e7d32",fillOpacity:.07})];
+});
+function revelarPonto(p){if(!p._visivel){p._visivel=true;p._camadas.forEach(c=>c.addTo(map))}}
+function revelarAldeia(nome){pontos.forEach(p=>{if(p.aldeia===nome)revelarPonto(p)})}
+
+
+// ================================================================
+// 4. ESTADO
+// ================================================================
+let marcadorUsuario=null,ultimoPonto=null,pontoAtivoObj=null,watchId=null;
+let audioAtual=null,audioTocando=false,pontosVisitados=new Set();
+let linhaRota=L.polyline([],{color:'#1976d2',weight:4}).addTo(map);
+let inicioTour=null,acessoLiberado=false,toqueDebug=0,timerDebug=null;
+const HISTERESIS=25;
+let infoMostrada=null,introAte=0;const aldeiasVistas=new Set();
+
+// ================================================================
+// 5. SENHA
+// ================================================================
+function gerarSenhaHoje(){const d=new Date();return`EURO-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`}
+function abrirModal(){const m=document.getElementById('modal-senha');m.classList.remove('oculto');document.getElementById('modal-erro').textContent='';const i=document.getElementById('input-senha');i.value='';i.setAttribute('aria-invalid','false');i.classList.remove('erro');setTimeout(()=>i.focus(),100)}
+function fecharModal(){document.getElementById('modal-senha').classList.add('oculto')}
+function confirmarSenha(){const v=document.getElementById('input-senha').value.trim().toUpperCase();if(v===gerarSenhaHoje()){acessoLiberado=true;fecharModal();iniciarTour()}else{document.getElementById('modal-erro').textContent=t('modal_erro_senha');const i=document.getElementById('input-senha');i.classList.add('erro');i.setAttribute('aria-invalid','true');i.focus()}}
+function toggleVerSenha(){const i=document.getElementById('input-senha'),b=document.getElementById('toggle-senha-btn'),vis=i.type==='text';i.type=vis?'password':'text';b.setAttribute('aria-pressed',String(!vis));b.setAttribute('aria-label',vis?'Mostrar senha':'Esconder senha')}
+
+// ================================================================
+// 6. TOUR
+// ================================================================
+function pedirPermissaoEIniciar(){if(acessoLiberado){iniciarTour();return}abrirModal()}
+function iniciarTour(){if(watchId!==null)return;document.getElementById('btn-iniciar').disabled=true;document.getElementById('btn-parar').disabled=false;inicioTour=Date.now();watchId=navigator.geolocation.watchPosition(atualizar,erroGps,{enableHighAccuracy:true,maximumAge:5000,timeout:15000});atualizarStatusGps('aguardar')}
+function parar(){if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null}pararAudio();document.getElementById('btn-iniciar').disabled=false;document.getElementById('btn-parar').disabled=true;document.getElementById('btn-audio').style.display='none';atualizarStatusGps('parado');if(pontosVisitados.size>0)mostrarConclusao()}
+
+// ================================================================
+// 7. GPS
+// ================================================================
+function atualizar(pos){
+  const lat=pos.coords.latitude,lng=pos.coords.longitude,precisao=pos.coords.accuracy;
+  if(!marcadorUsuario){marcadorUsuario=L.marker([lat,lng],{icon:userIcon,alt:'A sua localização'}).addTo(map)}else{marcadorUsuario.setLatLng([lat,lng])}
+  linhaRota.addLatLng([lat,lng]);
+  atualizarStatusGps(precisao>80?'impreciso':'ativo',precisao);
+  // Partilha posição com módulo RA
+  RA.posicaoUser={lat,lng};
+  if(RA.ativo)raSetGPSStatus(true);
+  // Chegada a uma aldeia: foto + resumo; os pontos dessa aldeia passam a aparecer no mapa
+  let aldPerto=null,menorAld=Infinity;
+  aldeias.forEach(a=>{const dA=dist(lat,lng,a.lat,a.lng);if(dA<a.raio&&dA<menorAld){aldPerto=a;menorAld=dA}});
+  if(aldPerto&&!aldeiasVistas.has(aldPerto.nome)){
+    aldeiasVistas.add(aldPerto.nome);revelarAldeia(aldPerto.nome);pararAudio();
+    introAte=Date.now()+20000;   // deixa 20 s para ler a apresentacao antes de mostrar o primeiro ponto
+    map.flyTo([aldPerto.lat,aldPerto.lng],15);mostrarInfo(aldPerto);vibrar();
+  }
+  let maisProximo=null,menorDist=Infinity;
+  pontos.forEach(p=>{const d=dist(lat,lng,p.lat,p.lng);if(d<p.raio&&d<menorDist){maisProximo=p;menorDist=d}});
+  if(pontoAtivoObj){const dA=dist(lat,lng,pontoAtivoObj.lat,pontoAtivoObj.lng);if(dA<=pontoAtivoObj.raio+HISTERESIS)maisProximo=pontoAtivoObj}
+  if(maisProximo&&maisProximo.nome!==ultimoPonto&&Date.now()>=introAte){revelarPonto(maisProximo);ultimoPonto=maisProximo.nome;pontoAtivoObj=maisProximo;pontosVisitados.add(maisProximo.nome);map.flyTo([maisProximo.lat,maisProximo.lng],15);mostrarInfo(maisProximo);tocarAudio(maisProximo);vibrar();atualizarProgresso();if(pontosVisitados.size===pontos.length)parar()}
+  document.getElementById('debug').innerHTML=`Lat:${lat.toFixed(6)}<br>Lng:${lng.toFixed(6)}<br>Precisão:${Math.round(precisao)}m<br>Ponto:${ultimoPonto||'—'}<br>Visitados:${pontosVisitados.size}/${pontos.length}<br>Senha:${gerarSenhaHoje()}`;
+}
+function erroGps(){atualizarStatusGps('erro')}
+function atualizarStatusGps(estado,acc){
+  const dot=document.getElementById('status-dot'),txt=document.getElementById('status-gps-texto');
+  dot.className='status-dot';
+  if(estado==='ativo'){dot.classList.add('ativo');txt.textContent=t('gps_ativo')}
+  else if(estado==='impreciso'){dot.classList.add('impreciso');txt.textContent=t('gps_impreciso',{acc:Math.round(acc)})}
+  else if(estado==='erro'){dot.classList.add('erro');txt.textContent=t('gps_erro')}
+  else{txt.textContent=t('gps_aguardar')}
+}
+
+// ================================================================
+// 8. INFO DO PONTO
+// ================================================================
+function mostrarInfo(p){infoMostrada=p;
+  const textoLoc=(typeof p.texto==='object')?(p.texto[idiomaAtual]||p.texto.pt):p.texto;
+  let html=`<h2>${p.nome}</h2><p>${textoLoc}</p>`;
+  if(p.img&&p.img.length){
+    const id=`car_${Date.now()}`,total=p.img.length;
+    html+=`<div class="galeria" role="region" aria-label="${p.nome} — galeria de imagens">`;
+    if(total>1)html+=`<button class="car-btn prev" onclick="mover('${id}',-1)" aria-label="${t('btn_anterior')}">‹</button>`;
+    html+=`<div class="carousel" id="${id}" role="list">`;
+    p.img.forEach((f,i)=>{html+=`<img src="${f}" alt="${t('img_alt',{nome:p.nome,n:i+1,total})}" role="listitem" loading="${i===0?'eager':'lazy'}" onerror="this.closest('.galeria').style.display='none'">`});
+    html+=`</div>`;
+    if(total>1){html+=`<button class="car-btn next" onclick="mover('${id}',1)" aria-label="${t('btn_seguinte')}">›</button>`;html+=`<span class="car-counter" aria-hidden="true">1 / ${total}</span>`}
+    html+=`</div>`;
+  }
+  if(navigator.share)html+=`<button class="btn-partilhar" onclick="partilharPonto('${p.nome.replace(/'/g,"\\'")}')">
+    ${t('btn_partilhar')}</button>`;
+  document.getElementById('info').innerHTML=html;
+  document.getElementById('info').scrollIntoView({behavior:'smooth',block:'start'});
+}
+const carIndex={};
+function mover(id,dir){const el=document.getElementById(id);if(!el)return;const total=el.children.length;if(!(id in carIndex))carIndex[id]=0;carIndex[id]=(carIndex[id]+dir+total)%total;el.style.transform=`translateX(-${carIndex[id]*100}%)`;const cnt=el.parentElement.querySelector('.car-counter');if(cnt)cnt.textContent=`${carIndex[id]+1} / ${total}`}
+
+// ================================================================
+// 9. ÁUDIO
+// ================================================================
+function tocarAudio(p){pararAudio();if(!p.audio)return;const src=(typeof p.audio==='object')?(p.audio[idiomaAtual]||p.audio.pt):p.audio;audioAtual=new Audio(src);audioAtual.addEventListener('ended',()=>{audioTocando=false;atualizarBtnAudio()});audioAtual.play().then(()=>{audioTocando=true;atualizarBtnAudio();document.getElementById('btn-audio').style.display='flex'}).catch(()=>{})}
+function pararAudio(){if(audioAtual){audioAtual.pause();audioAtual=null}audioTocando=false;atualizarBtnAudio()}
+function toggleAudio(){if(!audioAtual)return;if(audioTocando){audioAtual.pause();audioTocando=false}else{audioAtual.play().catch(()=>{});audioTocando=true}atualizarBtnAudio()}
+function atualizarBtnAudio(){const btn=document.getElementById('btn-audio');btn.textContent=audioTocando?'🔊':'🔇';btn.setAttribute('aria-label',t(audioTocando?'audio_pausar':'audio_retomar'));btn.setAttribute('aria-pressed',String(audioTocando));btn.classList.toggle('tocando',audioTocando)}
+
+// ================================================================
+// 10. PROGRESSO
+// ================================================================
+function atualizarProgresso(){const v=pontosVisitados.size,total=pontos.length,pct=total>0?Math.round((v/total)*100):0;document.getElementById('progresso-barra').style.width=pct+'%';document.getElementById('progresso-texto').textContent=`${v} / ${total}`;const a=document.getElementById('progresso-aria');a.setAttribute('aria-valuenow',pct);a.setAttribute('aria-valuetext',`${v} de ${total} pontos visitados`)}
+
+// ================================================================
+// 11. CONCLUSÃO
+// ================================================================
+function mostrarConclusao(){const min=inicioTour?Math.round((Date.now()-inicioTour)/60000):0;document.getElementById('conclusao-pontos').textContent=pontosVisitados.size;document.getElementById('conclusao-tempo').textContent=min;const ov=document.getElementById('conclusao-overlay');ov.classList.remove('oculto');ov.querySelector('button').focus()}
+function fecharConclusao(){document.getElementById('conclusao-overlay').classList.add('oculto');document.getElementById('btn-iniciar').focus()}
+
+// ================================================================
+// 12. PARTILHA / VIBRAÇÃO / DISTÂNCIA
+// ================================================================
+function partilharPonto(nome){if(!navigator.share)return;navigator.share({title:`EURO TOURS — ${nome}`,text:t('partilha_texto',{nome}),url:window.location.href}).catch(()=>{})}
+function vibrar(){if(navigator.vibrate)navigator.vibrate([200,100,200])}
+function dist(lat1,lon1,lat2,lon2){const R=6371000,r=Math.PI/180,dL=(lat2-lat1)*r,dO=(lon2-lon1)*r,a=Math.sin(dL/2)**2+Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dO/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+
+// ================================================================
+// 13. ONLINE / OFFLINE
+// ================================================================
+function verificarConexao(){document.getElementById('offline-banner').classList.toggle('visivel',!navigator.onLine)}
+window.addEventListener('online',verificarConexao);
+window.addEventListener('offline',verificarConexao);
+verificarConexao();
+
+// ================================================================
+// 14. DEBUG SECRETO (5 toques no logo)
+// ================================================================
+document.getElementById('logo-debug-trigger').addEventListener('click',()=>{toqueDebug++;clearTimeout(timerDebug);if(toqueDebug>=5){toqueDebug=0;document.getElementById('debug').classList.toggle('visivel')}else{timerDebug=setTimeout(()=>{toqueDebug=0},2000)}});
+document.getElementById('logo-debug-trigger').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')e.target.click()});
+
+// ================================================================
+// 15. SERVICE WORKER
+// ================================================================
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').then(()=>console.log('SW registado')).catch(e=>console.log('Erro SW:',e))}
+
+// ================================================================
+// 16. REALIDADE AUMENTADA
+// ================================================================
+const RA={ativo:false,stream:null,animFrame:null,orientacao:{alfa:0},posicaoUser:null,pontoFoco:null,canvas:null,ctx:null,video:null,DIST_MAX:3000,FOV_H:60,RAIO_FOCO:80};
+
+async function abrirRA(){
+  if(!RA.posicaoUser&&!marcadorUsuario){
+    const msgs={pt:'Por favor inicie o tour primeiro para ativar o GPS.',en:'Please start the tour first to activate GPS.',es:'Por favor inicie el tour primero para activar el GPS.',fr:'Veuillez d\'abord démarrer le tour pour activer le GPS.'};
+    alert(msgs[idiomaAtual]||msgs.pt);return;
+  }
+  document.getElementById('ra-overlay').classList.add('ativo');
+  RA.ativo=true;RA.canvas=document.getElementById('ra-canvas');RA.ctx=RA.canvas.getContext('2d');RA.video=document.getElementById('ra-video');
+  await pedirPermissoesRA();
+}
+
+function fecharRA(){
+  RA.ativo=false;document.getElementById('ra-overlay').classList.remove('ativo');
+  if(RA.stream){RA.stream.getTracks().forEach(t=>t.stop());RA.stream=null}
+  RA.video.srcObject=null;
+  if(RA.animFrame){cancelAnimationFrame(RA.animFrame);RA.animFrame=null}
+  window.removeEventListener('deviceorientation',raOnOrientacao);
+}
+
+async function pedirPermissoesRA(){
+  document.getElementById('ra-aviso').style.display='none';
+  try{
+    RA.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false});
+    RA.video.srcObject=RA.stream;
+  }catch(e){document.getElementById('ra-aviso').style.display='flex';return}
+  if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+    try{const r=await DeviceOrientationEvent.requestPermission();if(r==='granted')window.addEventListener('deviceorientation',raOnOrientacao,true)}catch(e){}
+  }else{window.addEventListener('deviceorientation',raOnOrientacao,true)}
+  if(marcadorUsuario){const ll=marcadorUsuario.getLatLng();RA.posicaoUser={lat:ll.lat,lng:ll.lng};raSetGPSStatus(true)}
+  else{navigator.geolocation.getCurrentPosition(pos=>{RA.posicaoUser={lat:pos.coords.latitude,lng:pos.coords.longitude};raSetGPSStatus(true)},()=>raSetGPSStatus(false),{enableHighAccuracy:true,timeout:8000})}
+  raLoop();
+}
+
+function raSetGPSStatus(ok){document.getElementById('ra-gps-dot').className='ra-gps-dot '+(ok?'ok':'err');document.getElementById('ra-gps-txt').textContent=ok?'GPS ativo':'Sem GPS'}
+function raOnOrientacao(e){RA.orientacao.alfa=e.alpha||0;const ag=document.getElementById('ra-agulha');if(ag)ag.style.transform=`rotate(${-RA.orientacao.alfa}deg)`}
+
+function raLoop(){
+  if(!RA.ativo)return;
+  const W=window.innerWidth,H=window.innerHeight;
+  if(RA.canvas.width!==W||RA.canvas.height!==H){RA.canvas.width=W;RA.canvas.height=H}
+  RA.ctx.clearRect(0,0,W,H);
+  if(RA.posicaoUser)raDesenharEtiquetas(W,H);
+  RA.animFrame=requestAnimationFrame(raLoop);
+}
+
+function raBearing(lat1,lng1,lat2,lng2){const r=Math.PI/180,dL=(lng2-lng1)*r,y=Math.sin(dL)*Math.cos(lat2*r),x=Math.cos(lat1*r)*Math.sin(lat2*r)-Math.sin(lat1*r)*Math.cos(lat2*r)*Math.cos(dL);return(Math.atan2(y,x)*180/Math.PI+360)%360}
+function raDistancia(lat1,lng1,lat2,lng2){const R=6371000,r=Math.PI/180,dL=(lat2-lat1)*r,dO=(lng2-lng1)*r,a=Math.sin(dL/2)**2+Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dO/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+function raFmt(m){return m<1000?Math.round(m)+'m':(m/1000).toFixed(1)+'km'}
+
+function raDesenharEtiquetas(W,H){
+  const ctx=RA.ctx,az=RA.orientacao.alfa,fov=RA.FOV_H,cx=W/2,cy=H/2;
+  let focoPonto=null,menorAng=Infinity;
+  const lista=[];
+  pontos.forEach(p=>{
+    const d=raDistancia(RA.posicaoUser.lat,RA.posicaoUser.lng,p.lat,p.lng);
+    if(d>RA.DIST_MAX)return;
+    const bearing=raBearing(RA.posicaoUser.lat,RA.posicaoUser.lng,p.lat,p.lng);
+    let diff=bearing-az;if(diff>180)diff-=360;if(diff<-180)diff+=360;
+    if(Math.abs(diff)>fov/2+10)return;
+    const x=cx+(diff/(fov/2))*(W/2)*0.85;
+    const y=cy-cy*0.5+(Math.min(d/RA.DIST_MAX,1))*cy*0.3;
+    const emFoco=Math.hypot(x-cx,y-cy)<RA.RAIO_FOCO;
+    if(emFoco&&Math.abs(diff)<menorAng){menorAng=Math.abs(diff);focoPonto={...p,d,x,y}}
+    lista.push({p,d,x,y,emFoco});
+  });
+  lista.sort((a,b)=>b.d-a.d);
+  lista.forEach(({p,d,x,y,emFoco})=>raDesenharEtiqueta(ctx,p,x,y,d,emFoco));
+  raInfoBar(focoPonto);
+}
+
+function raDesenharEtiqueta(ctx,p,x,y,d,emFoco){
+  const al=emFoco?1:Math.max(0.4,1-d/RA.DIST_MAX);
+  const sc=emFoco?1.15:Math.max(0.7,1-d/RA.DIST_MAX*0.4);
+  ctx.save();ctx.globalAlpha=al;ctx.translate(x,y);ctx.scale(sc,sc);
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,30);
+  ctx.strokeStyle=emFoco?'#c9a84c':'rgba(255,255,255,0.8)';ctx.lineWidth=emFoco?3:2;ctx.stroke();
+  ctx.beginPath();ctx.arc(0,32,7,0,Math.PI*2);ctx.fillStyle=emFoco?'#c9a84c':'rgba(255,255,255,0.9)';ctx.fill();
+  ctx.font='bold 14px Arial,sans-serif';const wN=ctx.measureText(p.nome).width;
+  ctx.font='12px Arial,sans-serif';const wD=ctx.measureText(raFmt(d)).width;
+  const pad=10,wMax=Math.max(wN,wD)+pad*2,hBox=46,xB=-wMax/2,yB=-hBox-10;
+  ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=8;ctx.shadowOffsetY=2;
+  ctx.beginPath();ctx.moveTo(xB+8,yB);ctx.lineTo(xB+wMax-8,yB);ctx.quadraticCurveTo(xB+wMax,yB,xB+wMax,yB+8);ctx.lineTo(xB+wMax,yB+hBox-8);ctx.quadraticCurveTo(xB+wMax,yB+hBox,xB+wMax-8,yB+hBox);ctx.lineTo(xB+8,yB+hBox);ctx.quadraticCurveTo(xB,yB+hBox,xB,yB+hBox-8);ctx.lineTo(xB,yB+8);ctx.quadraticCurveTo(xB,yB,xB+8,yB);ctx.closePath();
+  ctx.fillStyle=emFoco?'rgba(26,58,42,0.92)':'rgba(0,0,0,0.72)';ctx.fill();
+  if(emFoco){ctx.strokeStyle='#c9a84c';ctx.lineWidth=1.5;ctx.stroke()}
+  ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+  ctx.font='bold 14px Arial,sans-serif';ctx.fillStyle=emFoco?'#c9a84c':'#fff';ctx.textAlign='center';ctx.fillText(p.nome,0,yB+18);
+  ctx.font='12px Arial,sans-serif';ctx.fillStyle=emFoco?'rgba(255,220,100,0.9)':'rgba(255,255,255,0.7)';ctx.fillText('📍 '+raFmt(d),0,yB+36);
+  ctx.restore();
+}
+
+function raInfoBar(ponto){
+  const bar=document.getElementById('ra-info-bar'),elN=document.getElementById('ra-info-nome'),elD=document.getElementById('ra-info-dist'),elT=document.getElementById('ra-info-texto');
+  if(!ponto){bar.classList.add('vazio');elN.textContent='Aponte a câmara para a paisagem';elD.textContent='';elT.textContent='Os pontos aparecerão quando estiverem no campo de visão';RA.pontoFoco=null;return}
+  bar.classList.remove('vazio');elN.textContent=ponto.nome;elD.textContent='📍 '+raFmt(ponto.d)+' de distância';
+  const txt=ponto.texto;elT.textContent=typeof txt==='object'?(txt[idiomaAtual]||txt.pt||''):(txt||'');
+  if(RA.pontoFoco!==ponto.nome){RA.pontoFoco=ponto.nome;if(navigator.vibrate)navigator.vibrate(100)}
+}
+
+// ================================================================
+// 17. INICIALIZAÇÃO
+// ================================================================
+(function init(){
+  const l=localStorage.getItem('et_lang');
+  if(l&&TRADUCOES[l])idiomaAtual=l;
+  aplicarTraducoes();
+  atualizarProgresso();
+})();
+</script>
 </body>
 </html>
