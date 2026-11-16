@@ -1,0 +1,435 @@
+{
+  "tour": {
+    "nome": "Belmonte, Sortelha e Sabugal",
+    "descricao": "Roteiro a pé pelas Aldeias Históricas",
+    "versao": "1.0.0",
+    "idiomas": [
+      "pt",
+      "en",
+      "es",
+      "fr"
+    ],
+    "totalPontos": 23,
+    "nota": "O app le os pontos de dentro do index.html. Este ficheiro serve de referencia.",
+    "aldeias": [
+      {
+        "id": "belmonte",
+        "nome": "Belmonte",
+        "lat": 40.3588,
+        "lng": -7.3495,
+        "raio": 600,
+        "img": [
+          "images/vila-belmonte.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo a Belmonte! Vila da Cova da Beira com foral de 1199, é a terra de Pedro Álvares Cabral e guarda uma das mais antigas comunidades judaicas do mundo, que durante séculos praticou a fé em segredo. Vai passar pelo castelo, pela igreja e panteão dos Cabrais, pela sinagoga e pelo museu judaico.",
+          "en": "Welcome to Belmonte! A town in the Cova da Beira, granted its charter in 1199, it is the home of Pedro Álvares Cabral and has one of the oldest Jewish communities in the world, which for centuries practised its faith in secret. You will pass the castle, the church and pantheon of the Cabrais, the synagogue and the Jewish museum.",
+          "es": "¡Bienvenido a Belmonte! Villa de la Cova da Beira con fuero desde 1199, es la tierra de Pedro Álvares Cabral y conserva una de las comunidades judías más antiguas del mundo, que durante siglos practicó su fe en secreto. Pasará por el castillo, la iglesia y el panteón de los Cabral, la sinagoga y el museo judío.",
+          "fr": "Bienvenue à Belmonte ! Bourg de la Cova da Beira doté d'une charte depuis 1199, c'est la terre de Pedro Álvares Cabral et elle abrite l'une des plus anciennes communautés juives du monde, qui a pratiqué sa foi en secret pendant des siècles. Vous passerez par le château, l'église et le panthéon des Cabral, la synagogue et le musée juif."
+        }
+      },
+      {
+        "id": "sortelha",
+        "nome": "Sortelha",
+        "lat": 40.329,
+        "lng": -7.2152,
+        "raio": 500,
+        "img": [
+          "images/vila-sortelha.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo a Sortelha! Aldeia de granito a cerca de 760 m de altitude, rodeada por muralhas medievais e com castelo construído em 1228. Foi sede de concelho até 1855 e é muitas vezes apontada como uma das aldeias mais bonitas de Portugal. Vai passar pela porta da vila, pelo pelourinho, pela igreja e pelo castelo.",
+          "en": "Welcome to Sortelha! A granite village at about 760 m altitude, surrounded by medieval walls, with a castle built in 1228. It was a municipal seat until 1855 and is often named one of the most beautiful villages in Portugal. You will pass the village gate, the pillory, the church and the castle.",
+          "es": "¡Bienvenido a Sortelha! Aldea de granito a unos 760 m de altitud, rodeada de murallas medievales y con un castillo construido en 1228. Fue cabeza de concejo hasta 1855 y se la cita a menudo como una de las aldeas más bonitas de Portugal. Pasará por la puerta de la villa, la picota, la iglesia y el castillo.",
+          "fr": "Bienvenue à Sortelha ! Village de granit à environ 760 m d'altitude, entouré de remparts médiévaux, avec un château construit en 1228. Chef-lieu de municipalité jusqu'en 1855, il est souvent cité parmi les plus beaux villages du Portugal. Vous passerez par la porte du village, le pilori, l'église et le château."
+        }
+      },
+      {
+        "id": "sabugal",
+        "nome": "Sabugal",
+        "lat": 40.3515,
+        "lng": -7.0948,
+        "raio": 700,
+        "img": [
+          "images/vila-sabugal.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo ao Sabugal! Cidade a cerca de 750 m de altitude, junto ao rio Côa, famosa pelo castelo de torre de menagem pentagonal. Foi também palco da Batalha do Sabugal, em 1811, durante a Guerra Peninsular. Vai passar pelo castelo, pelo centro histórico e pelo rio.",
+          "en": "Welcome to Sabugal! A town at about 750 m altitude beside the Côa river, famous for its castle with a pentagonal keep. It was also the scene of the Battle of Sabugal in 1811, during the Peninsular War. You will pass the castle, the historic centre and the river.",
+          "es": "¡Bienvenido a Sabugal! Ciudad a unos 750 m de altitud, junto al río Côa, famosa por su castillo de torre del homenaje pentagonal. Fue también escenario de la Batalla de Sabugal, en 1811, durante la Guerra Peninsular. Pasará por el castillo, el casco histórico y el río.",
+          "fr": "Bienvenue à Sabugal ! Ville à environ 750 m d'altitude, au bord de la rivière Côa, célèbre pour son château au donjon pentagonal. Elle fut aussi le théâtre de la bataille de Sabugal, en 1811, pendant la guerre péninsulaire. Vous passerez par le château, le centre historique et la rivière."
+        }
+      }
+    ],
+    "pontos": [
+      {
+        "id": "belmonte-castelo",
+        "aldeia": "Belmonte",
+        "nome": "Castelo de Belmonte",
+        "lat": 40.3594,
+        "lng": -7.348,
+        "raio": 90,
+        "coord": "verificada",
+        "fonte": "Wikipedia (Castle of Belmonte)",
+        "texto": {
+          "pt": "Castelo do século XIII, erguido no alto da vila por ordem de D. Afonso III. Em 1446 foi entregue à família Cabral, a de Pedro Álvares Cabral. Do topo vê-se a Serra da Estrela.",
+          "en": "13th-century castle built above the town by order of King Afonso III. In 1446 it was granted to the Cabral family, that of Pedro Álvares Cabral. From the top you can see the Serra da Estrela.",
+          "es": "Castillo del siglo XIII, levantado en lo alto de la villa por orden de Alfonso III. En 1446 pasó a la familia Cabral, la de Pedro Álvares Cabral. Desde arriba se ve la Serra da Estrela.",
+          "fr": "Château du XIIIe siècle, bâti au sommet du bourg sur ordre d'Alphonse III. En 1446 il fut donné à la famille Cabral, celle de Pedro Álvares Cabral. Du haut, on voit la Serra da Estrela."
+        }
+      },
+      {
+        "id": "belmonte-igreja-santiago",
+        "aldeia": "Belmonte",
+        "nome": "Igreja de Santiago e Panteão dos Cabrais",
+        "lat": 40.3591,
+        "lng": -7.3487,
+        "raio": 70,
+        "coord": "estimada",
+        "fonte": "Junto ao castelo - confirmar",
+        "texto": {
+          "pt": "Igreja do século XIII, classificada como monumento nacional. No Panteão dos Cabrais, de 1433, estão depositadas as cinzas de Pedro Álvares Cabral e de outros membros da família.",
+          "en": "13th-century church, a National Monument. The Cabral Pantheon, from 1433, holds the ashes of Pedro Álvares Cabral and other members of his family.",
+          "es": "Iglesia del siglo XIII, Monumento Nacional. En el Panteón de los Cabral, de 1433, descansan las cenizas de Pedro Álvares Cabral y de otros miembros de la familia.",
+          "fr": "Église du XIIIe siècle, classée monument national. Le Panthéon des Cabral, de 1433, abrite les cendres de Pedro Álvares Cabral et d'autres membres de la famille."
+        }
+      },
+      {
+        "id": "belmonte-sinagoga",
+        "aldeia": "Belmonte",
+        "nome": "Sinagoga Bet Eliahu",
+        "lat": 40.359,
+        "lng": -7.3498,
+        "raio": 70,
+        "coord": "estimada",
+        "fonte": "Rua da Fonte da Rosa 41 - confirmar",
+        "texto": {
+          "pt": "Sinagoga inaugurada em 1996, exatamente 500 anos depois do decreto que proibiu o judaísmo em Portugal. A comunidade de Belmonte celebra aqui as cerimónias semanais e as festividades.",
+          "en": "Synagogue opened in 1996, exactly 500 years after the decree that banned Judaism in Portugal. The Belmonte community holds its weekly services and festivals here.",
+          "es": "Sinagoga inaugurada en 1996, justo 500 años después del decreto que prohibió el judaísmo en Portugal. La comunidad de Belmonte celebra aquí los oficios semanales y las festividades.",
+          "fr": "Synagogue inaugurée en 1996, exactement 500 ans après le décret qui interdit le judaïsme au Portugal. La communauté de Belmonte y célèbre ses offices hebdomadaires et ses fêtes."
+        }
+      },
+      {
+        "id": "belmonte-museu-judaico",
+        "aldeia": "Belmonte",
+        "nome": "Museu Judaico de Belmonte",
+        "lat": 40.3581,
+        "lng": -7.35,
+        "raio": 70,
+        "coord": "aproximada",
+        "fonte": "Wikipedia (40°21'29\"N 7°21'00\"W)",
+        "texto": {
+          "pt": "Inaugurado em 2005 e renovado em 2017, o museu conta a história da comunidade judaica de Belmonte, que durante séculos viveu e praticou a sua fé em segredo.",
+          "en": "Opened in 2005 and renovated in 2017, the museum tells the story of Belmonte's Jewish community, which for centuries lived and practised its faith in secret.",
+          "es": "Inaugurado en 2005 y renovado en 2017, el museo cuenta la historia de la comunidad judía de Belmonte, que durante siglos vivió y practicó su fe en secreto.",
+          "fr": "Inauguré en 2005 et rénové en 2017, le musée raconte l'histoire de la communauté juive de Belmonte, qui pendant des siècles a vécu et pratiqué sa foi en secret."
+        }
+      },
+      {
+        "id": "belmonte-rua-medieval",
+        "aldeia": "Belmonte",
+        "nome": "Rua Medieval de Belmonte",
+        "lat": 40.3585,
+        "lng": -7.3496,
+        "raio": 60,
+        "coord": "estimada",
+        "fonte": "Nome genérico - indicar a rua real",
+        "texto": {
+          "pt": "Ruelas estreitas do centro histórico de Belmonte, com casas de granito. Um bom sítio para caminhar devagar e imaginar a vida da vila ao longo dos séculos.",
+          "en": "Narrow lanes in Belmonte's historic centre, lined with granite houses. A good place to walk slowly and imagine life in the town over the centuries.",
+          "es": "Callejuelas estrechas del casco histórico de Belmonte, con casas de granito. Un buen lugar para caminar despacio e imaginar la vida de la villa a lo largo de los siglos.",
+          "fr": "Ruelles étroites du centre historique de Belmonte, bordées de maisons en granit. Un bon endroit pour marcher lentement et imaginer la vie du bourg au fil des siècles."
+        }
+      },
+      {
+        "id": "belmonte-cabral",
+        "aldeia": "Belmonte",
+        "nome": "Estátua de Pedro Álvares Cabral",
+        "lat": 40.3578,
+        "lng": -7.3512,
+        "raio": 70,
+        "coord": "estimada",
+        "fonte": "Perto da Câmara Municipal - confirmar",
+        "texto": {
+          "pt": "Monumento a Pedro Álvares Cabral, o navegador natural de Belmonte a quem se atribui a chegada ao Brasil, em 1500.",
+          "en": "Monument to Pedro Álvares Cabral, the navigator from Belmonte credited with reaching Brazil in 1500.",
+          "es": "Monumento a Pedro Álvares Cabral, el navegante natural de Belmonte al que se atribuye la llegada a Brasil en 1500.",
+          "fr": "Monument à Pedro Álvares Cabral, le navigateur originaire de Belmonte à qui l'on attribue l'arrivée au Brésil, en 1500."
+        }
+      },
+      {
+        "id": "belmonte-miradouro",
+        "aldeia": "Belmonte",
+        "nome": "Miradouro de Belmonte",
+        "lat": 40.3597,
+        "lng": -7.3468,
+        "raio": 100,
+        "coord": "estimada",
+        "fonte": "Nome genérico - indicar o miradouro real",
+        "texto": {
+          "pt": "Ponto de vista sobre a vila e a paisagem da Cova da Beira, com a Serra da Estrela ao fundo.",
+          "en": "Viewpoint over the town and the Cova da Beira landscape, with the Serra da Estrela in the background.",
+          "es": "Mirador sobre la villa y el paisaje de la Cova da Beira, con la Serra da Estrela al fondo.",
+          "fr": "Point de vue sur le bourg et le paysage de la Cova da Beira, avec la Serra da Estrela en toile de fond."
+        }
+      },
+      {
+        "id": "belmonte-centum-cellas",
+        "aldeia": "Belmonte",
+        "nome": "Torre Centum Cellas",
+        "lat": 40.37764,
+        "lng": -7.3427,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Wikipedia / Atlas Obscura / Pleiades",
+        "texto": {
+          "pt": "Torre romana do século I, em Colmeal da Torre, a cerca de 2 km de Belmonte. O nome 'Cem Celas' vem de uma teoria antiga que a via como prisão; a sua função original continua em debate.",
+          "en": "1st-century Roman tower in Colmeal da Torre, about 2 km from Belmonte. The name 'Hundred Cells' comes from an old theory that it was a prison; its original purpose is still debated.",
+          "es": "Torre romana del siglo I, en Colmeal da Torre, a unos 2 km de Belmonte. El nombre 'Cien Celdas' viene de una antigua teoría que la veía como prisión; su función original sigue debatiéndose.",
+          "fr": "Tour romaine du Ier siècle, à Colmeal da Torre, à environ 2 km de Belmonte. Le nom « Cent Cellules » vient d'une ancienne théorie qui y voyait une prison ; sa fonction d'origine reste débattue."
+        }
+      },
+      {
+        "id": "sortelha-porta",
+        "aldeia": "Sortelha",
+        "nome": "Porta da Vila de Sortelha",
+        "lat": 40.3284,
+        "lng": -7.2157,
+        "raio": 70,
+        "coord": "estimada",
+        "fonte": "Junto ao castelo verificado - confirmar",
+        "texto": {
+          "pt": "Entrada principal da aldeia, dentro das muralhas medievais. Daqui começa a subida pelas ruas de granito até ao castelo.",
+          "en": "Main entrance to the village, through the medieval walls. From here the granite streets climb up towards the castle.",
+          "es": "Entrada principal de la aldea, a través de las murallas medievales. Desde aquí las calles de granito suben hacia el castillo.",
+          "fr": "Entrée principale du village, à travers les remparts médiévaux. D'ici, les rues de granit montent vers le château."
+        }
+      },
+      {
+        "id": "sortelha-pelourinho",
+        "aldeia": "Sortelha",
+        "nome": "Pelourinho de Sortelha",
+        "lat": 40.329,
+        "lng": -7.2153,
+        "raio": 60,
+        "coord": "estimada",
+        "fonte": "Centro da aldeia - confirmar",
+        "texto": {
+          "pt": "Pelourinho manuelino, símbolo da autoridade municipal. Sortelha foi sede de concelho até 1855.",
+          "en": "Manueline pillory, a symbol of municipal authority. Sortelha was a municipal seat until 1855.",
+          "es": "Picota manuelina, símbolo de la autoridad municipal. Sortelha fue cabeza de concejo hasta 1855.",
+          "fr": "Pilori manuélin, symbole de l'autorité municipale. Sortelha fut chef-lieu de municipalité jusqu'en 1855."
+        }
+      },
+      {
+        "id": "sortelha-igreja",
+        "aldeia": "Sortelha",
+        "nome": "Igreja Matriz de Sortelha (N. Sra. das Neves)",
+        "lat": 40.3291,
+        "lng": -7.2149,
+        "raio": 60,
+        "coord": "estimada",
+        "fonte": "Centro da aldeia - confirmar",
+        "texto": {
+          "pt": "Igreja Matriz de Nossa Senhora das Neves, do século XVI; a data de 1573 está gravada no portal. Da torre sineira vê-se a aldeia e a serra.",
+          "en": "Parish church of Our Lady of the Snows, from the 16th century; the date 1573 is carved on its portal. From the bell tower you can see the village and the mountains.",
+          "es": "Iglesia Matriz de Nuestra Señora de las Nieves, del siglo XVI; la fecha de 1573 está grabada en el portal. Desde el campanario se ven la aldea y la sierra.",
+          "fr": "Église paroissiale Notre-Dame-des-Neiges, du XVIe siècle ; la date de 1573 est gravée sur le portail. Du clocher, on voit le village et la montagne."
+        }
+      },
+      {
+        "id": "sortelha-camara",
+        "aldeia": "Sortelha",
+        "nome": "Casa da Câmara e Cadeia (Câmara Velha)",
+        "lat": 40.3289,
+        "lng": -7.2155,
+        "raio": 60,
+        "coord": "estimada",
+        "fonte": "Centro da aldeia - confirmar",
+        "texto": {
+          "pt": "Antiga Casa da Câmara e Cadeia, memória do tempo em que Sortelha era sede de concelho.",
+          "en": "Former Town Hall and Jail, a reminder of when Sortelha was a municipal seat.",
+          "es": "Antigua Casa del Concejo y Cárcel, recuerdo de cuando Sortelha era cabeza de concejo.",
+          "fr": "Ancien hôtel de ville et prison, souvenir du temps où Sortelha était chef-lieu de municipalité."
+        }
+      },
+      {
+        "id": "sortelha-rua",
+        "aldeia": "Sortelha",
+        "nome": "Rua Principal de Sortelha",
+        "lat": 40.3287,
+        "lng": -7.2156,
+        "raio": 60,
+        "coord": "estimada",
+        "fonte": "Nome genérico - indicar a rua real",
+        "texto": {
+          "pt": "Ruas de granito, com casas de pedra encostadas aos rochedos, quase parte da própria rocha. Cada curva muda a vista.",
+          "en": "Granite streets lined with stone houses built against the rocks, almost part of the rock itself. Every turn changes the view.",
+          "es": "Calles de granito, con casas de piedra apoyadas en los peñascos, casi parte de la propia roca. Cada curva cambia la vista.",
+          "fr": "Rues de granit bordées de maisons en pierre adossées aux rochers, presque une part de la roche elle-même. Chaque virage change la vue."
+        }
+      },
+      {
+        "id": "sortelha-miradouro",
+        "aldeia": "Sortelha",
+        "nome": "Miradouro de Sortelha",
+        "lat": 40.3293,
+        "lng": -7.2146,
+        "raio": 80,
+        "coord": "estimada",
+        "fonte": "Zona da Porta Nova / ruínas da Misericórdia - confirmar",
+        "texto": {
+          "pt": "Perto da Porta Nova e das ruínas da Igreja da Misericórdia, a vista abre-se para a Serra da Estrela, a mais alta serra de Portugal continental.",
+          "en": "Near the Porta Nova and the ruins of the Misericórdia church, the view opens towards the Serra da Estrela, the highest mountain range in mainland Portugal.",
+          "es": "Cerca de la Porta Nova y de las ruinas de la iglesia de la Misericordia, la vista se abre hacia la Serra da Estrela, la sierra más alta de Portugal continental.",
+          "fr": "Près de la Porta Nova et des ruines de l'église de la Miséricorde, la vue s'ouvre sur la Serra da Estrela, la plus haute montagne du Portugal continental."
+        }
+      },
+      {
+        "id": "sortelha-castelo",
+        "aldeia": "Sortelha",
+        "nome": "Castelo de Sortelha",
+        "lat": 40.3288,
+        "lng": -7.2151,
+        "raio": 80,
+        "coord": "aproximada",
+        "fonte": "Aldeias Históricas (40°19'45.29\"N 7°12'53.75\"W) e Sygic; Wikipedia difere ~150 m",
+        "texto": {
+          "pt": "Castelo românico construído em 1228, no reinado de D. Sancho II, com torre de menagem quadrada. As muralhas rodeiam toda a aldeia, a cerca de 760 m de altitude.",
+          "en": "Romanesque castle built in 1228 under King Sancho II, with a square keep. The walls enclose the whole village, at about 760 m altitude.",
+          "es": "Castillo románico construido en 1228, en tiempos de Sancho II, con torre del homenaje cuadrada. Las murallas rodean toda la aldea, a unos 760 m de altitud.",
+          "fr": "Château roman construit en 1228 sous Sanche II, avec un donjon carré. Les remparts entourent tout le village, à environ 760 m d'altitude."
+        }
+      },
+      {
+        "id": "sabugal-castelo",
+        "aldeia": "Sabugal",
+        "nome": "Castelo de Sabugal",
+        "lat": 40.3514,
+        "lng": -7.0942,
+        "raio": 100,
+        "coord": "verificada",
+        "fonte": "Wikipedia (Sabugal Castle)",
+        "texto": {
+          "pt": "Castelo gótico com a invulgar torre de menagem pentagonal, de quase 30 metros, conhecido como Castelo das Cinco Quinas. Domina o rio Côa.",
+          "en": "Gothic castle with an unusual pentagonal keep almost 30 metres high, known as the Castle of the Five Quinas. It overlooks the Côa river.",
+          "es": "Castillo gótico con una inusual torre del homenaje pentagonal de casi 30 metros, conocido como Castillo de las Cinco Quinas. Domina el río Côa.",
+          "fr": "Château gothique au donjon pentagonal inhabituel, de près de 30 mètres, appelé château des Cinq Quinas. Il domine la rivière Côa."
+        }
+      },
+      {
+        "id": "sabugal-judaico",
+        "aldeia": "Sabugal",
+        "nome": "Centro de Interpretação do Património Judaico",
+        "lat": 40.3512,
+        "lng": -7.0946,
+        "raio": 60,
+        "coord": "estimada",
+        "fonte": "Junto ao castelo (Wikipedia) - confirmar",
+        "texto": {
+          "pt": "Junto ao castelo, este espaço recorda as comunidades judaicas que viveram no Sabugal.",
+          "en": "Next to the castle, this centre remembers the Jewish communities that lived in Sabugal.",
+          "es": "Junto al castillo, este espacio recuerda a las comunidades judías que vivieron en Sabugal.",
+          "fr": "Près du château, ce centre rappelle les communautés juives qui ont vécu à Sabugal."
+        }
+      },
+      {
+        "id": "sabugal-porta",
+        "aldeia": "Sabugal",
+        "nome": "Porta da Vila de Sabugal",
+        "lat": 40.351,
+        "lng": -7.095,
+        "raio": 70,
+        "coord": "estimada",
+        "fonte": "Junto ao castelo verificado - confirmar",
+        "texto": {
+          "pt": "Zona da antiga entrada da vila amuralhada. O Sabugal já tinha muralha no século XII.",
+          "en": "Area of the old entrance to the walled town. Sabugal already had a wall in the 12th century.",
+          "es": "Zona de la antigua entrada de la villa amurallada. Sabugal ya tenía muralla en el siglo XII.",
+          "fr": "Secteur de l'ancienne entrée du bourg fortifié. Sabugal avait déjà une muraille au XIIe siècle."
+        }
+      },
+      {
+        "id": "sabugal-igreja",
+        "aldeia": "Sabugal",
+        "nome": "Igreja de Santa Maria do Prado",
+        "lat": 40.3518,
+        "lng": -7.0958,
+        "raio": 80,
+        "coord": "estimada",
+        "fonte": "Posição e nome a confirmar; texto provisório",
+        "texto": {
+          "pt": "Igreja do centro histórico do Sabugal, uma das paragens do percurso a pé.",
+          "en": "Church in Sabugal's historic centre, one of the stops on the walking route.",
+          "es": "Iglesia del casco histórico de Sabugal, una de las paradas del recorrido a pie.",
+          "fr": "Église du centre historique de Sabugal, l'une des étapes du parcours à pied."
+        }
+      },
+      {
+        "id": "sabugal-rua",
+        "aldeia": "Sabugal",
+        "nome": "Rua da Direita de Sabugal",
+        "lat": 40.3516,
+        "lng": -7.0955,
+        "raio": 80,
+        "coord": "estimada",
+        "fonte": "Posição a confirmar; texto provisório",
+        "texto": {
+          "pt": "Rua do centro histórico do Sabugal, com casas tradicionais. Bom sítio para sentir o ritmo da vila.",
+          "en": "Street in Sabugal's historic centre, lined with traditional houses. A good spot to feel the rhythm of the town.",
+          "es": "Calle del casco histórico de Sabugal, con casas tradicionales. Buen lugar para sentir el ritmo de la villa.",
+          "fr": "Rue du centre historique de Sabugal, bordée de maisons traditionnelles. Un bon endroit pour sentir le rythme de la ville."
+        }
+      },
+      {
+        "id": "sabugal-camara",
+        "aldeia": "Sabugal",
+        "nome": "Casa da Câmara de Sabugal",
+        "lat": 40.3519,
+        "lng": -7.0945,
+        "raio": 70,
+        "coord": "estimada",
+        "fonte": "Posição a confirmar",
+        "texto": {
+          "pt": "Paços do Concelho do Sabugal, centro da vida administrativa do concelho.",
+          "en": "Sabugal Town Hall, the centre of the municipality's administration.",
+          "es": "Ayuntamiento de Sabugal, centro de la vida administrativa del municipio.",
+          "fr": "Hôtel de ville de Sabugal, centre de la vie administrative de la commune."
+        }
+      },
+      {
+        "id": "sabugal-ponte",
+        "aldeia": "Sabugal",
+        "nome": "Ponte Medieval de Sabugal",
+        "lat": 40.3498,
+        "lng": -7.0968,
+        "raio": 120,
+        "coord": "estimada",
+        "fonte": "Posição a confirmar (rio Côa, abaixo do castelo)",
+        "texto": {
+          "pt": "Ponte sobre o rio Côa, o rio que passa aos pés do castelo. Boa paragem para ver o vale.",
+          "en": "Bridge over the Côa river, which flows at the foot of the castle. A good stop to see the valley.",
+          "es": "Puente sobre el río Côa, que pasa a los pies del castillo. Buena parada para ver el valle.",
+          "fr": "Pont sur la rivière Côa, qui coule au pied du château. Une bonne halte pour voir la vallée."
+        }
+      },
+      {
+        "id": "sabugal-miradouro",
+        "aldeia": "Sabugal",
+        "nome": "Miradouro de Sabugal",
+        "lat": 40.351,
+        "lng": -7.0935,
+        "raio": 100,
+        "coord": "estimada",
+        "fonte": "Nome genérico - indicar o miradouro real",
+        "texto": {
+          "pt": "Ponto de vista sobre o vale do Côa e a paisagem em redor do Sabugal.",
+          "en": "Viewpoint over the Côa valley and the landscape around Sabugal.",
+          "es": "Mirador sobre el valle del Côa y el paisaje alrededor de Sabugal.",
+          "fr": "Point de vue sur la vallée du Côa et le paysage autour de Sabugal."
+        }
+      }
+    ]
+  }
+}

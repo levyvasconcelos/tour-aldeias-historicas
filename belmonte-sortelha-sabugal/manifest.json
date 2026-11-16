@@ -1,0 +1,20 @@
+{
+  "name": "EURO TOURS – Belmonte, Sortelha e Sabugal",
+  "short_name": "Aldeias Históricas",
+  "description": "Roteiro a pé GPS pelas Aldeias Históricas de Belmonte, Sortelha e Sabugal",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#e8f5e9",
+  "theme_color": "#1a3a2a",
+  "lang": "pt",
+  "icons": [
+    {
+      "src": "images/logo-euro-tours.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
