@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a3a2a">
+<meta name="description" content="Roteiro a pé Monsanto, Idanha-a-Velha e Penha Garcia - EURO TOURS">
+<title>EURO TOURS – Monsanto, Idanha-a-Velha e Penha Garcia</title>
+<link rel="icon" href="images/logo-euro-tours.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde-escuro:#1a3a2a;--verde-medio:#2e7d32;--verde-claro:#4caf50;
+  --verde-bg:#e8f5e9;--dourado:#c9a84c;--vermelho:#c62828;
+  --cinza-bg:#f5f5f0;--cinza-borda:#d0d0c8;--texto-primario:#1a1a18;
+  --texto-secundario:#555550;--branco:#ffffff;
+  --sombra:0 2px 12px rgba(0,0,0,.10);--radius:12px;--radius-sm:8px;
+  --font-titulo:'Playfair Display',Georgia,serif;
+  --font-corpo:'Source Sans 3',Arial,sans-serif;--btn-min:52px;
+}
+body{font-family:var(--font-corpo);background:var(--cinza-bg);color:var(--texto-primario);min-height:100vh;overflow-x:hidden}
+.skip-link{position:absolute;top:-100px;left:16px;background:var(--verde-escuro);color:#fff;padding:10px 16px;border-radius:var(--radius-sm);font-size:15px;text-decoration:none;z-index:9999;transition:top .2s}
+.skip-link:focus{top:16px}
+/* TOPBAR */
+.topbar{background:var(--verde-escuro);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.2);position:sticky;top:0;z-index:1000}
+.topbar .logo{height:48px;width:auto}
+.topbar-direita{display:flex;align-items:center;gap:12px}
+.lang-select{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-sm);color:#fff;font-family:var(--font-corpo);font-size:14px;font-weight:600;padding:8px 28px 8px 12px;cursor:pointer;min-height:var(--btn-min);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-color:rgba(255,255,255,.12)}
+.lang-select:focus{outline:3px solid var(--dourado);outline-offset:2px}
+/* TÍTULO */
+.titulo-tour{text-align:center;padding:20px 20px 8px}
+.titulo-tour h1{font-family:var(--font-titulo);font-size:clamp(22px,5vw,30px);color:var(--verde-escuro);letter-spacing:.5px}
+.titulo-tour p{font-size:14px;color:var(--texto-secundario);margin-top:4px}
+/* PROGRESSO */
+.progresso-container{padding:8px 20px 0}
+.progresso-label{display:flex;justify-content:space-between;font-size:13px;color:var(--texto-secundario);margin-bottom:6px}
+.progresso-label strong{color:var(--verde-escuro)}
+.progresso-barra-bg{background:var(--cinza-borda);border-radius:99px;height:10px;overflow:hidden}
+.progresso-barra{background:linear-gradient(90deg,var(--verde-medio),var(--verde-claro));height:100%;border-radius:99px;width:0%;transition:width .6s ease}
+/* BOTÕES */
+.botoes-controlo{display:flex;gap:10px;padding:16px 20px;justify-content:center;flex-wrap:wrap}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;min-height:var(--btn-min);font-family:var(--font-corpo);font-size:15px;font-weight:600;border:none;border-radius:var(--radius);cursor:pointer;transition:transform .15s,filter .15s;letter-spacing:.3px;flex:1;max-width:170px}
+.btn:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-start{background:var(--verde-medio);color:#fff;box-shadow:0 3px 10px rgba(46,125,50,.35)}
+.btn-start:hover:not(:disabled){filter:brightness(1.1)}
+.btn-stop{background:var(--vermelho);color:#fff;box-shadow:0 3px 10px rgba(198,40,40,.35)}
+.btn-stop:hover:not(:disabled){filter:brightness(1.1)}
+/* BOTÃO RA */
+.btn-ra{display:flex;align-items:center;justify-content:center;gap:8px;min-height:var(--btn-min);padding:0 18px;font-family:var(--font-corpo);font-size:15px;font-weight:600;border:2px solid var(--dourado);border-radius:var(--radius);background:var(--verde-escuro);color:var(--dourado);cursor:pointer;transition:background .2s,color .2s;flex:1;max-width:170px}
+.btn-ra:hover{background:var(--dourado);color:var(--verde-escuro)}
+.btn-ra:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+.btn-ra:active{transform:scale(.97)}
+/* ÁUDIO */
+.btn-audio{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--verde-escuro);color:#fff;border:2px solid var(--dourado);font-size:22px;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);z-index:900;transition:transform .15s,background .2s;display:none}
+.btn-audio:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+.btn-audio:active{transform:scale(.93)}
+.btn-audio.tocando{background:var(--dourado);color:var(--verde-escuro)}
+/* MAPA */
+
+/* INFO */
+#info{background:var(--branco);margin:12px 16px 0;border-radius:var(--radius) var(--radius) 0 0;padding:18px 20px 14px;box-shadow:0 -2px 0 0 var(--verde-medio) inset,var(--sombra);border-top:4px solid var(--verde-medio);min-height:56px;transition:border-color .4s}
+#info h2{font-family:var(--font-titulo);font-size:21px;color:var(--verde-escuro);margin-bottom:8px}
+#info p{font-size:15px;line-height:1.65;color:var(--texto-primario)}
+.info-vazio{color:var(--texto-secundario);font-style:italic;font-size:14px;text-align:center;padding:6px 0}
+/* Galeria acima do mapa — altura mais compacta */
+#info .galeria{aspect-ratio:16/7;margin-top:12px}
+/* Mapa sem arredondamento em cima quando tem info colada */
+#map{height:40vh;min-height:200px;width:100%;border-top:none;border-bottom:3px solid var(--verde-escuro)}
+/* CARROSSEL */
+.galeria{position:relative;overflow:hidden;border-radius:var(--radius-sm);margin-top:14px;background:#000;aspect-ratio:16/9}
+.carousel{display:flex;transition:transform .4s ease;height:100%}
+.carousel img{min-width:100%;height:100%;object-fit:cover;display:block}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:none;width:44px;height:44px;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:5;cursor:pointer;border-radius:50%;transition:background .2s}
+.car-btn:hover{background:rgba(0,0,0,.8)}
+.car-btn:focus-visible{outline:3px solid var(--dourado);outline-offset:2px}
+.prev{left:8px}.next{right:8px}
+.car-counter{position:absolute;bottom:8px;right:12px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:3px 8px;border-radius:99px}
+.btn-partilhar{margin-top:14px;width:100%;background:var(--verde-bg);color:var(--verde-escuro);border:1.5px solid var(--verde-claro);border-radius:var(--radius-sm);padding:12px;font-family:var(--font-corpo);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;min-height:48px}
+.btn-partilhar:hover{background:#c8e6c9}
+/* OFFLINE */
+.offline-banner{background:#fff3cd;color:#856404;text-align:center;font-size:14px;font-weight:600;padding:8px 16px;display:none;border-bottom:1px solid #ffc107}
+.offline-banner.visivel{display:block}
+/* GPS STATUS */
+.status-gps{display:flex;align-items:center;gap:8px;padding:6px 20px;font-size:13px;color:var(--texto-secundario)}
+.status-dot{width:10px;height:10px;border-radius:50%;background:var(--cinza-borda);flex-shrink:0;transition:background .3s}
+.status-dot.ativo{background:var(--verde-claro);box-shadow:0 0 0 3px rgba(76,175,80,.25)}
+.status-dot.impreciso{background:#ff9800;box-shadow:0 0 0 3px rgba(255,152,0,.25)}
+.status-dot.erro{background:var(--vermelho)}
+/* DEBUG */
+#debug{display:none;background:#111;color:#00ff88;padding:12px 16px;font-size:12px;font-family:monospace;text-align:left;margin:0 16px 8px;border-radius:var(--radius-sm);line-height:1.8}
+#debug.visivel{display:block}
+/* MODAL SENHA */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,25,17,.85);display:flex;align-items:center;justify-content:center;z-index:9000;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.oculto{display:none}
+.modal-box{background:var(--branco);border-radius:var(--radius);padding:32px 28px;max-width:380px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.35);text-align:center}
+.modal-logo{height:56px;margin-bottom:16px}
+.modal-box h2{font-family:var(--font-titulo);font-size:22px;color:var(--verde-escuro);margin-bottom:8px}
+.modal-box p{font-size:14px;color:var(--texto-secundario);margin-bottom:20px;line-height:1.5}
+.modal-input-wrap{position:relative;margin-bottom:16px}
+.modal-input{width:100%;padding:14px 48px 14px 16px;border:1.5px solid var(--cinza-borda);border-radius:var(--radius-sm);font-size:17px;font-family:var(--font-corpo);letter-spacing:2px;text-align:center;color:var(--texto-primario);background:var(--cinza-bg);transition:border-color .2s;min-height:var(--btn-min)}
+.modal-input:focus{outline:none;border-color:var(--verde-medio);box-shadow:0 0 0 3px rgba(46,125,50,.18)}
+.modal-input.erro{border-color:var(--vermelho)}
+.toggle-senha{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:20px;color:var(--texto-secundario);min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center}
+.modal-erro{color:var(--vermelho);font-size:13px;margin-bottom:12px;min-height:18px}
+.btn-confirmar{width:100%;background:var(--verde-medio);color:#fff;border:none;border-radius:var(--radius-sm);padding:16px;font-family:var(--font-corpo);font-size:17px;font-weight:600;cursor:pointer;transition:filter .15s;min-height:var(--btn-min)}
+.btn-confirmar:hover{filter:brightness(1.1)}
+.btn-confirmar:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+/* CONCLUSÃO */
+.conclusao-overlay{position:fixed;inset:0;background:rgba(10,25,17,.9);display:flex;align-items:center;justify-content:center;z-index:8000;padding:20px;backdrop-filter:blur(6px)}
+.conclusao-overlay.oculto{display:none}
+.conclusao-box{background:var(--branco);border-radius:var(--radius);padding:36px 28px;max-width:400px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.35)}
+.conclusao-icone{font-size:56px;margin-bottom:12px;display:block}
+.conclusao-box h2{font-family:var(--font-titulo);font-size:26px;color:var(--verde-escuro);margin-bottom:10px}
+.conclusao-box p{font-size:15px;color:var(--texto-secundario);margin-bottom:20px;line-height:1.6}
+.conclusao-stats{display:flex;gap:12px;justify-content:center;margin:16px 0 24px}
+.conclusao-stat{background:var(--verde-bg);border-radius:var(--radius-sm);padding:12px 18px;flex:1}
+.conclusao-stat span{display:block;font-size:26px;font-weight:700;color:var(--verde-escuro);font-family:var(--font-titulo)}
+.conclusao-stat small{font-size:12px;color:var(--texto-secundario)}
+.btn-fechar-conclusao{width:100%;background:var(--verde-escuro);color:#fff;border:none;border-radius:var(--radius-sm);padding:16px;font-family:var(--font-corpo);font-size:16px;font-weight:600;cursor:pointer;min-height:var(--btn-min)}
+/* REALIDADE AUMENTADA */
+#ra-overlay{position:fixed;inset:0;z-index:2000;background:#000;display:none;flex-direction:column}
+#ra-overlay.ativo{display:flex}
+#ra-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#ra-canvas{position:absolute;inset:0;width:100%;height:100%}
+.ra-topbar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,.65),transparent)}
+.ra-titulo{color:#fff;font-family:var(--font-corpo);font-size:15px;font-weight:600}
+.ra-logo{height:36px;border-radius:4px}
+.btn-fechar-ra{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .2s}
+.btn-fechar-ra:hover{background:rgba(255,255,255,.3)}
+.btn-fechar-ra:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.ra-info-bar{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:16px 20px 28px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);color:#fff;min-height:80px;transition:opacity .3s}
+.ra-info-bar.vazio{opacity:.4}
+.ra-info-nome{font-family:var(--font-titulo);font-size:22px;font-weight:600;margin-bottom:4px}
+.ra-info-dist{font-size:14px;color:var(--dourado);font-weight:600}
+.ra-info-texto{font-size:13px;color:rgba(255,255,255,.8);margin-top:4px;line-height:1.5}
+.ra-bussola{position:absolute;top:70px;right:16px;z-index:10;width:52px;height:52px;background:rgba(0,0,0,.5);border:1.5px solid rgba(255,255,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.ra-bussola-agulha{width:20px;height:20px;position:relative;transition:transform .15s ease-out}
+.ra-bussola-agulha::before{content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:18px solid #ff4444}
+.ra-bussola-agulha::after{content:'';position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:10px solid rgba(255,255,255,.5)}
+.ra-aviso{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;background:rgba(0,0,0,.85);color:#fff;text-align:center;padding:32px;gap:16px}
+.ra-aviso h3{font-family:var(--font-titulo);font-size:22px;color:var(--dourado)}
+.ra-aviso p{font-size:15px;line-height:1.6;color:rgba(255,255,255,.8)}
+.btn-permitir{background:var(--verde-medio);color:#fff;border:none;border-radius:10px;padding:14px 32px;font-size:16px;font-weight:600;cursor:pointer;min-height:52px}
+.btn-permitir:hover{filter:brightness(1.1)}
+.ra-mira{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border:2px solid rgba(255,255,255,.3);border-radius:50%;z-index:5;pointer-events:none}
+.ra-mira::before{content:'';position:absolute;width:1px;height:20px;background:rgba(255,255,255,.4);left:50%;top:50%;transform:translate(-50%,-50%)}
+.ra-mira::after{content:'';position:absolute;width:20px;height:1px;background:rgba(255,255,255,.4);left:50%;top:50%;transform:translate(-50%,-50%)}
+.ra-gps-status{position:absolute;top:70px;left:16px;z-index:10;background:rgba(0,0,0,.5);border-radius:20px;padding:6px 12px;font-size:12px;color:#fff;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px)}
+.ra-gps-dot{width:8px;height:8px;border-radius:50%;background:#aaa;flex-shrink:0}
+.ra-gps-dot.ok{background:#4caf50;box-shadow:0 0 0 2px rgba(76,175,80,.3)}
+.ra-gps-dot.err{background:#f44336}
+/* ACESSIBILIDADE */
+@media(prefers-contrast:high){:root{--cinza-bg:#fff;--cinza-borda:#000;--texto-primario:#000;--texto-secundario:#111}.btn,.modal-input{border:2px solid #000!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+@media(min-width:600px){.botoes-controlo{justify-content:center}.btn,.btn-ra{max-width:160px}#info{margin:20px 24px 10px;padding:24px}}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link" data-i18n="skip_link">Saltar para o conteúdo principal</a>
+
+<div class="offline-banner" id="offline-banner" role="alert" aria-live="assertive">
+  📶 Sem ligação à internet — a funcionar em modo offline
+</div>
+
+<header class="topbar" role="banner">
+  <img src="images/logo-euro-tours.png" class="logo" alt="EURO TOURS" id="logo-debug-trigger" tabindex="0" role="img">
+  <div class="topbar-direita">
+    <label for="lang-select" style="position:absolute;left:-9999px">Idioma</label>
+    <select class="lang-select" id="lang-select" aria-label="Selecionar idioma" onchange="mudarIdioma(this.value)">
+      <option value="pt">🇵🇹 PT</option>
+      <option value="en">🇬🇧 EN</option>
+      <option value="es">🇪🇸 ES</option>
+      <option value="fr">🇫🇷 FR</option>
+    </select>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <div class="titulo-tour">
+    <h1 data-i18n="titulo_tour">Monsanto, Idanha-a-Velha e Penha Garcia</h1>
+    <p data-i18n="subtitulo_tour">Roteiro a pé por aldeias históricas da Beira Baixa</p>
+  </div>
+
+  <div class="progresso-container" aria-label="Progresso do tour" role="region">
+    <div class="progresso-label">
+      <span data-i18n="progresso_label">Pontos visitados</span>
+      <strong id="progresso-texto" aria-live="polite">0 / 0</strong>
+    </div>
+    <div class="progresso-barra-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progresso-aria">
+      <div class="progresso-barra" id="progresso-barra"></div>
+    </div>
+  </div>
+
+  <div class="botoes-controlo" role="group" aria-label="Controlos do tour">
+    <button class="btn btn-start" id="btn-iniciar" onclick="pedirPermissaoEIniciar()" aria-describedby="status-gps-texto" data-i18n="btn_iniciar">▶ INICIAR TOUR</button>
+    <button class="btn btn-stop"  id="btn-parar"   onclick="parar()" disabled data-i18n="btn_parar">■ PARAR TOUR</button>
+    <button class="btn-ra"        id="btn-ra"       onclick="abrirRA()" aria-label="Abrir modo Realidade Aumentada">📷 MODO RA</button>
+  </div>
+
+  <div class="status-gps" aria-live="polite">
+    <div class="status-dot" id="status-dot" aria-hidden="true"></div>
+    <span id="status-gps-texto" data-i18n="gps_aguardar">A aguardar GPS...</span>
+  </div>
+
+  <section id="info" aria-live="polite" aria-atomic="true" aria-label="Informação do ponto atual">
+    <p class="info-vazio" data-i18n="info_vazio">Inicie o tour e aproxime-se de um ponto para ver a informação.</p>
+  </section>
+
+  <div id="map" role="application" aria-label="Mapa interativo do roteiro Monsanto, Idanha-a-Velha e Penha Garcia" tabindex="0"></div>
+
+  <div id="debug" role="log" aria-label="Informação de diagnóstico"></div>
+
+</main>
+
+<button class="btn-audio" id="btn-audio" aria-label="Pausar áudio" onclick="toggleAudio()" aria-pressed="true">🔊</button>
+
+<!-- MODAL SENHA -->
+<div class="modal-overlay oculto" id="modal-senha" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" aria-describedby="modal-desc">
+  <div class="modal-box">
+    <img src="images/logo-euro-tours.png" class="modal-logo" alt="EURO TOURS" aria-hidden="true">
+    <h2 id="modal-titulo" data-i18n="modal_titulo">Acesso ao Tour</h2>
+    <p id="modal-desc" data-i18n="modal_desc">Insira a senha fornecida pela EURO TOURS para iniciar o tour de hoje.</p>
+    <div class="modal-input-wrap">
+      <input type="password" id="input-senha" class="modal-input" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Senha de acesso" aria-required="true" aria-invalid="false" onkeydown="if(event.key==='Enter') confirmarSenha()" placeholder="EURO-AAAAMMDD">
+      <button class="toggle-senha" onclick="toggleVerSenha()" id="toggle-senha-btn" aria-label="Mostrar senha" aria-pressed="false">👁</button>
+    </div>
+    <div class="modal-erro" id="modal-erro" role="alert" aria-live="assertive"></div>
+    <button class="btn-confirmar" onclick="confirmarSenha()" data-i18n="modal_confirmar">Confirmar</button>
+  </div>
+</div>
+
+<!-- CONCLUSÃO -->
+<div class="conclusao-overlay oculto" id="conclusao-overlay" role="dialog" aria-modal="true" aria-labelledby="conclusao-titulo">
+  <div class="conclusao-box">
+    <span class="conclusao-icone" aria-hidden="true">🏰</span>
+    <h2 id="conclusao-titulo" data-i18n="conclusao_titulo">Tour Concluído!</h2>
+    <p data-i18n="conclusao_desc">Parabéns por ter explorado Monsanto, Idanha-a-Velha e Penha Garcia. Esperamos que tenha sido uma experiência inesquecível!</p>
+    <div class="conclusao-stats">
+      <div class="conclusao-stat"><span id="conclusao-pontos">0</span><small data-i18n="conclusao_pontos_label">pontos visitados</small></div>
+      <div class="conclusao-stat"><span id="conclusao-tempo">0</span><small data-i18n="conclusao_tempo_label">minutos</small></div>
+    </div>
+    <button class="btn-fechar-conclusao" onclick="fecharConclusao()" data-i18n="conclusao_fechar">Fechar</button>
+  </div>
+</div>
+
+<!-- REALIDADE AUMENTADA -->
+<div id="ra-overlay" role="dialog" aria-modal="true" aria-label="Modo Realidade Aumentada">
+  <video id="ra-video" autoplay playsinline muted aria-hidden="true"></video>
+  <canvas id="ra-canvas" aria-hidden="true"></canvas>
+  <div class="ra-mira" aria-hidden="true"></div>
+  <div class="ra-topbar">
+    <span class="ra-titulo">📍 Realidade Aumentada</span>
+    <img src="images/logo-euro-tours.png" class="ra-logo" alt="EURO TOURS" aria-hidden="true">
+    <button class="btn-fechar-ra" onclick="fecharRA()" aria-label="Fechar realidade aumentada">✕</button>
+  </div>
+  <div class="ra-gps-status" aria-live="polite">
+    <div class="ra-gps-dot" id="ra-gps-dot" aria-hidden="true"></div>
+    <span id="ra-gps-txt">A obter GPS...</span>
+  </div>
+  <div class="ra-bussola" aria-hidden="true">
+    <div class="ra-bussola-agulha" id="ra-agulha"></div>
+  </div>
+  <div class="ra-info-bar vazio" id="ra-info-bar" aria-live="polite">
+    <div class="ra-info-nome" id="ra-info-nome">Aponte a câmara para a paisagem</div>
+    <div class="ra-info-dist" id="ra-info-dist"></div>
+    <div class="ra-info-texto" id="ra-info-texto">Os pontos do tour aparecerão quando estiverem no campo de visão</div>
+  </div>
+  <div class="ra-aviso" id="ra-aviso" style="display:none">
+    <h3>📷 Permissões necessárias</h3>
+    <p>Para usar o modo RA precisamos de acesso à câmara e à bússola do seu telemóvel.</p>
+    <button class="btn-permitir" onclick="pedirPermissoesRA()">Permitir acesso</button>
+    <button style="background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;margin-top:8px;font-size:14px" onclick="fecharRA()">Cancelar</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+"use strict";
+// ================================================================
+// 1. I18N
+// ================================================================
+const TRADUCOES={
+  pt:{skip_link:"Saltar para o conteúdo principal",titulo_tour:"Monsanto, Idanha-a-Velha e Penha Garcia",subtitulo_tour:"Roteiro a pé por aldeias históricas da Beira Baixa",btn_iniciar:"▶ INICIAR TOUR",btn_parar:"■ PARAR TOUR",progresso_label:"Pontos visitados",gps_aguardar:"A aguardar GPS...",gps_ativo:"GPS ativo",gps_impreciso:"GPS com baixa precisão (±{acc}m) — mova-se ao ar livre",gps_erro:"Erro de GPS — verifique as permissões",info_vazio:"Inicie o tour e aproxime-se de um ponto para ver a informação.",modal_titulo:"Acesso ao Tour",modal_desc:"Insira a senha fornecida pela EURO TOURS para iniciar o tour de hoje.",modal_placeholder:"EURO-AAAAMMDD",modal_confirmar:"Confirmar",modal_erro_senha:"Senha incorreta. Tente novamente.",btn_partilhar:"📤 Partilhar este ponto",img_alt:"{nome} — imagem {n} de {total}",btn_anterior:"Imagem anterior",btn_seguinte:"Imagem seguinte",audio_pausar:"Pausar áudio",audio_retomar:"Retomar áudio",offline_banner:"📶 Sem ligação à internet — a funcionar em modo offline",conclusao_titulo:"Tour Concluído!",conclusao_desc:"Parabéns por ter explorado Monsanto, Idanha-a-Velha e Penha Garcia. Esperamos que tenha sido uma experiência inesquecível!",conclusao_pontos_label:"pontos visitados",conclusao_tempo_label:"minutos",conclusao_fechar:"Fechar",partilha_texto:"Acabei de visitar {nome} com o roteiro a pé EURO TOURS! 🏰"},
+  en:{skip_link:"Skip to main content",titulo_tour:"Monsanto, Idanha-a-Velha and Penha Garcia",subtitulo_tour:"Walking route through historic villages of Beira Baixa",btn_iniciar:"▶ START TOUR",btn_parar:"■ STOP TOUR",progresso_label:"Points visited",gps_aguardar:"Waiting for GPS...",gps_ativo:"GPS active",gps_impreciso:"Low GPS accuracy (±{acc}m) — move outdoors",gps_erro:"GPS error — check permissions",info_vazio:"Start the tour and approach a point to see information.",modal_titulo:"Tour Access",modal_desc:"Enter the password provided by EURO TOURS to start today's tour.",modal_placeholder:"EURO-YYYYMMDD",modal_confirmar:"Confirm",modal_erro_senha:"Incorrect password. Please try again.",btn_partilhar:"📤 Share this point",img_alt:"{nome} — image {n} of {total}",btn_anterior:"Previous image",btn_seguinte:"Next image",audio_pausar:"Pause audio",audio_retomar:"Resume audio",offline_banner:"📶 No internet connection — running in offline mode",conclusao_titulo:"Tour Completed!",conclusao_desc:"Congratulations on exploring Monsanto, Idanha-a-Velha and Penha Garcia. We hope it was an unforgettable experience!",conclusao_pontos_label:"points visited",conclusao_tempo_label:"minutes",conclusao_fechar:"Close",partilha_texto:"I just visited {nome} on the EURO TOURS walking route! 🏰"},
+  es:{skip_link:"Saltar al contenido principal",titulo_tour:"Monsanto, Idanha-a-Velha y Penha Garcia",subtitulo_tour:"Recorrido a pie por aldeas históricas de la Beira Baixa",btn_iniciar:"▶ INICIAR TOUR",btn_parar:"■ PARAR TOUR",progresso_label:"Puntos visitados",gps_aguardar:"Esperando GPS...",gps_ativo:"GPS activo",gps_impreciso:"GPS con baja precisión (±{acc}m) — muévase al exterior",gps_erro:"Error de GPS — verifique los permisos",info_vazio:"Inicie el tour y acérquese a un punto para ver la información.",modal_titulo:"Acceso al Tour",modal_desc:"Introduzca la contraseña proporcionada por EURO TOURS para iniciar el tour de hoy.",modal_placeholder:"EURO-AAAAMMDD",modal_confirmar:"Confirmar",modal_erro_senha:"Contraseña incorrecta. Inténtelo de nuevo.",btn_partilhar:"📤 Compartir este punto",img_alt:"{nome} — imagen {n} de {total}",btn_anterior:"Imagen anterior",btn_seguinte:"Imagen siguiente",audio_pausar:"Pausar audio",audio_retomar:"Reanudar audio",offline_banner:"📶 Sin conexión a internet — funcionando en modo sin conexión",conclusao_titulo:"¡Tour Completado!",conclusao_desc:"¡Felicidades por explorar Monsanto, Idanha-a-Velha y Penha Garcia! ¡Esperamos que haya sido una experiencia inolvidable!",conclusao_pontos_label:"puntos visitados",conclusao_tempo_label:"minutos",conclusao_fechar:"Cerrar",partilha_texto:"¡Acabo de visitar {nome} con el recorrido a pie de EURO TOURS! 🏰"},
+  fr:{skip_link:"Passer au contenu principal",titulo_tour:"Monsanto, Idanha-a-Velha et Penha Garcia",subtitulo_tour:"Parcours à pied dans des villages historiques de la Beira Baixa",btn_iniciar:"▶ DÉMARRER",btn_parar:"■ ARRÊTER",progresso_label:"Points visités",gps_aguardar:"En attente du GPS...",gps_ativo:"GPS actif",gps_impreciso:"Précision GPS faible (±{acc}m) — allez à l'extérieur",gps_erro:"Erreur GPS — vérifiez les permissions",info_vazio:"Démarrez le tour et approchez-vous d'un point pour voir les informations.",modal_titulo:"Accès au Tour",modal_desc:"Saisissez le mot de passe fourni par EURO TOURS pour commencer le tour d'aujourd'hui.",modal_placeholder:"EURO-AAAAMMJJ",modal_confirmar:"Confirmer",modal_erro_senha:"Mot de passe incorrect. Veuillez réessayer.",btn_partilhar:"📤 Partager ce point",img_alt:"{nome} — image {n} sur {total}",btn_anterior:"Image précédente",btn_seguinte:"Image suivante",audio_pausar:"Mettre en pause",audio_retomar:"Reprendre l'audio",offline_banner:"📶 Pas de connexion internet — mode hors ligne actif",conclusao_titulo:"Tour Terminé !",conclusao_desc:"Félicitations pour avoir exploré Monsanto, Idanha-a-Velha et Penha Garcia. Nous espérons que ce fut une expérience inoubliable !",conclusao_pontos_label:"points visités",conclusao_tempo_label:"minutes",conclusao_fechar:"Fermer",partilha_texto:"Je viens de visiter {nome} avec le parcours à pied EURO TOURS ! 🏰"}
+};
+let idiomaAtual=(navigator.language||'pt').slice(0,2);
+if(!TRADUCOES[idiomaAtual])idiomaAtual='pt';
+function t(chave,vars={}){let s=(TRADUCOES[idiomaAtual]||TRADUCOES.pt)[chave]||chave;Object.entries(vars).forEach(([k,v])=>{s=s.replace(`{${k}}`,v)});return s}
+function aplicarTraducoes(){document.documentElement.lang=idiomaAtual;document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.getAttribute('data-i18n')));document.getElementById('lang-select').value=idiomaAtual;atualizarProgresso()}
+function mudarIdioma(lang){idiomaAtual=lang;localStorage.setItem('et_lang',lang);aplicarTraducoes();if(infoMostrada)mostrarInfo(infoMostrada)}
+
+// ================================================================
+// 2. MAPA
+// ================================================================
+const map=L.map('map',{zoomControl:true,attributionControl:false}).setView([40.02,-7.08],11);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
+const userIcon=L.icon({iconUrl:'images/logo-euro-tours.png',iconSize:[40,40],iconAnchor:[20,40]});
+
+// ================================================================
+// 3. PONTOS (27 pontos — ver VERIFICAR-COORDENADAS.md)
+// ================================================================
+const pontos=[
+  {"nome": "Largo do Baluarte", "aldeia": "Monsanto", "lat": 40.03996, "lng": -7.11424, "raio": 40, "texto": {"pt": "Estamos no Largo do Baluarte, como os monsantinos lhe chamam: hoje é parque e miradouro à entrada da aldeia. Apesar do nome, os especialistas duvidam que aqui tenha existido um verdadeiro baluarte, a plataforma saliente de onde a artilharia defendia as muralhas. O que não engana é a vista: a campina estende-se a perder de vista, e percebe-se porque é que Monsanto foi sempre um posto de vigia.", "en": "This is the Largo do Baluarte, as the locals call it: today a car park and viewpoint at the entrance to the village. Despite the name, experts doubt there was ever a real bastion here, the projecting platform from which artillery defended the walls. What is beyond doubt is the view: the plain stretches as far as the eye can see, and you understand why Monsanto was always a lookout post.", "es": "Estamos en el Largo do Baluarte, como lo llaman los vecinos: hoy es aparcamiento y mirador a la entrada de la aldea. A pesar del nombre, los expertos dudan de que aquí existiera un verdadero baluarte, la plataforma saliente desde la que la artillería defendía las murallas. Lo que no engaña es la vista: la llanura se pierde en el horizonte, y se entiende por qué Monsanto fue siempre un puesto de vigilancia.", "fr": "Nous sommes sur le Largo do Baluarte, comme l'appellent les habitants : c'est aujourd'hui un parking et un belvédère à l'entrée du village. Malgré le nom, les spécialistes doutent qu'il y ait eu ici un vrai bastion, la plateforme saillante d'où l'artillerie défendait les remparts. Ce qui ne trompe pas, c'est la vue : la plaine s'étend à perte de vue, et l'on comprend pourquoi Monsanto a toujours été un poste de guet."}},
+  {"nome": "Igreja Matriz de São Salvador", "aldeia": "Monsanto", "lat": 40.04017, "lng": -7.1121, "raio": 30, "texto": {"pt": "A Igreja Matriz é dedicada a São Salvador, e o nome está gravado em letras grandes no friso por cima da porta: SAN SALVADOR. Repare também na rosácea da fachada e nas pequenas janelas manuelinas dos lados. Lá dentro, três naves separadas por colunas lisas guardam retábulos de talha de vários estilos, do maneirismo ao neoclássico, e algumas imagens esculpidas em granito, a pedra de Monsanto.", "en": "The parish church is dedicated to the Holy Saviour, and the name is carved in large letters on the frieze above the door: SAN SALVADOR. Notice also the rose window on the façade and the small Manueline windows on the sides. Inside, three naves separated by plain columns hold carved altarpieces in several styles, from Mannerist to Neoclassical, and some statues carved in granite, the stone of Monsanto.", "es": "La iglesia matriz está dedicada a San Salvador, y el nombre está grabado en letras grandes en el friso sobre la puerta: SAN SALVADOR. Fíjese también en el rosetón de la fachada y en las pequeñas ventanas manuelinas de los lados. Dentro, tres naves separadas por columnas lisas guardan retablos de talla de varios estilos, del manierismo al neoclásico, y algunas imágenes esculpidas en granito, la piedra de Monsanto.", "fr": "L'église paroissiale est dédiée au Saint-Sauveur, et son nom est gravé en grandes lettres sur la frise au-dessus de la porte : SAN SALVADOR. Remarquez aussi la rosace de la façade et les petites fenêtres manuélines sur les côtés. À l'intérieur, trois nefs séparées par des colonnes lisses abritent des retables sculptés de plusieurs styles, du maniérisme au néoclassicisme, et quelques statues taillées dans le granit, la pierre de Monsanto."}},
+  {"nome": "Casa de Fernando Namora", "aldeia": "Monsanto", "lat": 40.03963, "lng": -7.11275, "raio": 25, "texto": {"pt": "Nesta casa, construída em 1931, viveu o escritor Fernando Namora quando foi médico municipal de Monsanto, entre 1944 e 1946. A aldeia marcou-o: anos depois escreveu que os seus últimos livros tinham sido acabados aqui, e essa frase, tirada de A Nave de Pedra (1975), está na placa da fachada. Imagine o jovem médico a subir estas ruas de pedra para visitar os doentes.", "en": "This house, built in 1931, was home to the writer Fernando Namora when he was Monsanto's municipal doctor, from 1944 to 1946. The village left its mark: years later he wrote that his latest books had been finished here, and that sentence, from A Nave de Pedra (1975), is on the plaque on the façade. Picture the young doctor climbing these stone streets to visit his patients.", "es": "En esta casa, construida en 1931, vivió el escritor Fernando Namora cuando fue médico municipal de Monsanto, entre 1944 y 1946. La aldea lo marcó: años después escribió que sus últimos libros se habían terminado aquí, y esa frase, de A Nave de Pedra (1975), está en la placa de la fachada. Imagine al joven médico subiendo estas calles de piedra para visitar a los enfermos.", "fr": "Dans cette maison, construite en 1931, vécut l'écrivain Fernando Namora lorsqu'il était médecin municipal de Monsanto, de 1944 à 1946. Le village l'a marqué : des années plus tard, il écrivit que ses derniers livres avaient été achevés ici, et cette phrase, tirée de A Nave de Pedra (1975), figure sur la plaque de la façade. Imaginez le jeune médecin gravissant ces rues de pierre pour visiter ses malades."}},
+  {"nome": "Penedos Juntos", "aldeia": "Monsanto", "lat": 40.03904, "lng": -7.11198, "raio": 25, "texto": {"pt": "Monsanto está cheia de penedos gigantes, e estes são dos mais curiosos. São dois pares de blocos de granito que se separaram da mesma rocha por uma fratura e acabaram encostados uns aos outros, em equilíbrio. Na base forma-se uma passagem que se pode atravessar e um abrigo natural. Repare que a pedra de baixo está mais desfeita: é a água da chuva que, devagar, transforma o granito em areia.", "en": "Monsanto is full of giant boulders, and these are among the most curious. They are two pairs of granite blocks that split from the same rock along a fracture and ended up leaning against each other, in balance. At the base there is a passage you can walk through and a natural shelter. Notice that the lower stone is more worn: rainwater is slowly turning the granite into sand.", "es": "Monsanto está llena de peñascos gigantes, y estos son de los más curiosos. Son dos pares de bloques de granito que se separaron de la misma roca por una fractura y acabaron apoyados unos en otros, en equilibrio. En la base se forma un paso que se puede atravesar y un refugio natural. Fíjese en que la piedra de abajo está más deshecha: es el agua de la lluvia la que, poco a poco, convierte el granito en arena.", "fr": "Monsanto est plein de rochers géants, et ceux-ci sont parmi les plus curieux. Ce sont deux paires de blocs de granit qui se sont détachés de la même roche le long d'une fracture et ont fini appuyés les uns contre les autres, en équilibre. À la base se forme un passage que l'on peut traverser et un abri naturel. Remarquez que la pierre du bas est plus usée : c'est l'eau de pluie qui, lentement, transforme le granit en sable."}},
+  {"nome": "Pelourinho de Monsanto", "aldeia": "Monsanto", "lat": 40.0394, "lng": -7.11527, "raio": 20, "texto": {"pt": "Este pelourinho simples, com coluna lisa e remate cilíndrico, foi reposto em 1938, possivelmente com pedras encontradas nas redondezas, e por isso há quem duvide da sua autenticidade. Quando D. Manuel I deu foral novo a Monsanto, em 1510, a vila terá tido um pelourinho dessa época, mas não era este. Fica num dos raros largos de Monsanto, uma aldeia onde quase não há chão plano.", "en": "This simple pillory, with a plain column and cylindrical top, was put back in 1938, possibly with stones found nearby, which is why some doubt its authenticity. When King Manuel I gave Monsanto a new charter in 1510, the town would have had a pillory from that time, but it was not this one. It stands in one of Monsanto's rare squares, in a village with hardly any flat ground.", "es": "Esta picota sencilla, con columna lisa y remate cilíndrico, fue repuesta en 1938, posiblemente con piedras halladas en los alrededores, por eso hay quien duda de su autenticidad. Cuando D. Manuel I dio nuevo fuero a Monsanto, en 1510, la villa habría tenido una picota de esa época, pero no era esta. Está en una de las pocas plazas de Monsanto, una aldea donde casi no hay suelo llano.", "fr": "Ce pilori simple, à colonne lisse et sommet cylindrique, a été remis en place en 1938, peut-être avec des pierres trouvées aux alentours, c'est pourquoi certains doutent de son authenticité. Quand le roi Manuel Ier accorda une nouvelle charte à Monsanto, en 1510, le bourg eut sans doute un pilori de cette époque, mais ce n'était pas celui-ci. Il se trouve sur l'une des rares places de Monsanto, un village presque sans terrain plat."}},
+  {"nome": "Pedra da Paciência", "aldeia": "Monsanto", "lat": 40.03915, "lng": -7.11507, "raio": 20, "texto": {"pt": "Na Rua do Castelo, a casa n.º 3 terá sido a última Casa da Câmara de Monsanto, com tribunal e provavelmente cadeia, até o concelho ser extinto no século XIX. Do outro lado, encostado à casa n.º 4, há um banco de granito: a Pedra da Paciência. Diz o povo que aqui esperavam as visitas dos presos e as testemunhas dos julgamentos, e que a espera era tão longa que só com muita paciência. Sente-se um bocadinho e experimente.", "en": "On Rua do Castelo, house number 3 is thought to have been Monsanto's last town hall, with a court and probably a jail, until the municipality was abolished in the 19th century. Opposite, against house number 4, is a granite bench: the Stone of Patience. Locals say this is where prisoners' visitors and trial witnesses waited, and that the wait was so long it took a lot of patience. Sit down for a moment and try it.", "es": "En la Rua do Castelo, la casa n.º 3 habría sido el último ayuntamiento de Monsanto, con tribunal y probablemente cárcel, hasta que el municipio fue suprimido en el siglo XIX. Enfrente, apoyado en la casa n.º 4, hay un banco de granito: la Piedra de la Paciencia. Dice la gente que aquí esperaban las visitas de los presos y los testigos de los juicios, y que la espera era tan larga que hacía falta mucha paciencia. Siéntese un momento y pruebe.", "fr": "Rue du Château, la maison n° 3 aurait été la dernière mairie de Monsanto, avec tribunal et sans doute prison, jusqu'à la suppression de la commune au XIXe siècle. En face, contre la maison n° 4, se trouve un banc de granit : la Pierre de la Patience. On raconte qu'ici attendaient les visiteurs des prisonniers et les témoins des procès, et que l'attente était si longue qu'il fallait beaucoup de patience. Asseyez-vous un instant pour essayer."}},
+  {"nome": "Torre do Lucano (Torre do Relógio)", "aldeia": "Monsanto", "lat": 40.0391, "lng": -7.11576, "raio": 25, "texto": {"pt": "Esta torre sineira, também chamada Torre do Relógio, é especial para os monsantinos. No topo está uma réplica do Galo de Prata, o troféu que Monsanto ganhou em 1938, quando foi eleita 'a aldeia mais portuguesa de Portugal' num concurso nacional. A aldeia nunca mais largou o título, e o galo continua lá em cima a lembrá-lo.", "en": "This bell tower, also called the Clock Tower, is special to the people of Monsanto. At the top is a replica of the Silver Rooster, the trophy Monsanto won in 1938 when a national contest named it 'the most Portuguese village in Portugal'. The village has kept the title ever since, and the rooster is still up there as a reminder.", "es": "Esta torre campanario, también llamada Torre del Reloj, es especial para los vecinos de Monsanto. En lo alto hay una réplica del Gallo de Plata, el trofeo que Monsanto ganó en 1938, cuando un concurso nacional la eligió 'la aldea más portuguesa de Portugal'. La aldea nunca soltó el título, y el gallo sigue allí arriba para recordarlo.", "fr": "Ce clocher, aussi appelé tour de l'Horloge, est cher aux habitants de Monsanto. À son sommet se trouve une réplique du Coq d'Argent, le trophée gagné en 1938, quand un concours national élut Monsanto « le village le plus portugais du Portugal ». Le village n'a jamais lâché ce titre, et le coq est toujours là-haut pour le rappeler."}},
+  {"nome": "Capela de Santo António", "aldeia": "Monsanto", "lat": 40.0388, "lng": -7.11668, "raio": 25, "texto": {"pt": "Esta capela é de estilo manuelino: o portal tem quatro arcos encaixados uns nos outros, ladeados por dois bastões rematados por flores-de-lis, e por cima ergue-se um pequeno campanário. Lá dentro, a capela-mor tem abóbada gótica. Ao lado fica o cemitério, de 1836. É uma das capelas mais elegantes da aldeia, num canto sossegado.", "en": "This chapel is in the Manueline style: the doorway has four arches set one inside the other, flanked by two staffs topped with fleurs-de-lis, with a small bell gable above. Inside, the chancel has a Gothic vault. Next to it is the cemetery, from 1836. It is one of the village's most elegant chapels, in a quiet corner.", "es": "Esta capilla es de estilo manuelino: el portal tiene cuatro arcos encajados unos en otros, flanqueados por dos bastones rematados por flores de lis, y encima se alza una pequeña espadaña. Dentro, la capilla mayor tiene bóveda gótica. Al lado está el cementerio, de 1836. Es una de las capillas más elegantes de la aldea, en un rincón tranquilo.", "fr": "Cette chapelle est de style manuélin : le portail compte quatre arcs emboîtés, encadrés de deux bâtons surmontés de fleurs de lys, avec un petit clocher-mur au-dessus. À l'intérieur, le chœur a une voûte gothique. À côté se trouve le cimetière, de 1836. C'est l'une des chapelles les plus élégantes du village, dans un coin tranquille."}},
+  {"nome": "Gruta e Casa de uma só Telha", "aldeia": "Monsanto", "lat": 40.03856, "lng": -7.11479, "raio": 25, "texto": {"pt": "Em Monsanto as casas não lutam contra os penedos: aproveitam-nos como paredes ou como telhado. Esta gruta é um abrigo natural na base de vários blocos de granito, que já serviu de curral para porcos e hoje é um dos recantos mais fotografados. No topo da Rua do Castelo, procure a famosa 'casa de uma só telha', toda coberta por um único penedo enorme. Arquitetura feita à medida da rocha: bonita, mas pouco confortável.", "en": "In Monsanto the houses don't fight the boulders: they use them as walls or as roofs. This cave is a natural shelter at the base of several granite blocks; it was once a pigsty and is now one of the most photographed corners. At the top of Rua do Castelo, look for the famous 'house with a single roof tile', entirely covered by one enormous boulder. Architecture made to measure for the rock: beautiful, but not very comfortable.", "es": "En Monsanto las casas no luchan contra los peñascos: los aprovechan como paredes o como tejado. Esta gruta es un refugio natural en la base de varios bloques de granito, que sirvió de pocilga y hoy es uno de los rincones más fotografiados. En lo alto de la Rua do Castelo, busque la famosa 'casa de una sola teja', cubierta por un único peñasco enorme. Arquitectura hecha a la medida de la roca: bonita, pero poco cómoda.", "fr": "À Monsanto, les maisons ne luttent pas contre les rochers : elles s'en servent comme murs ou comme toit. Cette grotte est un abri naturel au pied de plusieurs blocs de granit ; elle a servi de porcherie et c'est aujourd'hui l'un des coins les plus photographiés. En haut de la rue du Château, cherchez la célèbre « maison à une seule tuile », entièrement couverte par un unique rocher énorme. Une architecture taillée sur mesure pour la roche : belle, mais peu confortable."}},
+  {"nome": "Capela de São Miguel e Torre do Peão", "aldeia": "Monsanto", "lat": 40.037, "lng": -7.11318, "raio": 35, "texto": {"pt": "Esta capela românica, do final do século XII ou início do XIII, foi o centro do primeiro povoado medieval de Monsanto. É simples e austera, com figuras de animais nas impostas e nos cachorros, e o campanário assenta numa rocha à parte. À volta, as sepulturas escavadas na rocha, algumas com a forma do corpo humano, foram usadas do século XII ao XV. No alto em frente estão os restos da Torre do Peão, uma atalaia que vigiava a encosta norte e que terá sido arruinada de propósito, para não servir ao inimigo num cerco.", "en": "This Romanesque chapel, from the late 12th or early 13th century, was the heart of Monsanto's first medieval settlement. It is simple and austere, with animal figures on the imposts and corbels, and its bell gable stands on a separate rock. Around it, graves cut into the rock, some in the shape of the human body, were used from the 12th to the 15th century. On the rise opposite are the remains of the Torre do Peão, a watchtower over the northern slope that was probably ruined on purpose so an enemy could not use it in a siege.", "es": "Esta capilla románica, de finales del siglo XII o principios del XIII, fue el centro del primer poblado medieval de Monsanto. Es sencilla y austera, con figuras de animales en las impostas y los canecillos, y la espadaña se apoya en una roca aparte. Alrededor, las sepulturas excavadas en la roca, algunas con la forma del cuerpo humano, se usaron del siglo XII al XV. En el alto de enfrente están los restos de la Torre do Peão, una atalaya que vigilaba la ladera norte y que habría sido arruinada a propósito para que no sirviera al enemigo en un asedio.", "fr": "Cette chapelle romane, de la fin du XIIe ou du début du XIIIe siècle, fut le cœur du premier village médiéval de Monsanto. Elle est simple et austère, avec des figures animales sur les impostes et les modillons, et son clocher-mur repose sur un rocher à part. Autour, des tombes creusées dans la roche, certaines en forme de corps humain, ont servi du XIIe au XVe siècle. Sur la hauteur en face se trouvent les restes de la Torre do Peão, une tour de guet sur le versant nord, sans doute ruinée exprès pour qu'un ennemi ne puisse pas s'en servir lors d'un siège."}},
+  {"nome": "Castelo de Monsanto", "aldeia": "Monsanto", "lat": 40.03635, "lng": -7.11402, "raio": 60, "texto": {"pt": "Chegou ao topo. D. Afonso Henriques conquistou Monsanto aos mouros e, em 1165, entregou-o aos Templários, que sob D. Gualdim Pais ergueram o castelo sobre uma fortificação mais antiga. Resistiu a cercos espanhóis nos séculos XVII e XVIII, mas no século XIX a explosão acidental do paiol destruiu parte dele. Todos os anos, na Festa da Santa Cruz, em maio, atiram-se das muralhas cântaros com flores. Conta a lenda que, num cerco antigo, os sitiados, já sem comida, lançaram por cima da muralha um vitelo bem alimentado, e os sitiantes, julgando que lá dentro havia fartura, desistiram.", "en": "You have reached the top. King Afonso Henriques took Monsanto from the Moors and in 1165 gave it to the Templars, who under Gualdim Pais built the castle on top of an older fortification. It withstood Spanish sieges in the 17th and 18th centuries, but in the 19th century an accidental explosion in the powder store destroyed part of it. Every year, at the Festa da Santa Cruz in May, pots of flowers are thrown from the walls. Legend says that in an ancient siege the starving defenders threw a well-fed calf over the wall, and the attackers, believing there was plenty of food inside, gave up.", "es": "Ha llegado a la cima. D. Afonso Henriques conquistó Monsanto a los moros y, en 1165, lo entregó a los Templarios, que bajo Gualdim Pais levantaron el castillo sobre una fortificación más antigua. Resistió asedios españoles en los siglos XVII y XVIII, pero en el XIX la explosión accidental del polvorín destruyó parte de él. Cada año, en la Fiesta de la Santa Cruz, en mayo, se lanzan cántaros con flores desde las murallas. Cuenta la leyenda que, en un antiguo asedio, los sitiados, ya sin comida, arrojaron por encima de la muralla un ternero bien alimentado, y los sitiadores, creyendo que dentro había abundancia, se rindieron.", "fr": "Vous êtes au sommet. Le roi Afonso Henriques prit Monsanto aux Maures et, en 1165, le donna aux Templiers, qui sous Gualdim Pais bâtirent le château sur une fortification plus ancienne. Il résista à des sièges espagnols aux XVIIe et XVIIIe siècles, mais au XIXe l'explosion accidentelle de la poudrière en détruisit une partie. Chaque année, à la Fête de la Sainte-Croix, en mai, on jette des cruches fleuries du haut des remparts. La légende raconte que lors d'un ancien siège, les assiégés affamés lancèrent par-dessus le rempart un veau bien nourri, et que les assiégeants, croyant qu'il y avait de quoi manger à l'intérieur, abandonnèrent."}},
+  {"nome": "Porta Norte", "aldeia": "Idanha-a-Velha", "lat": 39.99752, "lng": -7.1435, "raio": 30, "texto": {"pt": "Entre o fim do século III e o início do IV, a cidade romana fechou-se dentro de uma muralha oval com cerca de 750 metros, desenhada pela curva do rio. Para a erguer usou-se tudo o que havia à mão: repare nas colunas, capitéis e inscrições romanas metidas nas paredes. Esta Porta Norte, com dois torreões redondos e três arcos, estava virada para Bracara Augusta, a atual Braga. Ainda se veem os encaixes das dobradiças das portas originais.", "en": "Between the late 3rd and early 4th century, the Roman city closed itself inside an oval wall about 750 metres long, following the bend of the river. Everything at hand was used to build it: look for Roman columns, capitals and inscriptions set into the walls. This North Gate, with two round towers and three arches, faced Bracara Augusta, today's Braga. You can still see the sockets for the hinges of the original gates.", "es": "Entre finales del siglo III y principios del IV, la ciudad romana se encerró dentro de una muralla oval de unos 750 metros, dibujada por la curva del río. Para levantarla se usó todo lo que había a mano: fíjese en las columnas, capiteles e inscripciones romanas metidas en los muros. Esta Puerta Norte, con dos torreones redondos y tres arcos, miraba hacia Bracara Augusta, la actual Braga. Aún se ven los huecos de los goznes de las puertas originales.", "fr": "Entre la fin du IIIe et le début du IVe siècle, la ville romaine s'enferma dans un rempart ovale d'environ 750 mètres, dessiné par la boucle de la rivière. On utilisa tout ce qui était à portée de main : repérez les colonnes, chapiteaux et inscriptions romaines pris dans les murs. Cette Porte Nord, avec deux tours rondes et trois arcs, était tournée vers Bracara Augusta, l'actuelle Braga. On voit encore les logements des gonds des portes d'origine."}},
+  {"nome": "Freixo do Rei Wamba", "aldeia": "Idanha-a-Velha", "lat": 39.99852, "lng": -7.142, "raio": 35, "texto": {"pt": "Conta a lenda que Wamba era um lavrador destas terras quando o vieram buscar para ser rei dos Visigodos. Recusou, dizendo que só seria rei quando a vara seca que espetou no chão desse folhas, e a vara floresceu ali mesmo. O freixo que aqui cresce é o símbolo dessa história. Wamba existiu e reinou entre 672 e 680; a lenda é contada em várias terras da Península, mas em Idanha aparece nas crónicas pelo menos desde o século XIV.", "en": "Legend has it that Wamba was a farmer from these parts when they came to make him king of the Visigoths. He refused, saying he would only be king when the dry stick he had pushed into the ground grew leaves, and the stick blossomed on the spot. The ash tree growing here is the symbol of that story. Wamba was real and reigned from 672 to 680; several places in Iberia tell the legend, but in Idanha it appears in chronicles from at least the 14th century.", "es": "Cuenta la leyenda que Wamba era un labrador de estas tierras cuando vinieron a buscarlo para ser rey de los visigodos. Se negó, diciendo que solo sería rey cuando la vara seca que clavó en el suelo echara hojas, y la vara floreció allí mismo. El fresno que crece aquí es el símbolo de esa historia. Wamba existió y reinó entre 672 y 680; la leyenda se cuenta en varios lugares de la Península, pero en Idanha aparece en las crónicas al menos desde el siglo XIV.", "fr": "La légende raconte que Wamba était un paysan de ces terres quand on vint le chercher pour en faire le roi des Wisigoths. Il refusa, disant qu'il ne serait roi que lorsque le bâton sec planté dans le sol donnerait des feuilles, et le bâton fleurit sur-le-champ. Le frêne qui pousse ici est le symbole de cette histoire. Wamba a bien existé et régna de 672 à 680 ; plusieurs lieux de la péninsule racontent la légende, mais à Idanha elle figure dans les chroniques au moins depuis le XIVe siècle."}},
+  {"nome": "Casa Grande (Solar dos Marrocos)", "aldeia": "Idanha-a-Velha", "lat": 39.99681, "lng": -7.14431, "raio": 30, "texto": {"pt": "Esta casa grande foi mandada fazer no século XX pelos Marrocos, a família de lavradores que chegou a ser dona de quase toda a aldeia, depois de as terras da antiga comenda passarem para mãos privadas. Mistura vários estilos com o gosto 'português suave' e tem cantaria muito bem trabalhada. As obras pararam nos anos 50 e o interior nunca foi acabado. Os campos à volta de Idanha eram da herdade da família.", "en": "This large house was built in the 20th century by the Marrocos, the landowning family who came to own almost the whole village after the lands of the old commandery passed into private hands. It mixes several styles with the 'soft Portuguese' taste of the time and has finely worked stonework. Building stopped in the 1950s and the interior was never finished. The fields around Idanha belonged to the family estate.", "es": "Esta casa grande la mandaron construir en el siglo XX los Marrocos, la familia de terratenientes que llegó a ser dueña de casi toda la aldea, después de que las tierras de la antigua encomienda pasaran a manos privadas. Mezcla varios estilos con el gusto 'portugués suave' y tiene una cantería muy bien trabajada. Las obras se pararon en los años 50 y el interior nunca se terminó. Los campos alrededor de Idanha eran de la finca de la familia.", "fr": "Cette grande maison fut construite au XXe siècle par les Marrocos, la famille de propriétaires terriens qui posséda presque tout le village après que les terres de l'ancienne commanderie furent passées en mains privées. Elle mêle plusieurs styles au goût « portugais doux » de l'époque et offre une pierre de taille très soignée. Les travaux s'arrêtèrent dans les années 1950 et l'intérieur ne fut jamais achevé. Les champs autour d'Idanha appartenaient au domaine de la famille."}},
+  {"nome": "Pelourinho e Igreja Matriz", "aldeia": "Idanha-a-Velha", "lat": 39.99644, "lng": -7.14315, "raio": 30, "texto": {"pt": "No Largo da Igreja, este pelourinho do século XVI lembra o foral que D. Manuel I deu a Idanha em 1510, numa tentativa de voltar a povoar a terra. No capitel, procure a esfera armilar, as armas reais e a cruz de Cristo; na coluna ainda há restos dos ferros onde se prendiam os condenados. Ao lado fica a Igreja Matriz, a igreja da aldeia de hoje.", "en": "In the Church Square, this 16th-century pillory recalls the charter King Manuel I granted Idanha in 1510, in an attempt to repopulate the land. On the capital, look for the armillary sphere, the royal arms and the Cross of Christ; the column still has remains of the irons where offenders were tied. Next to it is the parish church, the church of today's village.", "es": "En el Largo da Igreja, esta picota del siglo XVI recuerda el fuero que D. Manuel I dio a Idanha en 1510, en un intento de volver a poblar la tierra. En el capitel, busque la esfera armilar, las armas reales y la cruz de Cristo; en la columna aún quedan restos de los hierros donde se ataba a los condenados. Al lado está la iglesia matriz, la iglesia de la aldea de hoy.", "fr": "Sur la place de l'Église, ce pilori du XVIe siècle rappelle la charte accordée à Idanha par le roi Manuel Ier en 1510, pour tenter de repeupler la terre. Sur le chapiteau, cherchez la sphère armillaire, les armes royales et la croix du Christ ; la colonne garde encore des restes des fers où l'on attachait les condamnés. À côté se trouve l'église paroissiale, l'église du village d'aujourd'hui."}},
+  {"nome": "Arquivo Epigráfico", "aldeia": "Idanha-a-Velha", "lat": 39.9964, "lng": -7.14359, "raio": 25, "texto": {"pt": "Idanha tem uma das maiores coleções de inscrições romanas de Portugal: são 210 peças, das quais 86 estão aqui expostas. Lápides funerárias e altares contam nomes, famílias e deuses de quem viveu na cidade romana. O Arquivo fica no quintal de um antigo lagar de azeite e usa painéis interativos para ajudar a ler as pedras. Vale a pena entrar.", "en": "Idanha has one of the largest collections of Roman inscriptions in Portugal: 210 pieces, 86 of them on display here. Tombstones and altars record the names, families and gods of the people who lived in the Roman city. The archive is in the yard of an old olive-oil press and uses interactive panels to help you read the stones. It is well worth going in.", "es": "Idanha tiene una de las mayores colecciones de inscripciones romanas de Portugal: 210 piezas, 86 de ellas expuestas aquí. Lápidas funerarias y altares cuentan nombres, familias y dioses de quienes vivieron en la ciudad romana. El Archivo está en el patio de una antigua almazara y usa paneles interactivos para ayudar a leer las piedras. Merece la pena entrar.", "fr": "Idanha possède l'une des plus grandes collections d'inscriptions romaines du Portugal : 210 pièces, dont 86 exposées ici. Stèles funéraires et autels livrent les noms, les familles et les dieux des habitants de la ville romaine. L'Archive se trouve dans la cour d'un ancien moulin à huile et utilise des panneaux interactifs pour aider à lire les pierres. Cela vaut la peine d'entrer."}},
+  {"nome": "Sé Catedral e Batistérios", "aldeia": "Idanha-a-Velha", "lat": 39.99643, "lng": -7.14475, "raio": 35, "texto": {"pt": "Esta é a antiga Sé da Egitânia, o nome da cidade quando, no século VI, se tornou sede de bispado. O edifício ainda divide os especialistas: igreja cristã antiga, mesquita do tempo muçulmano ou edifício civil depois transformado em igreja? Os Templários fizeram dele a igreja de Santa Maria. Junto à fachada norte ficam dois batistérios, com pequenas piscinas de mármore onde se batizava por imersão, dos mais antigos do território português.", "en": "This is the old cathedral of Egitânia, the city's name when it became a bishop's seat in the 6th century. The building still divides experts: an early Christian church, a mosque from Muslim times, or a civic building later turned into a church? The Templars made it the church of Santa Maria. By the north façade are two baptisteries, small marble pools for baptism by immersion, among the oldest in Portuguese territory.", "es": "Esta es la antigua catedral de Egitania, nombre de la ciudad cuando, en el siglo VI, se convirtió en sede episcopal. El edificio aún divide a los especialistas: ¿iglesia cristiana antigua, mezquita de época musulmana o edificio civil convertido después en iglesia? Los Templarios hicieron de él la iglesia de Santa María. Junto a la fachada norte hay dos baptisterios, pequeñas piscinas de mármol donde se bautizaba por inmersión, de los más antiguos del territorio portugués.", "fr": "Voici l'ancienne cathédrale d'Egitânia, nom de la ville lorsqu'elle devint siège épiscopal au VIe siècle. L'édifice divise encore les spécialistes : église chrétienne ancienne, mosquée de l'époque musulmane ou bâtiment civil transformé plus tard en église ? Les Templiers en firent l'église Santa Maria. Contre la façade nord se trouvent deux baptistères, petites piscines de marbre où l'on baptisait par immersion, parmi les plus anciens du territoire portugais."}},
+  {"nome": "Casa Romana e Porta Sul", "aldeia": "Idanha-a-Velha", "lat": 39.99591, "lng": -7.1448, "raio": 30, "texto": {"pt": "Aqui estão as ruínas de uma domus, a casa de uma família romana rica, construída no fim do século I. Vê-se parte do pátio interior com colunas, o centro da vida da casa, com um tanque que recolhia a água da chuva, e um quarto que ainda tem frescos nas paredes. A casa acabou no século IV, quando a muralha passou por aqui. Mesmo ao lado fica a Porta Sul da muralha.", "en": "Here are the ruins of a domus, the house of a wealthy Roman family, built at the end of the 1st century. You can see part of the inner courtyard with columns, the centre of household life, with a pool that collected rainwater, and a bedroom that still has frescoes on its walls. The house came to an end in the 4th century, when the town wall was built through it. Right next to it is the wall's South Gate.", "es": "Aquí están las ruinas de una domus, la casa de una familia romana rica, construida a finales del siglo I. Se ve parte del patio interior con columnas, el centro de la vida de la casa, con un estanque que recogía el agua de lluvia, y una habitación que aún conserva frescos en las paredes. La casa terminó en el siglo IV, cuando la muralla pasó por aquí. Justo al lado está la Puerta Sur de la muralla.", "fr": "Voici les ruines d'une domus, la maison d'une riche famille romaine, construite à la fin du Ier siècle. On voit une partie de la cour intérieure à colonnes, cœur de la vie domestique, avec un bassin qui recueillait l'eau de pluie, et une chambre qui garde encore des fresques. La maison disparut au IVe siècle, quand le rempart passa par ici. Juste à côté se trouve la Porte Sud du rempart."}},
+  {"nome": "Torre dos Templários", "aldeia": "Idanha-a-Velha", "lat": 39.99495, "lng": -7.14419, "raio": 35, "texto": {"pt": "Esta torre de menagem é o que resta do pequeno castelo dos Templários, que receberam Idanha pouco depois do foral de D. Sancho II, em 1229. Uma inscrição de 1245 sobre a porta, lá no alto, data a obra; entrava-se por uma escada móvel, que se recolhia. O mais curioso é a base: a torre assenta no pódio do templo principal do fórum romano, provavelmente ligado ao culto do imperador. Duas épocas, uma em cima da outra.", "en": "This keep is all that remains of the small Templar castle; the Templars received Idanha shortly after King Sancho II's charter of 1229. An inscription from 1245 above the door, high up, dates the work; you entered by a movable ladder that could be pulled up. The most curious part is the base: the tower stands on the podium of the main temple of the Roman forum, probably linked to the cult of the emperor. Two eras, one on top of the other.", "es": "Esta torre del homenaje es lo que queda del pequeño castillo de los Templarios, que recibieron Idanha poco después del fuero de D. Sancho II, en 1229. Una inscripción de 1245 sobre la puerta, en lo alto, fecha la obra; se entraba por una escalera móvil que se recogía. Lo más curioso es la base: la torre se asienta en el podio del templo principal del foro romano, probablemente ligado al culto del emperador. Dos épocas, una encima de la otra.", "fr": "Ce donjon est tout ce qui reste du petit château des Templiers, qui reçurent Idanha peu après la charte du roi Sancho II, en 1229. Une inscription de 1245 au-dessus de la porte, tout en haut, date l'ouvrage ; on entrait par une échelle mobile que l'on retirait. Le plus curieux est la base : la tour repose sur le podium du temple principal du forum romain, sans doute lié au culte de l'empereur. Deux époques, l'une sur l'autre."}},
+  {"nome": "Ponte sobre o Ponsul", "aldeia": "Idanha-a-Velha", "lat": 39.99504, "lng": -7.14216, "raio": 40, "texto": {"pt": "Os romanos chegavam aqui pela estrada que ligava Mérida, capital da Lusitânia, a Braga, e atravessavam o rio Ponsul por uma ponte. Dessa ponte só ficaram as fundações. A que vê, em granito e com três talhamares para cortar a força da água, parece romana mas é bem mais recente, do século XVII ou posterior. Um bom sítio para olhar a muralha de fora.", "en": "The Romans arrived here on the road linking Mérida, capital of Lusitania, to Braga, and crossed the Ponsul river by a bridge. Only the foundations of that bridge survive. The one you see, in granite with three cutwaters to break the force of the water, looks Roman but is much more recent, from the 17th century or later. A good spot to look at the town wall from outside.", "es": "Los romanos llegaban aquí por la calzada que unía Mérida, capital de Lusitania, con Braga, y cruzaban el río Ponsul por un puente. De ese puente solo quedan los cimientos. El que ve, de granito y con tres tajamares para cortar la fuerza del agua, parece romano pero es mucho más reciente, del siglo XVII o posterior. Un buen sitio para mirar la muralla desde fuera.", "fr": "Les Romains arrivaient ici par la voie reliant Mérida, capitale de la Lusitanie, à Braga, et franchissaient le Ponsul sur un pont. De ce pont, il ne reste que les fondations. Celui que vous voyez, en granit avec trois avant-becs pour briser la force de l'eau, a l'air romain mais il est bien plus récent, du XVIIe siècle ou postérieur. Un bon endroit pour regarder le rempart depuis l'extérieur."}},
+  {"nome": "Pelourinho de Penha Garcia", "aldeia": "Penha Garcia", "lat": 40.0422, "lng": -7.016, "raio": 25, "texto": {"pt": "Penha Garcia recebeu foral de D. Afonso III em 1256 e foral novo de D. Manuel I em 1510, e o pelourinho é o símbolo dessa autonomia. Foi durante séculos terra de fronteira, difícil de povoar: em 1431, D. João I fez dela couto de homiziados, onde quem tinha contas com a justiça podia viver em paz, desde que ajudasse a povoar e a defender a raia.", "en": "Penha Garcia received a charter from King Afonso III in 1256 and a new one from King Manuel I in 1510, and the pillory is the symbol of that self-government. For centuries it was a hard-to-settle border land: in 1431 King João I made it a refuge where people wanted by the law could live in peace, as long as they helped to populate and defend the frontier.", "es": "Penha Garcia recibió fuero de D. Afonso III en 1256 y nuevo fuero de D. Manuel I en 1510, y la picota es el símbolo de esa autonomía. Fue durante siglos tierra de frontera, difícil de poblar: en 1431, D. João I la convirtió en coto de homicianos, donde quien tenía cuentas con la justicia podía vivir en paz, siempre que ayudara a poblar y defender la raya.", "fr": "Penha Garcia reçut une charte du roi Afonso III en 1256 et une nouvelle charte du roi Manuel Ier en 1510, et le pilori est le symbole de cette autonomie. Ce fut pendant des siècles une terre frontalière difficile à peupler : en 1431, le roi João Ier en fit un refuge où les personnes recherchées par la justice pouvaient vivre en paix, à condition d'aider à peupler et à défendre la frontière."}},
+  {"nome": "Igreja Matriz e Miradouro", "aldeia": "Penha Garcia", "lat": 40.0427, "lng": -7.01535, "raio": 30, "texto": {"pt": "A Igreja Matriz fica no caminho para o castelo, e mesmo ao lado o miradouro abre a vista sobre a campina e sobre o vale do Ponsul lá em baixo. Daqui percebe-se bem a posição da aldeia: em cima de uma crista de quartzito, com o rio cavado aos pés. Pare um momento e recupere o fôlego, porque a subida continua.", "en": "The parish church stands on the way up to the castle, and right beside it the viewpoint opens onto the plain and the Ponsul valley far below. From here you can see the village's position clearly: on top of a quartzite ridge, with the river cut deep at its feet. Stop for a moment and catch your breath, because the climb goes on.", "es": "La iglesia matriz está en el camino al castillo, y justo al lado el mirador abre la vista sobre la llanura y el valle del Ponsul allá abajo. Desde aquí se entiende bien la posición de la aldea: en lo alto de una cresta de cuarcita, con el río encajado a sus pies. Pare un momento y recupere el aliento, porque la subida continúa.", "fr": "L'église paroissiale se trouve sur le chemin du château, et juste à côté le belvédère s'ouvre sur la plaine et sur la vallée du Ponsul tout en bas. D'ici on comprend bien la position du village : au sommet d'une crête de quartzite, avec la rivière creusée à ses pieds. Faites une pause pour reprendre votre souffle, car la montée continue."}},
+  {"nome": "Castelo de Penha Garcia", "aldeia": "Penha Garcia", "lat": 40.04313, "lng": -7.01579, "raio": 40, "texto": {"pt": "O castelo foi mandado erguer por D. Sancho I para guardar a fronteira contra Leão, e passou depois pela Ordem de Santiago, pelos Templários e pela Ordem de Cristo. Hoje é uma ruína, mas a vista sobre o vale do Ponsul é das melhores da região. Conta a lenda que D. Garcia, alcaide do castelo, raptou D. Branca, filha do alcaide de Monsanto. Foi condenado à morte, mas a pena foi trocada pela perda de um braço, e dizem que o fantasma do 'decepado' ainda vagueia pelas muralhas.", "en": "The castle was built on the orders of King Sancho I to guard the border against León, and later passed to the Order of Santiago, the Templars and the Order of Christ. Today it is a ruin, but the view over the Ponsul valley is one of the best in the region. Legend says that Dom Garcia, the castle's governor, abducted Dona Branca, daughter of the governor of Monsanto. He was sentenced to death, but the sentence was changed to the loss of an arm, and they say the ghost of the 'one-armed man' still wanders the walls.", "es": "El castillo lo mandó levantar D. Sancho I para guardar la frontera frente a León, y después pasó por la Orden de Santiago, los Templarios y la Orden de Cristo. Hoy es una ruina, pero la vista sobre el valle del Ponsul es de las mejores de la región. Cuenta la leyenda que D. Garcia, alcaide del castillo, raptó a D.ª Branca, hija del alcaide de Monsanto. Fue condenado a muerte, pero la pena se cambió por la pérdida de un brazo, y dicen que el fantasma del 'manco' aún vaga por las murallas.", "fr": "Le château fut élevé sur ordre du roi Sancho Ier pour garder la frontière face au León, puis passa à l'ordre de Santiago, aux Templiers et à l'ordre du Christ. C'est aujourd'hui une ruine, mais la vue sur la vallée du Ponsul est l'une des plus belles de la région. La légende raconte que Dom Garcia, gouverneur du château, enleva Dona Branca, fille du gouverneur de Monsanto. Condamné à mort, il vit sa peine changée en la perte d'un bras, et l'on dit que le fantôme du « manchot » erre encore sur les remparts."}},
+  {"nome": "Piscina Natural", "aldeia": "Penha Garcia", "lat": 40.04342, "lng": -7.01447, "raio": 40, "texto": {"pt": "Aqui o rio Ponsul cai sobre o açude e forma um lago entre paredes de rocha: é a piscina natural de Penha Garcia. No verão é sítio de mergulhos; no resto do ano é um dos cenários mais bonitos da aldeia. Repare nas camadas de rocha quase na vertical: há cerca de 480 milhões de anos eram fundo de mar.", "en": "Here the Ponsul river spills over the weir and forms a pool between walls of rock: Penha Garcia's natural swimming pool. In summer it is a place for a dip; the rest of the year it is one of the village's most beautiful spots. Notice the almost vertical layers of rock: about 480 million years ago they were the sea floor.", "es": "Aquí el río Ponsul cae sobre el azud y forma un lago entre paredes de roca: es la piscina natural de Penha Garcia. En verano es lugar de baños; el resto del año es uno de los rincones más bonitos de la aldea. Fíjese en las capas de roca casi verticales: hace unos 480 millones de años eran fondo marino.", "fr": "Ici, le Ponsul déborde du seuil et forme un bassin entre des parois rocheuses : c'est la piscine naturelle de Penha Garcia. En été on vient s'y baigner ; le reste de l'année, c'est l'un des plus beaux coins du village. Remarquez les couches de roche presque verticales : il y a environ 480 millions d'années, c'était le fond de la mer."}},
+  {"nome": "Museu dos Fósseis", "aldeia": "Penha Garcia", "lat": 40.04411, "lng": -7.01475, "raio": 25, "texto": {"pt": "Num dos antigos moinhos funciona um pequeno museu de fósseis. Aqui vê as 'cobras pintadas', como o povo chamava aos rastos deixados no fundo do mar por trilobites, animais marinhos que viveram há cerca de 480 milhões de anos. Os cientistas chamam-lhes cruzianas, e Penha Garcia é um dos sítios mais importantes do mundo para as ver. A informação está em português e inglês.", "en": "One of the old mills houses a small fossil museum. Here you will see the 'painted snakes', as locals called the tracks left on the sea floor by trilobites, marine creatures that lived about 480 million years ago. Scientists call them cruziana, and Penha Garcia is one of the most important places in the world to see them. Information is in Portuguese and English.", "es": "En uno de los antiguos molinos funciona un pequeño museo de fósiles. Aquí verá las 'culebras pintadas', como la gente llamaba a los rastros dejados en el fondo del mar por trilobites, animales marinos que vivieron hace unos 480 millones de años. Los científicos los llaman cruzianas, y Penha Garcia es uno de los lugares más importantes del mundo para verlas. La información está en portugués e inglés.", "fr": "Un des anciens moulins abrite un petit musée des fossiles. Vous y verrez les « serpents peints », comme les habitants appelaient les traces laissées au fond de la mer par des trilobites, animaux marins qui vivaient il y a environ 480 millions d'années. Les scientifiques les appellent cruziana, et Penha Garcia est l'un des sites les plus importants au monde pour les observer. Les informations sont en portugais et en anglais."}},
+  {"nome": "Moinhos de Penha Garcia", "aldeia": "Penha Garcia", "lat": 40.04442, "lng": -7.01522, "raio": 35, "texto": {"pt": "No fundo do vale alinham-se os moinhos de água recuperados, casinhas de pedra que durante gerações moeram o cereal da aldeia com a força do Ponsul. Alguns ainda funcionam e guardam ferramentas e objetos de outros tempos. É um bom sítio para perceber como se vivia de uma ribeira.", "en": "At the bottom of the valley stand the restored watermills, little stone houses that for generations ground the village's grain with the force of the Ponsul. Some still work and keep tools and objects from the past. It is a good place to understand how people made a living from a stream.", "es": "En el fondo del valle se alinean los molinos de agua recuperados, casitas de piedra que durante generaciones molieron el cereal de la aldea con la fuerza del Ponsul. Algunos aún funcionan y guardan herramientas y objetos de otros tiempos. Es un buen sitio para entender cómo se vivía de un arroyo.", "fr": "Au fond de la vallée s'alignent les moulins à eau restaurés, petites maisons de pierre qui, pendant des générations, ont moulu le grain du village grâce à la force du Ponsul. Certains fonctionnent encore et gardent des outils et objets d'autrefois. C'est un bon endroit pour comprendre comment on vivait d'un cours d'eau."}},
+  {"nome": "Barragem e Rota dos Fósseis", "aldeia": "Penha Garcia", "lat": 40.04545, "lng": -7.01487, "raio": 50, "texto": {"pt": "Chegou à barragem de Penha Garcia, que guarda a água do Ponsul. Por aqui passa a Rota dos Fósseis (PR3), um percurso circular de cerca de 3 km que liga o castelo, a pequena gruta da Lapa, os moinhos e as rochas com fósseis. Penha Garcia faz parte do Geopark Naturtejo, o primeiro geoparque português da rede da UNESCO. Se tiver tempo, faça o trilho completo, com água e chapéu no verão.", "en": "You have reached the Penha Garcia dam, which holds back the water of the Ponsul. The Fossil Trail (PR3) passes here, a circular route of about 3 km linking the castle, the small Lapa cave, the mills and the fossil-bearing rocks. Penha Garcia is part of the Naturtejo Geopark, the first Portuguese geopark in the UNESCO network. If you have time, walk the whole trail, with water and a hat in summer.", "es": "Ha llegado a la presa de Penha Garcia, que guarda el agua del Ponsul. Por aquí pasa la Ruta de los Fósiles (PR3), un recorrido circular de unos 3 km que une el castillo, la pequeña gruta da Lapa, los molinos y las rocas con fósiles. Penha Garcia forma parte del Geoparque Naturtejo, el primer geoparque portugués de la red de la UNESCO. Si tiene tiempo, haga la ruta completa, con agua y sombrero en verano.", "fr": "Vous voici au barrage de Penha Garcia, qui retient l'eau du Ponsul. La Route des Fossiles (PR3) passe par ici : une boucle d'environ 3 km qui relie le château, la petite grotte da Lapa, les moulins et les rochers à fossiles. Penha Garcia fait partie du Géoparc Naturtejo, le premier géoparc portugais du réseau de l'UNESCO. Si vous avez le temps, faites tout le sentier, avec de l'eau et un chapeau en été."}}
+];
+
+const aldeias=[
+  {"nome": "Monsanto", "lat": 40.039, "lng": -7.1145, "raio": 600, "img": ["images/vila-monsanto.jpg"], "texto": {"pt": "Bem-vindo a Monsanto! Aldeia agarrada à encosta de um monte de granito que sobe aos 758 metros, foi eleita em 1938 'a aldeia mais portuguesa de Portugal'. Casas encaixadas entre penedos gigantes, um castelo templário no cimo e uma vista enorme sobre a campina. Vai passar pela igreja matriz, pela Torre do Lucano e pelas casas entre penedos, e subir até ao castelo. A subida é íngreme: leve água e calçado confortável.", "en": "Welcome to Monsanto! Clinging to the slope of a granite hill that rises to 758 metres, it was named 'the most Portuguese village in Portugal' in 1938. Houses wedged between giant boulders, a Templar castle at the top and a huge view over the plain. You will pass the parish church, the Lucano Tower and the houses among the rocks, then climb to the castle. The climb is steep: bring water and comfortable shoes.", "es": "¡Bienvenido a Monsanto! Aferrada a la ladera de un monte de granito que sube hasta los 758 metros, fue elegida en 1938 'la aldea más portuguesa de Portugal'. Casas encajadas entre peñascos gigantes, un castillo templario en lo alto y una vista inmensa sobre la llanura. Pasará por la iglesia matriz, la Torre do Lucano y las casas entre rocas, y subirá hasta el castillo. La subida es empinada: lleve agua y calzado cómodo.", "fr": "Bienvenue à Monsanto ! Accroché au flanc d'une colline de granit qui culmine à 758 mètres, le village a été élu en 1938 « le village le plus portugais du Portugal ». Des maisons coincées entre des rochers géants, un château templier au sommet et une vue immense sur la plaine. Vous passerez par l'église paroissiale, la tour du Lucano et les maisons entre les rochers, puis monterez au château. La montée est raide : prenez de l'eau et de bonnes chaussures."}},
+  {"nome": "Idanha-a-Velha", "lat": 39.9965, "lng": -7.144, "raio": 500, "img": ["images/vila-idanha-a-velha.jpg"], "texto": {"pt": "Bem-vindo a Idanha-a-Velha! Esta pequena aldeia foi uma cidade romana, a Civitas Igaeditanorum, junto à estrada de Mérida a Braga. Mais tarde, com o nome de Egitânia, foi sede de bispado, e depois terra dos Templários. Quase dois mil anos de história cabem dentro desta muralha. Vai passar pela Porta Norte, pela antiga Sé, pela casa romana, pela torre dos Templários e pela ponte sobre o Ponsul.", "en": "Welcome to Idanha-a-Velha! This small village was once a Roman city, the Civitas Igaeditanorum, on the road from Mérida to Braga. Later, as Egitânia, it was a bishop's seat, and then a Templar town. Almost two thousand years of history fit inside these walls. You will pass the North Gate, the old cathedral, the Roman house, the Templar tower and the bridge over the Ponsul.", "es": "¡Bienvenido a Idanha-a-Velha! Esta pequeña aldea fue una ciudad romana, la Civitas Igaeditanorum, junto a la calzada de Mérida a Braga. Más tarde, con el nombre de Egitania, fue sede episcopal, y después tierra de los Templarios. Casi dos mil años de historia caben dentro de esta muralla. Pasará por la Puerta Norte, la antigua catedral, la casa romana, la torre de los Templarios y el puente sobre el Ponsul.", "fr": "Bienvenue à Idanha-a-Velha ! Ce petit village fut une ville romaine, la Civitas Igaeditanorum, sur la route de Mérida à Braga. Plus tard, sous le nom d'Egitânia, ce fut un siège épiscopal, puis une terre des Templiers. Près de deux mille ans d'histoire tiennent dans ces remparts. Vous passerez par la Porte Nord, l'ancienne cathédrale, la maison romaine, la tour des Templiers et le pont sur le Ponsul."}},
+  {"nome": "Penha Garcia", "lat": 40.0428, "lng": -7.0155, "raio": 500, "img": ["images/vila-penha-garcia.jpg"], "texto": {"pt": "Bem-vindo a Penha Garcia! A aldeia está no alto de uma crista de quartzito, sobre o vale do rio Ponsul, e faz parte do Geopark Naturtejo, reconhecido pela UNESCO. Aqui as rochas guardam rastos de animais marinhos com cerca de 480 milhões de anos, as 'cobras pintadas'. Vai passar pelo pelourinho, pela igreja e pelo castelo, e descer ao vale dos moinhos, à piscina natural e à barragem.", "en": "Welcome to Penha Garcia! The village sits on a quartzite ridge above the Ponsul valley and is part of the Naturtejo Geopark, recognised by UNESCO. Here the rocks hold the tracks of sea creatures some 480 million years old, the 'painted snakes'. You will pass the pillory, the church and the castle, then go down to the valley of the mills, the natural pool and the dam.", "es": "¡Bienvenido a Penha Garcia! La aldea está en lo alto de una cresta de cuarcita, sobre el valle del río Ponsul, y forma parte del Geoparque Naturtejo, reconocido por la UNESCO. Aquí las rocas guardan rastros de animales marinos de unos 480 millones de años, las 'culebras pintadas'. Pasará por la picota, la iglesia y el castillo, y bajará al valle de los molinos, a la piscina natural y a la presa.", "fr": "Bienvenue à Penha Garcia ! Le village se dresse sur une crête de quartzite au-dessus de la vallée du Ponsul et fait partie du Géoparc Naturtejo, reconnu par l'UNESCO. Ici, les rochers gardent les traces d'animaux marins vieux d'environ 480 millions d'années, les « serpents peints ». Vous passerez par le pilori, l'église et le château, puis descendrez vers la vallée des moulins, la piscine naturelle et le barrage."}}
+];
+
+// Marcadores das aldeias (sempre visiveis). Os pontos de cada aldeia so aparecem no mapa quando se chega a ela
+// (ou ao tocar no marcador da aldeia).
+const iconeAldeia=L.divIcon({html:'<div style="font-size:28px;line-height:1">🏰</div>',className:'',iconSize:[32,32],iconAnchor:[16,16]});
+aldeias.forEach(a=>{
+  L.marker([a.lat,a.lng],{icon:iconeAldeia}).addTo(map).bindPopup(a.nome).on('click',()=>revelarAldeia(a.nome));
+  L.circle([a.lat,a.lng],{radius:a.raio,color:"#c9a84c",weight:2,dashArray:'6 6',fillOpacity:.04}).addTo(map);
+});
+pontos.forEach(p=>{
+  p._camadas=[L.marker([p.lat,p.lng]).bindPopup(p.nome),L.circle([p.lat,p.lng],{radius:p.raio,color:"#2e7d32",fillOpacity:.07})];
+});
+function revelarPonto(p){if(!p._visivel){p._visivel=true;p._camadas.forEach(c=>c.addTo(map))}}
+function revelarAldeia(nome){pontos.forEach(p=>{if(p.aldeia===nome)revelarPonto(p)})}
+
+
+// ================================================================
+// 4. ESTADO
+// ================================================================
+let marcadorUsuario=null,ultimoPonto=null,pontoAtivoObj=null,watchId=null;
+let audioAtual=null,audioTocando=false,pontosVisitados=new Set();
+let linhaRota=L.polyline([],{color:'#1976d2',weight:4}).addTo(map);
+let inicioTour=null,acessoLiberado=false,toqueDebug=0,timerDebug=null;
+const HISTERESIS=25;
+let infoMostrada=null,introAte=0;const aldeiasVistas=new Set();
+
+// ================================================================
+// 5. SENHA
+// ================================================================
+function gerarSenhaHoje(){const d=new Date();return`EURO-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`}
+function abrirModal(){const m=document.getElementById('modal-senha');m.classList.remove('oculto');document.getElementById('modal-erro').textContent='';const i=document.getElementById('input-senha');i.value='';i.setAttribute('aria-invalid','false');i.classList.remove('erro');setTimeout(()=>i.focus(),100)}
+function fecharModal(){document.getElementById('modal-senha').classList.add('oculto')}
+function confirmarSenha(){const v=document.getElementById('input-senha').value.trim().toUpperCase();if(v===gerarSenhaHoje()){acessoLiberado=true;fecharModal();iniciarTour()}else{document.getElementById('modal-erro').textContent=t('modal_erro_senha');const i=document.getElementById('input-senha');i.classList.add('erro');i.setAttribute('aria-invalid','true');i.focus()}}
+function toggleVerSenha(){const i=document.getElementById('input-senha'),b=document.getElementById('toggle-senha-btn'),vis=i.type==='text';i.type=vis?'password':'text';b.setAttribute('aria-pressed',String(!vis));b.setAttribute('aria-label',vis?'Mostrar senha':'Esconder senha')}
+
+// ================================================================
+// 6. TOUR
+// ================================================================
+function pedirPermissaoEIniciar(){if(acessoLiberado){iniciarTour();return}abrirModal()}
+function iniciarTour(){if(watchId!==null)return;document.getElementById('btn-iniciar').disabled=true;document.getElementById('btn-parar').disabled=false;inicioTour=Date.now();watchId=navigator.geolocation.watchPosition(atualizar,erroGps,{enableHighAccuracy:true,maximumAge:5000,timeout:15000});atualizarStatusGps('aguardar')}
+function parar(){if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null}pararAudio();document.getElementById('btn-iniciar').disabled=false;document.getElementById('btn-parar').disabled=true;document.getElementById('btn-audio').style.display='none';atualizarStatusGps('parado');if(pontosVisitados.size>0)mostrarConclusao()}
+
+// ================================================================
+// 7. GPS
+// ================================================================
+function atualizar(pos){
+  const lat=pos.coords.latitude,lng=pos.coords.longitude,precisao=pos.coords.accuracy;
+  if(!marcadorUsuario){marcadorUsuario=L.marker([lat,lng],{icon:userIcon,alt:'A sua localização'}).addTo(map)}else{marcadorUsuario.setLatLng([lat,lng])}
+  linhaRota.addLatLng([lat,lng]);
+  atualizarStatusGps(precisao>80?'impreciso':'ativo',precisao);
+  // Partilha posição com módulo RA
+  RA.posicaoUser={lat,lng};
+  if(RA.ativo)raSetGPSStatus(true);
+  // Chegada a uma aldeia: foto + resumo; os pontos dessa aldeia passam a aparecer no mapa
+  let aldPerto=null,menorAld=Infinity;
+  aldeias.forEach(a=>{const dA=dist(lat,lng,a.lat,a.lng);if(dA<a.raio&&dA<menorAld){aldPerto=a;menorAld=dA}});
+  if(aldPerto&&!aldeiasVistas.has(aldPerto.nome)){
+    aldeiasVistas.add(aldPerto.nome);revelarAldeia(aldPerto.nome);pararAudio();
+    introAte=Date.now()+20000;   // deixa 20 s para ler a apresentacao antes de mostrar o primeiro ponto
+    map.flyTo([aldPerto.lat,aldPerto.lng],15);mostrarInfo(aldPerto);vibrar();
+  }
+  let maisProximo=null,menorDist=Infinity;
+  pontos.forEach(p=>{const d=dist(lat,lng,p.lat,p.lng);if(d<p.raio&&d<menorDist){maisProximo=p;menorDist=d}});
+  if(pontoAtivoObj){const dA=dist(lat,lng,pontoAtivoObj.lat,pontoAtivoObj.lng);if(dA<=pontoAtivoObj.raio+HISTERESIS)maisProximo=pontoAtivoObj}
+  if(maisProximo&&maisProximo.nome!==ultimoPonto&&Date.now()>=introAte){revelarPonto(maisProximo);ultimoPonto=maisProximo.nome;pontoAtivoObj=maisProximo;pontosVisitados.add(maisProximo.nome);map.flyTo([maisProximo.lat,maisProximo.lng],15);mostrarInfo(maisProximo);tocarAudio(maisProximo);vibrar();atualizarProgresso();if(pontosVisitados.size===pontos.length)parar()}
+  document.getElementById('debug').innerHTML=`Lat:${lat.toFixed(6)}<br>Lng:${lng.toFixed(6)}<br>Precisão:${Math.round(precisao)}m<br>Ponto:${ultimoPonto||'—'}<br>Visitados:${pontosVisitados.size}/${pontos.length}<br>Senha:${gerarSenhaHoje()}`;
+}
+function erroGps(){atualizarStatusGps('erro')}
+function atualizarStatusGps(estado,acc){
+  const dot=document.getElementById('status-dot'),txt=document.getElementById('status-gps-texto');
+  dot.className='status-dot';
+  if(estado==='ativo'){dot.classList.add('ativo');txt.textContent=t('gps_ativo')}
+  else if(estado==='impreciso'){dot.classList.add('impreciso');txt.textContent=t('gps_impreciso',{acc:Math.round(acc)})}
+  else if(estado==='erro'){dot.classList.add('erro');txt.textContent=t('gps_erro')}
+  else{txt.textContent=t('gps_aguardar')}
+}
+
+// ================================================================
+// 8. INFO DO PONTO
+// ================================================================
+function mostrarInfo(p){infoMostrada=p;
+  const textoLoc=(typeof p.texto==='object')?(p.texto[idiomaAtual]||p.texto.pt):p.texto;
+  let html=`<h2>${p.nome}</h2><p>${textoLoc}</p>`;
+  if(p.img&&p.img.length){
+    const id=`car_${Date.now()}`,total=p.img.length;
+    html+=`<div class="galeria" role="region" aria-label="${p.nome} — galeria de imagens">`;
+    if(total>1)html+=`<button class="car-btn prev" onclick="mover('${id}',-1)" aria-label="${t('btn_anterior')}">‹</button>`;
+    html+=`<div class="carousel" id="${id}" role="list">`;
+    p.img.forEach((f,i)=>{html+=`<img src="${f}" alt="${t('img_alt',{nome:p.nome,n:i+1,total})}" role="listitem" loading="${i===0?'eager':'lazy'}" onerror="this.closest('.galeria').style.display='none'">`});
+    html+=`</div>`;
+    if(total>1){html+=`<button class="car-btn next" onclick="mover('${id}',1)" aria-label="${t('btn_seguinte')}">›</button>`;html+=`<span class="car-counter" aria-hidden="true">1 / ${total}</span>`}
+    html+=`</div>`;
+  }
+  if(navigator.share)html+=`<button class="btn-partilhar" onclick="partilharPonto('${p.nome.replace(/'/g,"\\'")}')">
+    ${t('btn_partilhar')}</button>`;
+  document.getElementById('info').innerHTML=html;
+  document.getElementById('info').scrollIntoView({behavior:'smooth',block:'start'});
+}
+const carIndex={};
+function mover(id,dir){const el=document.getElementById(id);if(!el)return;const total=el.children.length;if(!(id in carIndex))carIndex[id]=0;carIndex[id]=(carIndex[id]+dir+total)%total;el.style.transform=`translateX(-${carIndex[id]*100}%)`;const cnt=el.parentElement.querySelector('.car-counter');if(cnt)cnt.textContent=`${carIndex[id]+1} / ${total}`}
+
+// ================================================================
+// 9. ÁUDIO
+// ================================================================
+function tocarAudio(p){pararAudio();if(!p.audio)return;const src=(typeof p.audio==='object')?(p.audio[idiomaAtual]||p.audio.pt):p.audio;audioAtual=new Audio(src);audioAtual.addEventListener('ended',()=>{audioTocando=false;atualizarBtnAudio()});audioAtual.play().then(()=>{audioTocando=true;atualizarBtnAudio();document.getElementById('btn-audio').style.display='flex'}).catch(()=>{})}
+function pararAudio(){if(audioAtual){audioAtual.pause();audioAtual=null}audioTocando=false;atualizarBtnAudio()}
+function toggleAudio(){if(!audioAtual)return;if(audioTocando){audioAtual.pause();audioTocando=false}else{audioAtual.play().catch(()=>{});audioTocando=true}atualizarBtnAudio()}
+function atualizarBtnAudio(){const btn=document.getElementById('btn-audio');btn.textContent=audioTocando?'🔊':'🔇';btn.setAttribute('aria-label',t(audioTocando?'audio_pausar':'audio_retomar'));btn.setAttribute('aria-pressed',String(audioTocando));btn.classList.toggle('tocando',audioTocando)}
+
+// ================================================================
+// 10. PROGRESSO
+// ================================================================
+function atualizarProgresso(){const v=pontosVisitados.size,total=pontos.length,pct=total>0?Math.round((v/total)*100):0;document.getElementById('progresso-barra').style.width=pct+'%';document.getElementById('progresso-texto').textContent=`${v} / ${total}`;const a=document.getElementById('progresso-aria');a.setAttribute('aria-valuenow',pct);a.setAttribute('aria-valuetext',`${v} de ${total} pontos visitados`)}
+
+// ================================================================
+// 11. CONCLUSÃO
+// ================================================================
+function mostrarConclusao(){const min=inicioTour?Math.round((Date.now()-inicioTour)/60000):0;document.getElementById('conclusao-pontos').textContent=pontosVisitados.size;document.getElementById('conclusao-tempo').textContent=min;const ov=document.getElementById('conclusao-overlay');ov.classList.remove('oculto');ov.querySelector('button').focus()}
+function fecharConclusao(){document.getElementById('conclusao-overlay').classList.add('oculto');document.getElementById('btn-iniciar').focus()}
+
+// ================================================================
+// 12. PARTILHA / VIBRAÇÃO / DISTÂNCIA
+// ================================================================
+function partilharPonto(nome){if(!navigator.share)return;navigator.share({title:`EURO TOURS — ${nome}`,text:t('partilha_texto',{nome}),url:window.location.href}).catch(()=>{})}
+function vibrar(){if(navigator.vibrate)navigator.vibrate([200,100,200])}
+function dist(lat1,lon1,lat2,lon2){const R=6371000,r=Math.PI/180,dL=(lat2-lat1)*r,dO=(lon2-lon1)*r,a=Math.sin(dL/2)**2+Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dO/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+
+// ================================================================
+// 13. ONLINE / OFFLINE
+// ================================================================
+function verificarConexao(){document.getElementById('offline-banner').classList.toggle('visivel',!navigator.onLine)}
+window.addEventListener('online',verificarConexao);
+window.addEventListener('offline',verificarConexao);
+verificarConexao();
+
+// ================================================================
+// 14. DEBUG SECRETO (5 toques no logo)
+// ================================================================
+document.getElementById('logo-debug-trigger').addEventListener('click',()=>{toqueDebug++;clearTimeout(timerDebug);if(toqueDebug>=5){toqueDebug=0;document.getElementById('debug').classList.toggle('visivel')}else{timerDebug=setTimeout(()=>{toqueDebug=0},2000)}});
+document.getElementById('logo-debug-trigger').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')e.target.click()});
+
+// ================================================================
+// 15. SERVICE WORKER
+// ================================================================
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').then(()=>console.log('SW registado')).catch(e=>console.log('Erro SW:',e))}
+
+// ================================================================
+// 16. REALIDADE AUMENTADA
+// ================================================================
+const RA={ativo:false,stream:null,animFrame:null,orientacao:{alfa:0},posicaoUser:null,pontoFoco:null,canvas:null,ctx:null,video:null,DIST_MAX:3000,FOV_H:60,RAIO_FOCO:80};
+
+async function abrirRA(){
+  if(!RA.posicaoUser&&!marcadorUsuario){
+    const msgs={pt:'Por favor inicie o tour primeiro para ativar o GPS.',en:'Please start the tour first to activate GPS.',es:'Por favor inicie el tour primero para activar el GPS.',fr:'Veuillez d\'abord démarrer le tour pour activer le GPS.'};
+    alert(msgs[idiomaAtual]||msgs.pt);return;
+  }
+  document.getElementById('ra-overlay').classList.add('ativo');
+  RA.ativo=true;RA.canvas=document.getElementById('ra-canvas');RA.ctx=RA.canvas.getContext('2d');RA.video=document.getElementById('ra-video');
+  await pedirPermissoesRA();
+}
+
+function fecharRA(){
+  RA.ativo=false;document.getElementById('ra-overlay').classList.remove('ativo');
+  if(RA.stream){RA.stream.getTracks().forEach(t=>t.stop());RA.stream=null}
+  RA.video.srcObject=null;
+  if(RA.animFrame){cancelAnimationFrame(RA.animFrame);RA.animFrame=null}
+  window.removeEventListener('deviceorientation',raOnOrientacao);
+}
+
+async function pedirPermissoesRA(){
+  document.getElementById('ra-aviso').style.display='none';
+  try{
+    RA.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false});
+    RA.video.srcObject=RA.stream;
+  }catch(e){document.getElementById('ra-aviso').style.display='flex';return}
+  if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+    try{const r=await DeviceOrientationEvent.requestPermission();if(r==='granted')window.addEventListener('deviceorientation',raOnOrientacao,true)}catch(e){}
+  }else{window.addEventListener('deviceorientation',raOnOrientacao,true)}
+  if(marcadorUsuario){const ll=marcadorUsuario.getLatLng();RA.posicaoUser={lat:ll.lat,lng:ll.lng};raSetGPSStatus(true)}
+  else{navigator.geolocation.getCurrentPosition(pos=>{RA.posicaoUser={lat:pos.coords.latitude,lng:pos.coords.longitude};raSetGPSStatus(true)},()=>raSetGPSStatus(false),{enableHighAccuracy:true,timeout:8000})}
+  raLoop();
+}
+
+function raSetGPSStatus(ok){document.getElementById('ra-gps-dot').className='ra-gps-dot '+(ok?'ok':'err');document.getElementById('ra-gps-txt').textContent=ok?'GPS ativo':'Sem GPS'}
+function raOnOrientacao(e){RA.orientacao.alfa=e.alpha||0;const ag=document.getElementById('ra-agulha');if(ag)ag.style.transform=`rotate(${-RA.orientacao.alfa}deg)`}
+
+function raLoop(){
+  if(!RA.ativo)return;
+  const W=window.innerWidth,H=window.innerHeight;
+  if(RA.canvas.width!==W||RA.canvas.height!==H){RA.canvas.width=W;RA.canvas.height=H}
+  RA.ctx.clearRect(0,0,W,H);
+  if(RA.posicaoUser)raDesenharEtiquetas(W,H);
+  RA.animFrame=requestAnimationFrame(raLoop);
+}
+
+function raBearing(lat1,lng1,lat2,lng2){const r=Math.PI/180,dL=(lng2-lng1)*r,y=Math.sin(dL)*Math.cos(lat2*r),x=Math.cos(lat1*r)*Math.sin(lat2*r)-Math.sin(lat1*r)*Math.cos(lat2*r)*Math.cos(dL);return(Math.atan2(y,x)*180/Math.PI+360)%360}
+function raDistancia(lat1,lng1,lat2,lng2){const R=6371000,r=Math.PI/180,dL=(lat2-lat1)*r,dO=(lng2-lng1)*r,a=Math.sin(dL/2)**2+Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dO/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+function raFmt(m){return m<1000?Math.round(m)+'m':(m/1000).toFixed(1)+'km'}
+
+function raDesenharEtiquetas(W,H){
+  const ctx=RA.ctx,az=RA.orientacao.alfa,fov=RA.FOV_H,cx=W/2,cy=H/2;
+  let focoPonto=null,menorAng=Infinity;
+  const lista=[];
+  pontos.forEach(p=>{
+    const d=raDistancia(RA.posicaoUser.lat,RA.posicaoUser.lng,p.lat,p.lng);
+    if(d>RA.DIST_MAX)return;
+    const bearing=raBearing(RA.posicaoUser.lat,RA.posicaoUser.lng,p.lat,p.lng);
+    let diff=bearing-az;if(diff>180)diff-=360;if(diff<-180)diff+=360;
+    if(Math.abs(diff)>fov/2+10)return;
+    const x=cx+(diff/(fov/2))*(W/2)*0.85;
+    const y=cy-cy*0.5+(Math.min(d/RA.DIST_MAX,1))*cy*0.3;
+    const emFoco=Math.hypot(x-cx,y-cy)<RA.RAIO_FOCO;
+    if(emFoco&&Math.abs(diff)<menorAng){menorAng=Math.abs(diff);focoPonto={...p,d,x,y}}
+    lista.push({p,d,x,y,emFoco});
+  });
+  lista.sort((a,b)=>b.d-a.d);
+  lista.forEach(({p,d,x,y,emFoco})=>raDesenharEtiqueta(ctx,p,x,y,d,emFoco));
+  raInfoBar(focoPonto);
+}
+
+function raDesenharEtiqueta(ctx,p,x,y,d,emFoco){
+  const al=emFoco?1:Math.max(0.4,1-d/RA.DIST_MAX);
+  const sc=emFoco?1.15:Math.max(0.7,1-d/RA.DIST_MAX*0.4);
+  ctx.save();ctx.globalAlpha=al;ctx.translate(x,y);ctx.scale(sc,sc);
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,30);
+  ctx.strokeStyle=emFoco?'#c9a84c':'rgba(255,255,255,0.8)';ctx.lineWidth=emFoco?3:2;ctx.stroke();
+  ctx.beginPath();ctx.arc(0,32,7,0,Math.PI*2);ctx.fillStyle=emFoco?'#c9a84c':'rgba(255,255,255,0.9)';ctx.fill();
+  ctx.font='bold 14px Arial,sans-serif';const wN=ctx.measureText(p.nome).width;
+  ctx.font='12px Arial,sans-serif';const wD=ctx.measureText(raFmt(d)).width;
+  const pad=10,wMax=Math.max(wN,wD)+pad*2,hBox=46,xB=-wMax/2,yB=-hBox-10;
+  ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=8;ctx.shadowOffsetY=2;
+  ctx.beginPath();ctx.moveTo(xB+8,yB);ctx.lineTo(xB+wMax-8,yB);ctx.quadraticCurveTo(xB+wMax,yB,xB+wMax,yB+8);ctx.lineTo(xB+wMax,yB+hBox-8);ctx.quadraticCurveTo(xB+wMax,yB+hBox,xB+wMax-8,yB+hBox);ctx.lineTo(xB+8,yB+hBox);ctx.quadraticCurveTo(xB,yB+hBox,xB,yB+hBox-8);ctx.lineTo(xB,yB+8);ctx.quadraticCurveTo(xB,yB,xB+8,yB);ctx.closePath();
+  ctx.fillStyle=emFoco?'rgba(26,58,42,0.92)':'rgba(0,0,0,0.72)';ctx.fill();
+  if(emFoco){ctx.strokeStyle='#c9a84c';ctx.lineWidth=1.5;ctx.stroke()}
+  ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+  ctx.font='bold 14px Arial,sans-serif';ctx.fillStyle=emFoco?'#c9a84c':'#fff';ctx.textAlign='center';ctx.fillText(p.nome,0,yB+18);
+  ctx.font='12px Arial,sans-serif';ctx.fillStyle=emFoco?'rgba(255,220,100,0.9)':'rgba(255,255,255,0.7)';ctx.fillText('📍 '+raFmt(d),0,yB+36);
+  ctx.restore();
+}
+
+function raInfoBar(ponto){
+  const bar=document.getElementById('ra-info-bar'),elN=document.getElementById('ra-info-nome'),elD=document.getElementById('ra-info-dist'),elT=document.getElementById('ra-info-texto');
+  if(!ponto){bar.classList.add('vazio');elN.textContent='Aponte a câmara para a paisagem';elD.textContent='';elT.textContent='Os pontos aparecerão quando estiverem no campo de visão';RA.pontoFoco=null;return}
+  bar.classList.remove('vazio');elN.textContent=ponto.nome;elD.textContent='📍 '+raFmt(ponto.d)+' de distância';
+  const txt=ponto.texto;elT.textContent=typeof txt==='object'?(txt[idiomaAtual]||txt.pt||''):(txt||'');
+  if(RA.pontoFoco!==ponto.nome){RA.pontoFoco=ponto.nome;if(navigator.vibrate)navigator.vibrate(100)}
+}
+
+// ================================================================
+// 17. INICIALIZAÇÃO
+// ================================================================
+(function init(){
+  const l=localStorage.getItem('et_lang');
+  if(l&&TRADUCOES[l])idiomaAtual=l;
+  aplicarTraducoes();
+  atualizarProgresso();
+})();
+</script>
+</body>
+</html>
