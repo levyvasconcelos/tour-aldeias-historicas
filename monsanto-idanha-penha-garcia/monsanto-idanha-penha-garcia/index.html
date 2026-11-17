@@ -360,12 +360,16 @@ const aldeias=[
 // (ou ao tocar no marcador da aldeia).
 const iconeAldeia=L.divIcon({html:'<div style="font-size:28px;line-height:1">🏰</div>',className:'',iconSize:[32,32],iconAnchor:[16,16]});
 aldeias.forEach(a=>{
-  L.marker([a.lat,a.lng],{icon:iconeAldeia}).addTo(map).bindPopup(a.nome).on('click',()=>revelarAldeia(a.nome));
+  L.marker([a.lat,a.lng],{icon:iconeAldeia}).addTo(map).bindPopup(()=>popupHtml(a,'a',aldeias.indexOf(a)),{maxWidth:240,autoPanPaddingTopLeft:[10,40]}).on('click',()=>revelarAldeia(a.nome));
   L.circle([a.lat,a.lng],{radius:a.raio,color:"#c9a84c",weight:2,dashArray:'6 6',fillOpacity:.04}).addTo(map);
 });
 pontos.forEach(p=>{
-  p._camadas=[L.marker([p.lat,p.lng]).bindPopup(p.nome),L.circle([p.lat,p.lng],{radius:p.raio,color:"#2e7d32",fillOpacity:.07})];
+  p._camadas=[L.marker([p.lat,p.lng]).bindPopup(()=>popupHtml(p,'p',pontos.indexOf(p)),{maxWidth:240,autoPanPaddingTopLeft:[10,40]}),L.circle([p.lat,p.lng],{radius:p.raio,color:"#2e7d32",fillOpacity:.07})];
 });
+const TXT_VER={pt:'Ver foto e informação',en:'See photo and info',es:'Ver foto e información',fr:'Voir photo et infos'};
+function popupHtml(x,tipo,i){const f=(x.img&&x.img.length)?`<img src="${x.img[0]}" alt="" style="width:100%;max-height:120px;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px" onerror="this.remove()">`:'';
+  return `<div style="text-align:center">${f}<strong style="font-size:15px">${x.nome}</strong><br><button onclick="abrirDoMapa('${tipo}',${i})" style="margin-top:8px;background:#2e7d32;color:#fff;border:none;border-radius:8px;padding:9px 12px;font-size:14px;font-weight:600;cursor:pointer;width:100%">${TXT_VER[idiomaAtual]||TXT_VER.pt}</button></div>`}
+function abrirDoMapa(tipo,i){const x=tipo==='a'?aldeias[i]:pontos[i];map.closePopup();mostrarInfo(x);const el=document.getElementById('info');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 function revelarPonto(p){if(!p._visivel){p._visivel=true;p._camadas.forEach(c=>c.addTo(map))}}
 function revelarAldeia(nome){pontos.forEach(p=>{if(p.aldeia===nome)revelarPonto(p)})}
 
