@@ -1,6 +1,6 @@
 // Service Worker - roteiro Monsanto, Idanha-a-Velha e Penha Garcia
 // Para forcar a atualizacao nos telemoveis depois de mudar ficheiros, mude o numero da versao abaixo.
-const VERSAO = 'v2';
+const VERSAO = 'v3';
 const CACHE = 'euro-tours-monsanto-idanha-penha-garcia-' + VERSAO;
 const CORE = [
   './', './index.html', './manifest.json', './pontos-tour.json',

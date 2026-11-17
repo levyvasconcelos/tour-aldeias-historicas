@@ -372,6 +372,7 @@ function popupHtml(x,tipo,i){const f=(x.img&&x.img.length)?`<img src="${x.img[0]
 function abrirDoMapa(tipo,i){const x=tipo==='a'?aldeias[i]:pontos[i];map.closePopup();mostrarInfo(x);const el=document.getElementById('info');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 function revelarPonto(p){if(!p._visivel){p._visivel=true;p._camadas.forEach(c=>c.addTo(map))}}
 function revelarAldeia(nome){pontos.forEach(p=>{if(p.aldeia===nome)revelarPonto(p)})}
+pontos.forEach(revelarPonto);
 
 
 // ================================================================
