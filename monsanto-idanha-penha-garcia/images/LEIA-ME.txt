@@ -1,4 +1,4 @@
 Coloque aqui o logo: logo-euro-tours.png (ja incluido).
 Fotos das aldeias (aparecem ao chegar a cada vila): vila-monsanto.jpg, vila-idanha-a-velha.jpg, vila-penha-garcia.jpg
-Enquanto nao existirem, o app simplesmente nao mostra foto.
+(ja incluidas)
 Fotos dos pontos: coloque aqui e depois acrescente  img:["images/nome.jpg"]  ao ponto no index.html.
