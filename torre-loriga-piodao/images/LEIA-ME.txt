@@ -1,2 +1,0 @@
-Coloque aqui o logo: logo-euro-tours.png (copie-o da pasta images do repositório tour-serra).
-Fotos dos pontos: coloque aqui e depois acrescente  img:["images/nome.jpg"]  ao ponto no index.html.
