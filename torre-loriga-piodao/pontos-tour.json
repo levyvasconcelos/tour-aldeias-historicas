@@ -1,0 +1,926 @@
+{
+  "tour": {
+    "nome": "Torre, Loriga e Piódão",
+    "descricao": "Roteiro GPS pela Serra da Estrela e Piódão",
+    "versao": "1.0.0",
+    "idiomas": [
+      "pt",
+      "en",
+      "es",
+      "fr"
+    ],
+    "totalPontos": 41,
+    "nota": "O app le os pontos de dentro do index.html. Este ficheiro serve de referencia.",
+    "aldeias": [
+      {
+        "id": "subida",
+        "nome": "Subida à Serra",
+        "lat": 40.299,
+        "lng": -7.539,
+        "raio": 3500,
+        "img": [
+          "images/vila-subida.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo à subida à Serra da Estrela! A partir da Covilhã sobe-se pela estrada das Penhas da Saúde, ganhando altitude a cada curva. Vai passar pela Varanda dos Carqueijais, pela Pedra do Urso, pelo antigo sanatório, hoje pousada, e pela Lagoa do Viriato.",
+          "en": "Welcome to the climb up the Serra da Estrela! From Covilhã the road to Penhas da Saúde gains altitude with every bend. You will pass the Varanda dos Carqueijais, the Pedra do Urso, the old sanatorium, now a pousada, and the Lagoa do Viriato.",
+          "es": "¡Bienvenido a la subida a la Serra da Estrela! Desde la Covilhã, la carretera de Penhas da Saúde gana altitud en cada curva. Pasará por la Varanda dos Carqueijais, la Pedra do Urso, el antiguo sanatorio, hoy pousada, y la Lagoa do Viriato.",
+          "fr": "Bienvenue dans la montée de la Serra da Estrela ! Depuis la Covilhã, la route de Penhas da Saúde gagne de l'altitude à chaque virage. Vous passerez par la Varanda dos Carqueijais, la Pedra do Urso, l'ancien sanatorium, aujourd'hui pousada, et la Lagoa do Viriato."
+        }
+      },
+      {
+        "id": "zezere",
+        "nome": "Vale do Zêzere",
+        "lat": 40.322,
+        "lng": -7.579,
+        "raio": 1800,
+        "img": [
+          "images/vila-zezere.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo ao vale do Zêzere! Aqui a serra mostra as marcas dos glaciares: covões, vales em U e planaltos. Vai ver Piornos, a Nave de Santo António, o Covão d'Ametade e os miradouros sobre o vale glaciar.",
+          "en": "Welcome to the Zêzere valley! Here the mountains show the marks of the glaciers: hollows, U-shaped valleys and plateaus. You will see Piornos, the Nave de Santo António, the Covão d'Ametade and the viewpoints over the glacial valley.",
+          "es": "¡Bienvenido al valle del Zêzere! Aquí la sierra muestra las marcas de los glaciares: covões, valles en U y mesetas. Verá Piornos, la Nave de Santo António, el Covão d'Ametade y los miradores sobre el valle glaciar.",
+          "fr": "Bienvenue dans la vallée du Zêzere ! Ici la Serra montre les traces des glaciers : cuvettes, vallées en U et plateaux. Vous verrez Piornos, la Nave de Santo António, le Covão d'Ametade et les belvédères sur la vallée glaciaire."
+        }
+      },
+      {
+        "id": "torre",
+        "nome": "Torre",
+        "lat": 40.325,
+        "lng": -7.607,
+        "raio": 2200,
+        "img": [
+          "images/vila-torre.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo à Torre, no coração da Serra da Estrela! Está no ponto mais alto de Portugal continental, a 1993 metros. Vai ver os miradouros, a imagem de Nossa Senhora da Boa Estrela, o marco de 1806 e a estância de ski.",
+          "en": "Welcome to the Torre, in the heart of the Serra da Estrela! You are at the highest point of mainland Portugal, at 1,993 metres. You will see the viewpoints, the statue of Our Lady of the Good Star, the 1806 marker and the ski resort.",
+          "es": "¡Bienvenido a la Torre, en el corazón de la Serra da Estrela! Está en el punto más alto de Portugal continental, a 1993 metros. Verá los miradores, la imagen de Nuestra Señora de la Buena Estrella, el mojón de 1806 y la estación de esquí.",
+          "fr": "Bienvenue à la Torre, au cœur de la Serra da Estrela ! Vous êtes au point culminant du Portugal continental, à 1 993 mètres. Vous verrez les belvédères, la statue de Notre-Dame de la Bonne Étoile, la borne de 1806 et la station de ski."
+        }
+      },
+      {
+        "id": "manteigas",
+        "nome": "Manteigas",
+        "lat": 40.378,
+        "lng": -7.531,
+        "raio": 2600,
+        "img": [
+          "images/vila-manteigas.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo a Manteigas! É o único concelho totalmente integrado no Parque Natural da Serra da Estrela, com paisagens de montanha e águas límpidas. Vai ver o Viveiro das Trutas e a cascata do Poço do Inferno.",
+          "en": "Welcome to Manteigas! It is the only municipality entirely within the Serra da Estrela Natural Park, with mountain scenery and clear waters. You will see the Trout Farm and the Poço do Inferno waterfall.",
+          "es": "¡Bienvenido a Manteigas! Es el único municipio totalmente integrado en el Parque Natural de la Serra da Estrela, con paisajes de montaña y aguas límpidas. Verá el Vivero de Truchas y la cascada del Poço do Inferno.",
+          "fr": "Bienvenue à Manteigas ! C'est la seule commune entièrement intégrée au Parc Naturel de la Serra da Estrela, avec des paysages de montagne et des eaux limpides. Vous verrez l'élevage de truites et la cascade du Poço do Inferno."
+        }
+      },
+      {
+        "id": "lagoa-comprida",
+        "nome": "Lagoa Comprida",
+        "lat": 40.358,
+        "lng": -7.66,
+        "raio": 2000,
+        "img": [
+          "images/vila-lagoa-comprida.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo à Lagoa Comprida! É o maior reservatório da Serra da Estrela, a cerca de 1600 metros de altitude, de origem glaciar. Vai ver o miradouro da Rocha, a vista panorâmica e a barragem.",
+          "en": "Welcome to the Lagoa Comprida! It is the largest reservoir in the Serra da Estrela, at about 1,600 metres, of glacial origin. You will see the Rocha viewpoint, the panoramic view and the dam.",
+          "es": "¡Bienvenido a la Lagoa Comprida! Es el mayor embalse de la Serra da Estrela, a unos 1600 metros, de origen glaciar. Verá el mirador de la Rocha, la vista panorámica y la presa.",
+          "fr": "Bienvenue à la Lagoa Comprida ! C'est le plus grand réservoir de la Serra da Estrela, à environ 1 600 mètres, d'origine glaciaire. Vous verrez le belvédère da Rocha, la vue panoramique et le barrage."
+        }
+      },
+      {
+        "id": "loriga",
+        "nome": "Loriga",
+        "lat": 40.327388,
+        "lng": -7.697081,
+        "raio": 2300,
+        "img": [
+          "images/vila-loriga.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo a Loriga! Vila a cerca de 770 metros de altitude, no único vale glaciar permanentemente habitado do país, com uma longa tradição ligada à lã. Vai ver a praia fluvial, de água límpida e fria.",
+          "en": "Welcome to Loriga! A village at about 770 metres, in the only permanently inhabited glacial valley in the country, with a long tradition tied to wool. You will see the river beach, with its clear, cold water.",
+          "es": "¡Bienvenido a Loriga! Villa a unos 770 metros, en el único valle glaciar habitado de forma permanente del país, con una larga tradición ligada a la lana. Verá la playa fluvial, de agua límpida y fría.",
+          "fr": "Bienvenue à Loriga ! Village à environ 770 mètres d'altitude, dans la seule vallée glaciaire habitée en permanence du pays, avec une longue tradition liée à la laine. Vous verrez la plage fluviale, à l'eau limpide et froide."
+        }
+      },
+      {
+        "id": "vide",
+        "nome": "Vide",
+        "lat": 40.294756,
+        "lng": -7.78392,
+        "raio": 800,
+        "img": [
+          "images/vila-vide.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo a Vide! Aldeia de montanha no concelho de Seia, junto à ribeira de Alvoco. Tem uma igreja matriz com mais de 300 anos e fontes antigas. Vai ver a ponte medieval, no centro da aldeia.",
+          "en": "Welcome to Vide! A mountain village in the municipality of Seia, beside the Alvoco stream. It has a parish church more than 300 years old and old fountains. You will see the medieval bridge in the centre of the village.",
+          "es": "¡Bienvenido a Vide! Aldea de montaña en el municipio de Seia, junto a la ribera de Alvoco. Tiene una iglesia matriz de más de 300 años y fuentes antiguas. Verá el puente medieval, en el centro de la aldea.",
+          "fr": "Bienvenue à Vide ! Village de montagne de la commune de Seia, au bord de la rivière d'Alvoco. Il a une église paroissiale de plus de 300 ans et de vieilles fontaines. Vous verrez le pont médiéval, au centre du village."
+        }
+      },
+      {
+        "id": "piodao",
+        "nome": "Piódão",
+        "lat": 40.229356,
+        "lng": -7.824749,
+        "raio": 800,
+        "img": [
+          "images/vila-piodao.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo ao Piódão, a aldeia presépio! Aldeia Histórica de Portugal, na Serra do Açor, com casas de xisto e janelas azuis a descer a encosta em socalcos. Vai ver a igreja matriz, as capelas, a fonte dos Algares e a eira.",
+          "en": "Welcome to Piódão, the nativity-scene village! A Historic Village of Portugal in the Serra do Açor, with schist houses and blue windows stepping down the hillside in terraces. You will see the parish church, the chapels, the Algares fountain and the threshing floor.",
+          "es": "¡Bienvenido a Piódão, la aldea belén! Aldea Histórica de Portugal, en la Serra do Açor, con casas de pizarra y ventanas azules que bajan por la ladera en bancales. Verá la iglesia matriz, las capillas, la fuente de los Algares y la era.",
+          "fr": "Bienvenue à Piódão, le village crèche ! Village Historique du Portugal, dans la Serra do Açor, avec des maisons de schiste et des fenêtres bleues qui descendent la colline en terrasses. Vous verrez l'église paroissiale, les chapelles, la fontaine des Algares et l'aire de battage."
+        }
+      },
+      {
+        "id": "foz-degua",
+        "nome": "Foz d'Égua",
+        "lat": 40.247368,
+        "lng": -7.812328,
+        "raio": 700,
+        "img": [
+          "images/vila-foz-degua.jpg"
+        ],
+        "texto": {
+          "pt": "Bem-vindo a Foz d'Égua! Pequena aldeia de xisto, na freguesia do Piódão, famosa pela sua praia fluvial, onde se juntam duas ribeiras. Aqui termina o roteiro, com um mergulho se a estação o permitir.",
+          "en": "Welcome to Foz d'Égua! A small schist village in the parish of Piódão, famous for its river beach where two streams meet. The route ends here, with a dip if the season allows.",
+          "es": "¡Bienvenido a Foz d'Égua! Pequeña aldea de pizarra, en la parroquia de Piódão, famosa por su playa fluvial, donde se unen dos riberas. Aquí termina el recorrido, con un baño si la estación lo permite.",
+          "fr": "Bienvenue à Foz d'Égua ! Petit village de schiste, dans la paroisse de Piódão, célèbre pour sa plage fluviale où se rejoignent deux ruisseaux. Le parcours se termine ici, avec une baignade si la saison le permet."
+        }
+      }
+    ],
+    "pontos": [
+      {
+        "id": "parque-campismo-piao",
+        "aldeia": "Subida à Serra",
+        "nome": "Parque de Campismo do Pião",
+        "lat": 40.287816,
+        "lng": -7.526094,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Já a subir a serra, passa pelo Parque de Campismo do Pião, rodeado de árvores. É o primeiro sinal de que a montanha está a chegar.",
+          "en": "Already climbing the mountain, you pass the Pião campsite, surrounded by trees. It is the first sign that the mountains are near.",
+          "es": "Ya subiendo la sierra, pasa por el camping de Pião, rodeado de árboles. Es la primera señal de que la montaña se acerca.",
+          "fr": "En montant déjà vers la Serra, vous passez par le camping de Pião, entouré d'arbres. C'est le premier signe que la montagne approche."
+        },
+        "img": [
+          "images/ponto-parque-campismo-piao-1.jpg"
+        ]
+      },
+      {
+        "id": "varanda-carqueijais",
+        "aldeia": "Subida à Serra",
+        "nome": "Varanda dos Carqueijais",
+        "lat": 40.291269,
+        "lng": -7.525945,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Miradouro sobre a Cova da Beira, a planície lá em baixo, e primeira grande vista da subida. É daqui que parte o percurso geológico que atravessa a serra até às Penhas Douradas.",
+          "en": "A viewpoint over the Cova da Beira plain below and the first great view of the climb. From here starts the geological route that crosses the mountains to Penhas Douradas.",
+          "es": "Mirador sobre la Cova da Beira, la llanura de abajo, y primera gran vista de la subida. De aquí parte el recorrido geológico que cruza la sierra hasta Penhas Douradas.",
+          "fr": "Belvédère sur la Cova da Beira, la plaine en contrebas, et première grande vue de la montée. C'est d'ici que part le parcours géologique qui traverse la Serra jusqu'à Penhas Douradas."
+        },
+        "img": [
+          "images/ponto-varanda-carqueijais-1.jpg"
+        ]
+      },
+      {
+        "id": "pedra-urso",
+        "aldeia": "Subida à Serra",
+        "nome": "Pedra do Urso",
+        "lat": 40.301777,
+        "lng": -7.533441,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Uma rocha de granito com a forma de um urso, à beira da estrada para as Penhas da Saúde. Um bom sítio para uma fotografia.",
+          "en": "A granite rock shaped like a bear, beside the road to Penhas da Saúde. A good spot for a photo.",
+          "es": "Una roca de granito con forma de oso, junto a la carretera hacia Penhas da Saúde. Un buen sitio para una foto.",
+          "fr": "Un rocher de granit en forme d'ours, au bord de la route vers Penhas da Saúde. Un bon endroit pour une photo."
+        },
+        "img": [
+          "images/ponto-pedra-urso-1.jpg"
+        ]
+      },
+      {
+        "id": "pousada-sanatorio",
+        "aldeia": "Subida à Serra",
+        "nome": "Pousada da Serra da Estrela (antigo Sanatório)",
+        "lat": 40.305,
+        "lng": -7.541,
+        "raio": 120,
+        "coord": "estimada",
+        "fonte": "Posição estimada pela rota (Levy não indicou coordenada) - confirmar no local",
+        "texto": {
+          "pt": "Esta foi um sanatório de altitude para tuberculosos, destinado aos ferroviários, construído a cerca de 1200 metros de altitude e abandonado durante décadas. Foi recuperado e abriu como pousada em 2014, num projeto do arquiteto Eduardo Souto Moura.",
+          "en": "This was a high-altitude sanatorium for tuberculosis patients, built for railway workers at about 1,200 metres and left abandoned for decades. It was restored and opened as a pousada in 2014, in a design by architect Eduardo Souto Moura.",
+          "es": "Fue un sanatorio de altura para tuberculosos, destinado a los ferroviarios, construido a unos 1200 metros y abandonado durante décadas. Se restauró y abrió como pousada en 2014, en un proyecto del arquitecto Eduardo Souto Moura.",
+          "fr": "C'était un sanatorium d'altitude pour tuberculeux, destiné aux cheminots, construit à environ 1 200 mètres et abandonné pendant des décennies. Il a été restauré et a ouvert comme pousada en 2014, sur un projet de l'architecte Eduardo Souto Moura."
+        },
+        "img": [
+          "images/ponto-pousada-1.jpg"
+        ]
+      },
+      {
+        "id": "penhas-saude",
+        "aldeia": "Subida à Serra",
+        "nome": "Penhas da Saúde",
+        "lat": 40.3125,
+        "lng": -7.5535,
+        "raio": 120,
+        "coord": "estimada",
+        "fonte": "Posição estimada pela rota (Levy não indicou coordenada) - confirmar no local",
+        "texto": {
+          "pt": "Aldeia de montanha a cerca de 1500 metros de altitude, no coração da Serra, e estância de inverno. O nome liga-se à saúde: o ar da montanha fez dela lugar de sanatórios. Daqui vê-se a Torre ao longe.",
+          "en": "A mountain village at about 1,500 metres, in the heart of the Serra, and a winter resort. The name is tied to health: the mountain air made it a place of sanatoria. From here you can see the Torre in the distance.",
+          "es": "Aldea de montaña a unos 1500 metros, en el corazón de la sierra, y estación de invierno. El nombre se vincula a la salud: el aire de montaña la convirtió en lugar de sanatorios. Desde aquí se ve la Torre a lo lejos.",
+          "fr": "Village de montagne à environ 1 500 mètres, au cœur de la Serra, et station d'hiver. Son nom est lié à la santé : l'air de la montagne en a fait un lieu de sanatoriums. D'ici, on voit la Torre au loin."
+        },
+        "img": [
+          "images/ponto-penhas-saude-1.jpg"
+        ]
+      },
+      {
+        "id": "lagoa-viriato",
+        "aldeia": "Subida à Serra",
+        "nome": "Lagoa do Viriato",
+        "lat": 40.314207,
+        "lng": -7.55992,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Lagoa junto às Penhas da Saúde, ponto de partida de vários caminhos pela serra. O granito, os pinheiros e o silêncio dão-lhe um ar de alta montanha.",
+          "en": "A lake next to Penhas da Saúde, the starting point of several mountain trails. The granite, pines and silence give it a high-mountain feel.",
+          "es": "Laguna junto a Penhas da Saúde, punto de partida de varios caminos por la sierra. El granito, los pinos y el silencio le dan aire de alta montaña.",
+          "fr": "Lac près de Penhas da Saúde, point de départ de plusieurs sentiers dans la Serra. Le granit, les pins et le silence lui donnent un air de haute montagne."
+        },
+        "img": [
+          "images/ponto-lagoa-viriato-1.jpg"
+        ]
+      },
+      {
+        "id": "piornos-teleferico",
+        "aldeia": "Vale do Zêzere",
+        "nome": "Piornos – antigo edifício do teleférico",
+        "lat": 40.314608,
+        "lng": -7.575961,
+        "raio": 39,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "As ruínas de um antigo teleférico, a cerca de 1630 metros. Aqui há também um marco geodésico. É um ponto de partida para ver o planalto ocidental da serra.",
+          "en": "The ruins of an old cable car, at about 1,630 metres. There is also a geodetic marker here. It is a starting point for seeing the western plateau of the mountains.",
+          "es": "Las ruinas de un antiguo teleférico, a unos 1630 metros. Aquí hay también un vértice geodésico. Es un punto de partida para ver la meseta occidental de la sierra.",
+          "fr": "Les ruines d'un ancien téléphérique, à environ 1 630 mètres. Il y a aussi ici une borne géodésique. C'est un point de départ pour voir le plateau occidental de la Serra."
+        },
+        "img": [
+          "images/ponto-piornos-edificio-1.jpg"
+        ]
+      },
+      {
+        "id": "piornos-miradouro",
+        "aldeia": "Vale do Zêzere",
+        "nome": "Miradouro dos Piornos / Nave de Santo António",
+        "lat": 40.3149,
+        "lng": -7.576922,
+        "raio": 39,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Miradouro aberto em 2022, uma varanda segura e confortável para observar a Nave de Santo António e o planalto ocidental, uma paisagem moldada por antigos glaciares.",
+          "en": "A viewpoint opened in 2022, a safe and comfortable balcony for looking at the Nave de Santo António and the western plateau, a landscape shaped by ancient glaciers.",
+          "es": "Mirador inaugurado en 2022, un balcón seguro y cómodo para observar la Nave de Santo António y la meseta occidental, un paisaje moldeado por antiguos glaciares.",
+          "fr": "Belvédère ouvert en 2022, un balcon sûr et confortable pour observer la Nave de Santo António et le plateau occidental, un paysage façonné par d'anciens glaciers."
+        },
+        "img": [
+          "images/ponto-piornos-miradouro-1.jpg"
+        ]
+      },
+      {
+        "id": "nave-santo-antonio",
+        "aldeia": "Vale do Zêzere",
+        "nome": "Nave de Santo António",
+        "lat": 40.31761,
+        "lng": -7.572159,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Planalto a cerca de 1500 metros, entre os vales do Zêzere e do Alforfa, onde ficaram moreias deixadas pelos glaciares. No planalto há uma pequena capela de pedra dedicada a Santo António.",
+          "en": "A plateau at about 1,500 metres, between the Zêzere and Alforfa valleys, where moraines left by glaciers remain. On the plateau stands a small stone chapel dedicated to Saint Anthony.",
+          "es": "Meseta a unos 1500 metros, entre los valles del Zêzere y del Alforfa, donde quedaron morrenas dejadas por los glaciares. En la meseta hay una pequeña capilla de piedra dedicada a San Antonio.",
+          "fr": "Plateau à environ 1 500 mètres, entre les vallées du Zêzere et de l'Alforfa, où subsistent des moraines laissées par les glaciers. Sur le plateau se dresse une petite chapelle de pierre dédiée à saint Antoine."
+        },
+        "img": [
+          "images/ponto-nave-santo-antonio-1.jpg"
+        ]
+      },
+      {
+        "id": "covao-ametade",
+        "aldeia": "Vale do Zêzere",
+        "nome": "Covão d'Ametade",
+        "lat": 40.328336,
+        "lng": -7.586143,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Depressão em forma de anfiteatro, escavada pelo gelo, a cerca de 1500 metros. É aqui que o rio Zêzere começa a ganhar corpo. Tem parque de merendas e liga-se a Manteigas por caminhos a pé.",
+          "en": "An amphitheatre-shaped hollow carved by ice, at about 1,500 metres. This is where the river Zêzere begins to take shape. It has a picnic park and connects to Manteigas by walking trails.",
+          "es": "Depresión en forma de anfiteatro, excavada por el hielo, a unos 1500 metros. Aquí empieza a cobrar cuerpo el río Zêzere. Tiene parque de meriendas y se conecta con Manteigas por senderos.",
+          "fr": "Dépression en forme d'amphithéâtre, creusée par la glace, à environ 1 500 mètres. C'est ici que le Zêzere commence à prendre corps. Il y a une aire de pique-nique et des sentiers vers Manteigas."
+        },
+        "img": [
+          "images/ponto-covao-ametade-1.jpg"
+        ]
+      },
+      {
+        "id": "santa-catarina",
+        "aldeia": "Vale do Zêzere",
+        "nome": "Miradouro de Santa Catarina",
+        "lat": 40.325427,
+        "lng": -7.578495,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Miradouro sobre o vale glaciar do Zêzere, com o recorte em U escavado pelo gelo. Repare nos blocos de granito arredondados, deixados pelo glaciar.",
+          "en": "A viewpoint over the Zêzere glacial valley, with the U shape carved by ice. Notice the rounded granite boulders left behind by the glacier.",
+          "es": "Mirador sobre el valle glaciar del Zêzere, con el perfil en U excavado por el hielo. Fíjese en los bloques de granito redondeados que dejó el glaciar.",
+          "fr": "Belvédère sur la vallée glaciaire du Zêzere, au profil en U creusé par la glace. Remarquez les blocs de granit arrondis laissés par le glacier."
+        },
+        "img": [
+          "images/ponto-santa-catarina-1.jpg"
+        ]
+      },
+      {
+        "id": "fonte-paulo-luis-martins",
+        "aldeia": "Vale do Zêzere",
+        "nome": "Fonte de Paulo Luís Martins",
+        "lat": 40.332656,
+        "lng": -7.568907,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Fonte de água fresca que nunca deixa de brotar, junto à estrada, no vale do Zêzere, perto de Manteigas.",
+          "en": "A fountain of fresh water that never stops flowing, beside the road in the Zêzere valley, near Manteigas.",
+          "es": "Fuente de agua fresca que nunca deja de brotar, junto a la carretera, en el valle del Zêzere, cerca de Manteigas.",
+          "fr": "Fontaine d'eau fraîche qui ne cesse de couler, au bord de la route dans la vallée du Zêzere, près de Manteigas."
+        },
+        "img": [
+          "images/ponto-fonte-paulo-luis-martins-1.jpg"
+        ]
+      },
+      {
+        "id": "miradouro-vale-glaciar-zezere",
+        "aldeia": "Vale do Zêzere",
+        "nome": "Miradouro do Vale Glaciar do Zêzere",
+        "lat": 40.324608,
+        "lng": -7.588603,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Vista privilegiada sobre um dos maiores vales glaciares da Europa, onde nasce o rio Zêzere.",
+          "en": "A privileged view of one of the largest glacial valleys in Europe, where the river Zêzere rises.",
+          "es": "Vista privilegiada de uno de los mayores valles glaciares de Europa, donde nace el río Zêzere.",
+          "fr": "Vue privilégiée sur l'une des plus grandes vallées glaciaires d'Europe, où naît le Zêzere."
+        },
+        "img": [
+          "images/ponto-vale-glaciar-zezere-1.jpg"
+        ]
+      },
+      {
+        "id": "miradouro-covao",
+        "aldeia": "Torre",
+        "nome": "Miradouro do Covão",
+        "lat": 40.320278,
+        "lng": -7.589621,
+        "raio": 83,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Uma plataforma suspensa, projetada sobre o vale, que dá uma nova perspetiva da paisagem glaciar.",
+          "en": "A suspended platform projecting over the valley, offering a new perspective on the glacial landscape.",
+          "es": "Una plataforma suspendida, proyectada sobre el valle, que ofrece una nueva perspectiva del paisaje glaciar.",
+          "fr": "Une plateforme suspendue, projetée au-dessus de la vallée, qui offre une nouvelle perspective sur le paysage glaciaire."
+        },
+        "img": [
+          "images/ponto-covao-miradouro-1.jpg"
+        ]
+      },
+      {
+        "id": "tunel-serra-estrela",
+        "aldeia": "Torre",
+        "nome": "Túnel da Serra da Estrela",
+        "lat": 40.320736,
+        "lng": -7.59172,
+        "raio": 83,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "O túnel da Serra da Estrela, na estrada que atravessa a serra em direção à Torre.",
+          "en": "The Serra da Estrela tunnel, on the road that crosses the mountains towards the Torre.",
+          "es": "El túnel de la Serra da Estrela, en la carretera que cruza la sierra hacia la Torre.",
+          "fr": "Le tunnel de la Serra da Estrela, sur la route qui traverse la Serra en direction de la Torre."
+        }
+      },
+      {
+        "id": "miradouro-vale-glaciar-unhais",
+        "aldeia": "Torre",
+        "nome": "Miradouro do Vale Glaciar de Unhais",
+        "lat": 40.321626,
+        "lng": -7.60122,
+        "raio": 93,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Miradouro sobre o vale glaciar de Unhais, na vertente da serra voltada ao poente.",
+          "en": "A viewpoint over the Unhais glacial valley, on the west-facing side of the mountains.",
+          "es": "Mirador sobre el valle glaciar de Unhais, en la vertiente de la sierra orientada al poniente.",
+          "fr": "Belvédère sur la vallée glaciaire d'Unhais, sur le versant de la Serra tourné vers l'ouest."
+        },
+        "img": [
+          "images/ponto-vale-glaciar-unhais-1.jpg"
+        ]
+      },
+      {
+        "id": "nossa-senhora-boa-estrela",
+        "aldeia": "Torre",
+        "nome": "Nossa Senhora da Boa Estrela",
+        "lat": 40.323295,
+        "lng": -7.600135,
+        "raio": 93,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Imagem de Nossa Senhora da Boa Estrela, protetora dos pastores, esculpida na rocha, com mais de sete metros de altura. É obra de António Duarte, inaugurada em 1946. Todos os anos, no segundo domingo de agosto, há aqui uma missa.",
+          "en": "An image of Our Lady of the Good Star, protector of shepherds, carved into the rock and more than seven metres tall. It is the work of António Duarte, inaugurated in 1946. Every year, on the second Sunday of August, a mass is held here.",
+          "es": "Imagen de Nuestra Señora de la Buena Estrella, protectora de los pastores, esculpida en la roca, de más de siete metros de altura. Es obra de António Duarte, inaugurada en 1946. Cada año, el segundo domingo de agosto, se celebra aquí una misa.",
+          "fr": "Image de Notre-Dame de la Bonne Étoile, protectrice des bergers, sculptée dans la roche, haute de plus de sept mètres. C'est l'œuvre d'António Duarte, inaugurée en 1946. Chaque année, le deuxième dimanche d'août, une messe y est célébrée."
+        },
+        "img": [
+          "images/ponto-boa-estrela-1.jpg"
+        ]
+      },
+      {
+        "id": "miradouro-cantaro-magro",
+        "aldeia": "Torre",
+        "nome": "Miradouro do Cântaro Magro",
+        "lat": 40.327223,
+        "lng": -7.598402,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Vista para o Cântaro Magro, uma esguia agulha de granito e uma das formações mais icónicas da Serra da Estrela, com cerca de 1928 metros.",
+          "en": "A view of the Cântaro Magro, a slender granite spire and one of the most iconic formations in the Serra da Estrela, at about 1,928 metres.",
+          "es": "Vista del Cântaro Magro, una esbelta aguja de granito y una de las formaciones más icónicas de la Serra da Estrela, de unos 1928 metros.",
+          "fr": "Vue sur le Cântaro Magro, une aiguille de granit élancée et l'une des formations les plus emblématiques de la Serra da Estrela, à environ 1 928 mètres."
+        },
+        "img": [
+          "images/ponto-cantaro-magro-1.jpg"
+        ]
+      },
+      {
+        "id": "torre-marco",
+        "aldeia": "Torre",
+        "nome": "Torre – ponto mais alto de Portugal continental",
+        "lat": 40.322239,
+        "lng": -7.612814,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "O marco mandado erguer pelo futuro rei D. João VI é a Torre, vértice geodésico de 1.ª ordem Estrela, construída em 1806 no ponto mais alto de Portugal continental, a 1993 metros de altitude.",
+          "en": "The marker raised on the orders of the future King João VI is the Torre, a first-order geodetic point called Estrela, built in 1806 at the highest point of mainland Portugal, at 1,993 metres.",
+          "es": "El mojón mandado erigir por el futuro rey Juan VI es la Torre, vértice geodésico de primer orden Estrela, construida en 1806 en el punto más alto de Portugal continental, a 1993 metros.",
+          "fr": "La borne érigée sur ordre du futur roi Jean VI est la Torre, point géodésique de premier ordre Estrela, construite en 1806 au point culminant du Portugal continental, à 1 993 mètres."
+        },
+        "img": [
+          "images/ponto-marco-1.jpg",
+          "images/ponto-marco-2.jpg"
+        ]
+      },
+      {
+        "id": "centro-comercial-torre",
+        "aldeia": "Torre",
+        "nome": "Centro Comercial da Torre",
+        "lat": 40.321873,
+        "lng": -7.613392,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Zona de lojas e restaurantes no topo, onde se encontram produtos regionais como o queijo da Serra.",
+          "en": "A zone of shops and restaurants at the top, where you can find regional products such as Serra cheese.",
+          "es": "Zona de tiendas y restaurantes en la cima, donde se encuentran productos regionales como el queso de la Serra.",
+          "fr": "Zone de boutiques et de restaurants au sommet, où l'on trouve des produits régionaux comme le fromage de la Serra."
+        }
+      },
+      {
+        "id": "capela-nossa-senhora-ar",
+        "aldeia": "Torre",
+        "nome": "Capela de Nossa Senhora do Ar",
+        "lat": 40.321851,
+        "lng": -7.61426,
+        "raio": 33,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Pequena capela de Nossa Senhora do Ar, junto ao ponto mais alto do país continental.",
+          "en": "The small chapel of Our Lady of the Air, next to the highest point of mainland Portugal.",
+          "es": "La pequeña capilla de Nuestra Señora del Aire, junto al punto más alto de Portugal continental.",
+          "fr": "La petite chapelle de Notre-Dame de l'Air, près du point culminant du Portugal continental."
+        }
+      },
+      {
+        "id": "teleferico-serra-estrela",
+        "aldeia": "Torre",
+        "nome": "Teleférico da Serra da Estrela",
+        "lat": 40.3236,
+        "lng": -7.612734,
+        "raio": 68,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "O teleférico e as telecadeiras da estância de ski da Torre, que levam os visitantes pelas pistas no inverno.",
+          "en": "The cable car and chairlifts of the Torre ski resort, which carry visitors over the slopes in winter.",
+          "es": "El teleférico y las telesillas de la estación de esquí de la Torre, que llevan a los visitantes por las pistas en invierno.",
+          "fr": "Le téléphérique et les télésièges de la station de ski de la Torre, qui emmènent les visiteurs sur les pistes en hiver."
+        },
+        "img": [
+          "images/ponto-teleferico-1.jpg"
+        ]
+      },
+      {
+        "id": "lago-barragem-torre",
+        "aldeia": "Torre",
+        "nome": "Lago da Barragem da Torre",
+        "lat": 40.326416,
+        "lng": -7.608263,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Pequeno lago de barragem, no planalto da Torre, rodeado de granito e urzes.",
+          "en": "A small reservoir lake on the Torre plateau, surrounded by granite and heather.",
+          "es": "Pequeño lago de presa en la meseta de la Torre, rodeado de granito y brezo.",
+          "fr": "Petit lac de barrage sur le plateau de la Torre, entouré de granit et de bruyère."
+        }
+      },
+      {
+        "id": "estancia-ski",
+        "aldeia": "Torre",
+        "nome": "Estância de Ski da Serra da Estrela",
+        "lat": 40.330878,
+        "lng": -7.613578,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "A estância de ski fica no planalto da Torre, a cerca de 2000 metros de altitude, no concelho de Seia. É a única de Portugal continental.",
+          "en": "The ski resort lies on the Torre plateau at about 2,000 metres, in the municipality of Seia. It is the only one in mainland Portugal.",
+          "es": "La estación de esquí está en la meseta de la Torre, a unos 2000 metros, en el municipio de Seia. Es la única de Portugal continental.",
+          "fr": "La station de ski se trouve sur le plateau de la Torre, à environ 2 000 mètres, dans la commune de Seia. C'est la seule du Portugal continental."
+        }
+      },
+      {
+        "id": "abrigo-pastores",
+        "aldeia": "Torre",
+        "nome": "Abrigo de Pastores",
+        "lat": 40.337937,
+        "lng": -7.616009,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Pequeno abrigo de pedra onde os pastores se protegiam, em plena serra. Um lembrete de como a montanha foi vivida durante séculos.",
+          "en": "A small stone shelter where shepherds took cover, high in the mountains. A reminder of how the mountain has been lived in for centuries.",
+          "es": "Pequeño refugio de piedra donde se protegían los pastores, en plena sierra. Un recordatorio de cómo se ha vivido la montaña durante siglos.",
+          "fr": "Petit abri de pierre où les bergers se protégeaient, en pleine montagne. Un rappel de la façon dont la montagne a été habitée pendant des siècles."
+        },
+        "img": [
+          "images/ponto-abrigo-pastores-1.jpg"
+        ]
+      },
+      {
+        "id": "miradouro-vale-loriga",
+        "aldeia": "Torre",
+        "nome": "Miradouro do Vale de Loriga (Vale Glaciar de Loriga)",
+        "lat": 40.334667,
+        "lng": -7.617106,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Daqui vê-se o vale glaciar de Loriga, escavado em U há milhares de anos. É o único vale glaciar permanentemente habitado do país, com a vila lá ao fundo.",
+          "en": "From here you see the glacial valley of Loriga, carved into a U shape thousands of years ago. It is the only permanently inhabited glacial valley in the country, with the village far below.",
+          "es": "Desde aquí se ve el valle glaciar de Loriga, excavado en U hace miles de años. Es el único valle glaciar habitado de forma permanente del país, con la villa al fondo.",
+          "fr": "D'ici, on voit la vallée glaciaire de Loriga, creusée en U il y a des milliers d'années. C'est la seule vallée glaciaire habitée en permanence du pays, avec le village tout au fond."
+        },
+        "img": [
+          "images/ponto-vale-loriga-1.jpg"
+        ]
+      },
+      {
+        "id": "poco-inferno",
+        "aldeia": "Manteigas",
+        "nome": "Cascata do Poço do Inferno",
+        "lat": 40.373537,
+        "lng": -7.517641,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Cascata de cerca de 10 metros, a mais de 1000 metros de altitude, na ribeira de Leandres, afluente do Zêzere. A escadaria até lá é íngreme.",
+          "en": "A waterfall about 10 metres high, at over 1,000 metres, on the Leandres stream, a tributary of the Zêzere. The stairway down to it is steep.",
+          "es": "Cascada de unos 10 metros, a más de 1000 metros de altitud, en el arroyo de Leandres, afluente del Zêzere. La escalinata hasta ella es empinada.",
+          "fr": "Cascade d'environ 10 mètres, à plus de 1 000 mètres d'altitude, sur le ruisseau de Leandres, affluent du Zêzere. L'escalier pour y descendre est raide."
+        },
+        "img": [
+          "images/ponto-poco-inferno-1.jpg"
+        ]
+      },
+      {
+        "id": "viveiro-trutas",
+        "aldeia": "Manteigas",
+        "nome": "Viveiro das Trutas",
+        "lat": 40.382603,
+        "lng": -7.544606,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Viveiro onde se criam trutas, junto às Caldas de Manteigas, com água fresca que desce da serra.",
+          "en": "A trout farm near the Caldas de Manteigas, fed by cool water coming down from the mountains.",
+          "es": "Vivero donde se crían truchas, junto a las Caldas de Manteigas, con agua fresca que baja de la sierra.",
+          "fr": "Élevage de truites près des Caldas de Manteigas, alimenté par l'eau fraîche qui descend de la Serra."
+        },
+        "img": [
+          "images/ponto-viveiro-trutas-1.jpg"
+        ]
+      },
+      {
+        "id": "lagoa-rocha",
+        "aldeia": "Lagoa Comprida",
+        "nome": "Miradouro da Rocha",
+        "lat": 40.357095,
+        "lng": -7.67234,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Miradouro sobre a Lagoa Comprida e o planalto da serra, a caminho de Loriga.",
+          "en": "A viewpoint over the Lagoa Comprida and the mountain plateau, on the way to Loriga.",
+          "es": "Mirador sobre la Lagoa Comprida y la meseta de la sierra, de camino a Loriga.",
+          "fr": "Belvédère sur la Lagoa Comprida et le plateau de la Serra, sur la route de Loriga."
+        },
+        "img": [
+          "images/ponto-lagoa-rocha-1.jpg"
+        ]
+      },
+      {
+        "id": "lagoa-vista",
+        "aldeia": "Lagoa Comprida",
+        "nome": "Vista panorâmica da Lagoa Comprida",
+        "lat": 40.351876,
+        "lng": -7.660089,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "A Lagoa Comprida é o maior reservatório da Serra da Estrela, a cerca de 1600 metros, de origem glaciar. Nas margens ainda se veem marcas do gelo, como as rochas polidas.",
+          "en": "The Lagoa Comprida is the largest reservoir in the Serra da Estrela, at about 1,600 metres, of glacial origin. On its shores you can still see ice marks, such as polished rocks.",
+          "es": "La Lagoa Comprida es el mayor embalse de la Serra da Estrela, a unos 1600 metros, de origen glaciar. En sus orillas aún se ven marcas del hielo, como rocas pulidas.",
+          "fr": "La Lagoa Comprida est le plus grand réservoir de la Serra da Estrela, à environ 1 600 mètres, d'origine glaciaire. Sur ses rives, on voit encore des traces de la glace, comme les roches polies."
+        },
+        "img": [
+          "images/ponto-lagoa-vista-1.jpg"
+        ]
+      },
+      {
+        "id": "lagoa-barragem",
+        "aldeia": "Lagoa Comprida",
+        "nome": "Barragem da Lagoa Comprida",
+        "lat": 40.363879,
+        "lng": -7.648112,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "A barragem foi construída aproveitando o covão glaciar. As obras começaram no início do século XX, em 1911 ou 1912, e a barragem foi crescendo ao longo dos anos.",
+          "en": "The dam was built taking advantage of the glacial hollow. Work began in the early 20th century, in 1911 or 1912, and the dam grew taller over the years.",
+          "es": "La presa se construyó aprovechando el covão glaciar. Las obras empezaron a principios del siglo XX, en 1911 o 1912, y la presa fue creciendo con los años.",
+          "fr": "Le barrage a été construit en profitant de la cuvette glaciaire. Les travaux ont commencé au début du XXe siècle, en 1911 ou 1912, et le barrage a grandi au fil des ans."
+        },
+        "img": [
+          "images/ponto-lagoa-barragem-1.jpg"
+        ]
+      },
+      {
+        "id": "loriga-praia",
+        "aldeia": "Loriga",
+        "nome": "Praia Fluvial de Loriga",
+        "lat": 40.32745,
+        "lng": -7.678052,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "A única praia fluvial de Portugal num vale glaciar, a cerca de 800 metros de altitude. A água, límpida e fria, desce da serra pela ribeira de Loriga. Foi finalista das 7 Maravilhas de Portugal na categoria de praia fluvial.",
+          "en": "The only river beach in Portugal set in a glacial valley, at about 800 metres. The clear, cold water comes down from the mountains along the Loriga stream. It was a finalist in the 7 Wonders of Portugal in the river beach category.",
+          "es": "La única playa fluvial de Portugal situada en un valle glaciar, a unos 800 metros. El agua, límpida y fría, baja de la sierra por la ribera de Loriga. Fue finalista de las 7 Maravillas de Portugal en la categoría de playa fluvial.",
+          "fr": "La seule plage fluviale du Portugal située dans une vallée glaciaire, à environ 800 mètres. L'eau, limpide et froide, descend de la Serra par le ruisseau de Loriga. Elle fut finaliste des 7 Merveilles du Portugal dans la catégorie plage fluviale."
+        },
+        "img": [
+          "images/ponto-loriga-praia-1.jpg",
+          "images/ponto-loriga-praia-2.jpg"
+        ]
+      },
+      {
+        "id": "vide-ponte",
+        "aldeia": "Vide",
+        "nome": "Ponte Medieval de Vide",
+        "lat": 40.293894,
+        "lng": -7.784778,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "No centro de Vide, sobre a ribeira de Alvoco, uma ponte possivelmente medieval une as duas margens. É uma das mais notáveis das Aldeias de Montanha: em cantaria de granito, com um único arco de volta perfeita e tabuleiro ligeiramente arqueado, com pavimento de paralelos. A jusante há um açude moderno que também serve de passagem a pé.",
+          "en": "In the centre of Vide, over the Alvoco stream, a possibly medieval bridge joins the two banks. It is one of the most remarkable of the Mountain Villages: built of granite ashlar, with a single round arch and a slightly arched deck paved with cobbles. Downstream is a modern weir that also serves as a footbridge.",
+          "es": "En el centro de Vide, sobre la ribera de Alvoco, un puente posiblemente medieval une las dos orillas. Es uno de los más notables de las Aldeas de Montaña: de sillería de granito, con un único arco de medio punto y tablero ligeramente arqueado, con pavimento de adoquines. Aguas abajo hay un azud moderno que también sirve de paso peatonal.",
+          "fr": "Au centre de Vide, sur la rivière d'Alvoco, un pont peut-être médiéval relie les deux rives. C'est l'un des plus remarquables des Villages de Montagne : en pierre de taille de granit, avec une seule arche en plein cintre et un tablier légèrement bombé, pavé de pavés. En aval, un seuil moderne sert aussi de passage piéton."
+        }
+      },
+      {
+        "id": "piodao-museu",
+        "aldeia": "Piódão",
+        "nome": "Posto de Turismo / Núcleo Museológico de Piódão",
+        "lat": 40.229189,
+        "lng": -7.824436,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "No largo do Cónego Manuel Fernandes Nogueira fica o posto de turismo e o núcleo museológico, onde se conhece melhor a história da aldeia e o modo de vida de quem sempre aqui viveu. O Piódão está classificado como Imóvel de Interesse Público desde 1978.",
+          "en": "In the square named after Canon Manuel Fernandes Nogueira you will find the tourist office and the small museum, where you can learn more about the village's history and the way of life of those who have always lived here. Piódão has been classified as a Property of Public Interest since 1978.",
+          "es": "En la plaza del canónigo Manuel Fernandes Nogueira están la oficina de turismo y el pequeño museo, donde se conoce mejor la historia de la aldea y el modo de vida de quienes siempre han vivido aquí. Piódão está clasificada Inmueble de Interés Público desde 1978.",
+          "fr": "Sur la place du chanoine Manuel Fernandes Nogueira se trouvent l'office de tourisme et le petit musée, où l'on découvre l'histoire du village et le mode de vie de ceux qui y ont toujours vécu. Piódão est classé Immeuble d'Intérêt Public depuis 1978."
+        },
+        "img": [
+          "images/ponto-piodao-museu-1.jpg"
+        ]
+      },
+      {
+        "id": "piodao-matriz",
+        "aldeia": "Piódão",
+        "nome": "Igreja Matriz do Piódão",
+        "lat": 40.229349,
+        "lng": -7.824136,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "A igreja atual foi ampliada no século XVIII e remodelada no XIX por iniciativa e projeto do Cónego Manuel Fernandes Nogueira, que desenhou uma fachada ao gosto da época, com frontão neobarroco e quatro esguios contrafortes cilíndricos coroados por coruchéus cónicos. Dentro, procure a imagem em calcário da Senhora da Conceição, do século XV, os altares de talha e a azulejaria coimbrã.",
+          "en": "The present church was enlarged in the 18th century and remodelled in the 19th on the initiative and design of Canon Manuel Fernandes Nogueira, who gave it a façade in the taste of the day, with a neo-Baroque pediment and four slender cylindrical buttresses topped with conical pinnacles. Inside, look for the 15th-century limestone image of Our Lady of the Conception, the carved altars and the Coimbra tiles.",
+          "es": "La iglesia actual fue ampliada en el siglo XVIII y remodelada en el XIX por iniciativa y proyecto del canónigo Manuel Fernandes Nogueira, que le dio una fachada al gusto de la época, con frontón neobarroco y cuatro esbeltos contrafuertes cilíndricos coronados por pináculos cónicos. En el interior, busque la imagen de caliza de Nuestra Señora de la Concepción, del siglo XV, los altares de talla y los azulejos de Coímbra.",
+          "fr": "L'église actuelle a été agrandie au XVIIIe siècle et remaniée au XIXe sur l'initiative et le projet du chanoine Manuel Fernandes Nogueira, qui lui donna une façade au goût de l'époque, avec un fronton néobaroque et quatre élégants contreforts cylindriques coiffés de pinacles coniques. À l'intérieur, cherchez l'image en calcaire de Notre-Dame de la Conception, du XVe siècle, les autels sculptés et les azulejos de Coimbra."
+        },
+        "img": [
+          "images/ponto-piodao-matriz-1.jpg"
+        ]
+      },
+      {
+        "id": "piodao-sao-pedro",
+        "aldeia": "Piódão",
+        "nome": "Capela de São Pedro",
+        "lat": 40.229706,
+        "lng": -7.824184,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Pequena capela de traço simples, no meio da malha urbana. No interior guarda uma imagem de São Pedro, o orago, que remonta ao século XVI.",
+          "en": "A small chapel of simple design, inside the village's tight web of lanes. Inside is an image of Saint Peter, the patron saint, dating from the 16th century.",
+          "es": "Pequeña capilla de trazo sencillo, en el interior de la trama urbana. En su interior guarda una imagen de San Pedro, el patrón, que se remonta al siglo XVI.",
+          "fr": "Petite chapelle au tracé simple, au cœur de la trame urbaine. À l'intérieur se trouve une image de saint Pierre, le patron, qui date du XVIe siècle."
+        },
+        "img": [
+          "images/ponto-piodao-sao-pedro-1.jpg"
+        ]
+      },
+      {
+        "id": "piodao-algares",
+        "aldeia": "Piódão",
+        "nome": "Fonte dos Algares",
+        "lat": 40.229965,
+        "lng": -7.824229,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Chafariz inteiramente construído em xisto, que se distingue pelo seu arco ogival, embutido numa parede de xisto. Por estas ruelas íngremes corre aqui e ali um fio de água numa canada irregular: a levada.",
+          "en": "A fountain built entirely of schist, notable for its pointed arch set into a schist wall. Along these steep lanes a thread of water runs here and there in an uneven channel: the levada.",
+          "es": "Fuente construida íntegramente en pizarra, que destaca por su arco ojival, empotrado en un muro de pizarra. Por estas empinadas callejas corre aquí y allá un hilo de agua por un canal irregular: la levada.",
+          "fr": "Fontaine entièrement construite en schiste, remarquable par son arc brisé encastré dans un mur de schiste. Dans ces ruelles escarpées coule çà et là un filet d'eau dans un chenal irrégulier : la levada."
+        },
+        "img": [
+          "images/ponto-piodao-algares-1.jpg"
+        ]
+      },
+      {
+        "id": "piodao-almas",
+        "aldeia": "Piódão",
+        "nome": "Capela das Almas",
+        "lat": 40.230186,
+        "lng": -7.824132,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Capela fundada no século XVIII e profundamente remodelada no século XX. No interior tem um retábulo em madeira. Com a igreja matriz e a capela de São Pedro, forma o trio de templos da aldeia.",
+          "en": "A chapel founded in the 18th century and deeply remodelled in the 20th. Inside is a wooden altarpiece. With the parish church and the chapel of Saint Peter, it makes up the village's three places of worship.",
+          "es": "Capilla fundada en el siglo XVIII y profundamente remodelada en el XX. En el interior tiene un retablo de madera. Junto con la iglesia matriz y la capilla de San Pedro, forma el trío de templos de la aldea.",
+          "fr": "Chapelle fondée au XVIIIe siècle et profondément remaniée au XXe. À l'intérieur se trouve un retable en bois. Avec l'église paroissiale et la chapelle Saint-Pierre, elle forme le trio de lieux de culte du village."
+        },
+        "img": [
+          "images/ponto-piodao-almas-1.jpg"
+        ]
+      },
+      {
+        "id": "piodao-busto",
+        "aldeia": "Piódão",
+        "nome": "Busto do Cónego Manuel Fernandes Nogueira",
+        "lat": 40.229447,
+        "lng": -7.82473,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Homenagem ao Cónego Manuel Fernandes Nogueira, nascido em Loriga em 1861, ordenado padre em 1884 e chegado ao Piódão em 1885. Em 1886 fundou aqui um colégio, que funcionou até 1906 e criou um polo cultural de grande importância para a zona. Foi também ele quem remodelou a igreja matriz.",
+          "en": "A tribute to Canon Manuel Fernandes Nogueira, born in Loriga in 1861, ordained in 1884 and arrived in Piódão in 1885. In 1886 he founded a school here, which ran until 1906 and became a cultural hub of great importance for the area. He also remodelled the parish church.",
+          "es": "Homenaje al canónigo Manuel Fernandes Nogueira, nacido en Loriga en 1861, ordenado sacerdote en 1884 y llegado a Piódão en 1885. En 1886 fundó aquí un colegio, que funcionó hasta 1906 y creó un polo cultural de gran importancia para la zona. Fue también quien remodeló la iglesia matriz.",
+          "fr": "Hommage au chanoine Manuel Fernandes Nogueira, né à Loriga en 1861, ordonné prêtre en 1884 et arrivé à Piódão en 1885. En 1886 il y fonda un collège, qui fonctionna jusqu'en 1906 et devint un pôle culturel majeur pour la région. C'est aussi lui qui remania l'église paroissiale."
+        },
+        "img": [
+          "images/ponto-piodao-busto-1.jpg"
+        ]
+      },
+      {
+        "id": "piodao-eira",
+        "aldeia": "Piódão",
+        "nome": "Eira Comunitária de Piódão",
+        "lat": 40.229587,
+        "lng": -7.823448,
+        "raio": 30,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "No cimo da povoação fica a eira comunitária, de onde se desfruta uma bela panorâmica sobre o casario e os socalcos. Em aldeias pequenas e isoladas, o trabalho em comum foi um modo de vida. Repare também no Forno do Pão.",
+          "en": "At the top of the village is the communal threshing floor, with a fine panorama over the houses and terraces. In small, isolated villages, communal work was a way of life. Look out also for the bread oven.",
+          "es": "En lo alto del pueblo está la era comunitaria, desde donde se disfruta de una bella panorámica sobre el caserío y los bancales. En aldeas pequeñas y aisladas, el trabajo en común fue un modo de vida. Fíjese también en el horno de pan.",
+          "fr": "Au sommet du village se trouve l'aire de battage communautaire, d'où l'on jouit d'un beau panorama sur les maisons et les terrasses. Dans les petits villages isolés, le travail en commun était un mode de vie. Remarquez aussi le four à pain."
+        },
+        "img": [
+          "images/ponto-piodao-eira-1.jpg"
+        ]
+      },
+      {
+        "id": "foz-degua-praia",
+        "aldeia": "Foz d'Égua",
+        "nome": "Praia Fluvial de Foz d'Égua",
+        "lat": 40.247368,
+        "lng": -7.812328,
+        "raio": 120,
+        "coord": "verificada",
+        "fonte": "Coordenada indicada por Levy (Google Maps)",
+        "texto": {
+          "pt": "Uma das praias fluviais mais bonitas do país, no ponto onde se juntam a ribeira do Piódão e a ribeira de Chãs d'Égua. Uma pequena represa cria um espelho de água cristalina, ladeado por duas pontes gémeas de xisto e por antigos moinhos.",
+          "en": "One of the most beautiful river beaches in the country, where the Piódão and Chãs d'Égua streams meet. A small weir creates a mirror of crystal-clear water, flanked by two twin schist bridges and old mills.",
+          "es": "Una de las playas fluviales más bonitas del país, donde se unen la ribera de Piódão y la de Chãs d'Égua. Una pequeña presa crea un espejo de agua cristalina, flanqueado por dos puentes gemelos de pizarra y antiguos molinos.",
+          "fr": "L'une des plus belles plages fluviales du pays, là où se rejoignent les ruisseaux de Piódão et de Chãs d'Égua. Un petit barrage forme un miroir d'eau cristalline, bordé de deux ponts jumeaux en schiste et d'anciens moulins."
+        },
+        "img": [
+          "images/ponto-foz-degua-1.jpg"
+        ]
+      }
+    ]
+  }
+}
